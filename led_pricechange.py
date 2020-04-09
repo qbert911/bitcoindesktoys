@@ -30,13 +30,13 @@ position=[
 [+1,+1,+1,+1,+1,+1,0],
 [+1,+1,+1,+1,+1,+1,+1]
 ]
-red=[255, 0, 0]
-green=[0, 255, 0]
+red=[55, 0, 0]
+green=[0, 55, 0]
 gray=[25, 25, 30]
 blank=[0,0,0]
 brightness=0.04
 
-print position[vala]
+#print position[vala]
 for x in range (0,7):
     if position[vala][x] == 2:
         r,g,b=gray
