@@ -1,6 +1,6 @@
 #!/bin/bash
-SPEEDMONITOR=true
-DISPLAYDIGITS=true
+SPEEDMONITOR=false
+DISPLAYDIGITS=false
 CHATPRICE=false
 maxbarlen=$((100))
 nodeip="127.0.0.1"
