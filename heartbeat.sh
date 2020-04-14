@@ -22,7 +22,7 @@ while [ -z "$tblok" ] || [[ $tblok = "null" ]] ||  [ -z "$oldmempool" ] || [[ "$
 done
 nmempool=$(( 1 + $oldmempool ))
 oldmempool=$(( 1 + $oldmempool ))
-lastprice=$((0))
+lastprice=$(( 0 ))
 mychar="-";myblank=" ";
 while : ;do
   START=$(date +%s)
@@ -77,7 +77,7 @@ while : ;do
     for (( c=1; c<=$(( $currbarlen - $oldbarlen )); c++ )); do out+="#";done
     for (( c=1; c<=$(( $maxbarlen - $currbarlen )); c++ )); do
       if [ "$(( ($c + $currbarlen) % ($maxbarlen / 10 / $scalevel ) ))" == "0" ];then out+="+";else out+=${myblank}; fi;  done
-    if [[ "$(( $RUNTIME%5 ))" -eq "0" ]];then
+    if [[ "$(( $RUNTIME%5 ))" -eq "0" ]] || [ "$lastprice" = "0" ];then
 			echo -en "O"
 			usdprice=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" -H "accept: application/json")
 			if echo $usdprice | grep -q "bitcoin"  ;then
