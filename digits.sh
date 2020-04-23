@@ -1,10 +1,7 @@
 #!/bin/bash
-lastreading=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" -H "accept: application/json" |jq -r '.bitcoin.usd')
-lastdisplay=$(printf '%04.0f' $lastreading)
-change=$((0))
+lastreading="new"
 START=$(date +%s)
 echo -en "Watching BTC price movements."
-eval "/home/pi/bitcoindesktoys/show_message.py $lastdisplay"
 while : ;do
   usdreading=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" -H "accept: application/json")
   if echo $usdreading | grep -q "bitcoin"  ;then  #data scrape was successful
@@ -15,21 +12,24 @@ while : ;do
     usdreading=$lastreading
   fi
 
-  if [[ "$usdreading" = "$lastdisplay" ]] ;then   #&& [[ "$change" -ne "0" ]]
+  if [[ "$usdreading" = "$lastreading" ]] && [[ "$lastreading" -ne "new" ]];then
     echo -en "."
   else
-    if [[ "$usdreading" > "$lastdisplay" ]];then
-      changeup=$(($change+1))
-      change=$(( $changeup > 10 ? 10 : $changeup ))
+    if [[ "$lastreading" -eq "new" ]];then
+      change=$((0))
+      eval "/home/pi/bitcoindesktoys/show_message.py $usdreading"
     else
-      changeup=$(($change-1))
-      change=$(( $changeup < -10 ? -10 : $changeup ))
+      if [[ "$usdreading" > "$lastreading" ]];then
+        changeup=$(($change+1))
+        change=$(( $changeup > 10 ? 10 : $changeup ))
+      else
+        changeup=$(($change-1))
+        change=$(( $changeup < -10 ? -10 : $changeup ))
+      fi
+      eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading"
+      eval "/home/pi/bitcoindesktoys/led_pricechange.py $change"
+      echo -en "\n\$$usdreading $(printf '%+03d' $change) $(printf '%+04d' $(( $usdreading - $lastreading )) )\$ change  $(( $(date +%s) - $START )) seconds"
     fi
-    #echo ""
-    eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastdisplay $usdreading"
-    eval "/home/pi/bitcoindesktoys/led_pricechange.py $change"
-    echo -en "\n\$$usdreading $(printf '%+03d' $changeup)/$change $(printf '%+04d' $(( $usdreading - $lastdisplay )) )\$ change  $(( $(date +%s) - $START )) seconds"
-    lastdisplay=$usdreading
     START=$(date +%s)
   fi
   lastreading=$usdreading
