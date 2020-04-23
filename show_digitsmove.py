@@ -17,9 +17,9 @@ if vala > valb:
     stride=-1
 else:
     stride=1
-#print
+
 for val in range (vala,valb+stride,stride):
-    st=(x/(abs(vala-valb)+1))**1.8*(10.0/(abs(vala-valb)+1))
+    st=(x/(abs(vala-valb)+1.0))**1.8*(10.0/(abs(vala-valb)+1.0))
     #print(st)
     sleep (st)
     if st > .01:
@@ -28,5 +28,4 @@ for val in range (vala,valb+stride,stride):
 
     x=x+1.0
 
-t1 = time()
-sys.stdout.write(str(t1-t0))
+sys.stdout.write(str(time()-t0))
