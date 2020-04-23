@@ -41,7 +41,7 @@ while : ;do
      ( *	)        cola="\e[38;5;229m";colb="\e[38;5;094m";;
     esac
     if [ "$RUNTIME" -ge 3600 ]; then  cola="\e[38;5;088m";colb="\e[38;5;088m";fi #when over an hour keep red
-    out="\033[1K\r\e[?25l$tblok \e[38;5;229m$(printf "$cola%01d$colb%01d\e[38;5;229m:%02d" $((RUNTIME/60%100/10)) $((RUNTIME/60%10)) $((RUNTIME%60)))\e[0m $(printf "%05d" $mempool) "
+    out="\033[1K\r\e[?25l$(( $tblok + 1 )) \e[38;5;229m$(printf "$cola%01d$colb%01d\e[38;5;229m:%02d" $((RUNTIME/60%100/10)) $((RUNTIME/60%10)) $((RUNTIME%60)))\e[0m $(printf "%05d" $mempool) "
     nscale=$(( (($mempool/10000)+1)*(10000/$maxbarlen) ))
     if [ "$nscale" != "$scale" ];then
       scale=$nscale
@@ -77,7 +77,7 @@ while : ;do
     for (( c=1; c<=$(( $currbarlen - $oldbarlen )); c++ )); do out+="#";done
     for (( c=1; c<=$(( $maxbarlen - $currbarlen )); c++ )); do
       if [ "$(( ($c + $currbarlen) % ($maxbarlen / 10 / $scalevel ) ))" == "0" ];then out+="+";else out+=${myblank}; fi;  done
-    if [[ "$(( $RUNTIME%5 ))" -eq "0" ]] || [ "$lastprice" = "0" ];then
+    if [[ "$(( $RUNTIME%5 ))" -eq "0" ]] || [ "$lastprice" < "1" ];then
 			echo -en "O"
 			usdprice=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" -H "accept: application/json")
 			if echo $usdprice | grep -q "bitcoin"  ;then
