@@ -19,7 +19,7 @@ else:
 #print
 for val in range (vala,valb+stride,stride):
     st=(x/(abs(vala-valb)+1))**1.8*(10.0/(abs(vala-valb)+1))
-    print(st)
+    #print(st)
     sleep (st)
     if st > .01:
         rainbowhat.display.print_str(str(val))
