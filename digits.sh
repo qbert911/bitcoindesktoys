@@ -25,7 +25,7 @@ while : ;do
       changeup=$(($change-1))
       change=$(( $changeup < -10 ? -10 : $changeup ))
     fi
-    eval "/home/pi/bitcoindesktoys/show_digitschange.py $lastdisplay $usdreading"
+    eval "/home/pi/bitcoindesktoys/show_digitmove.py $lastdisplay $usdreading"
     eval "/home/pi/bitcoindesktoys/led_pricechange.py $change"
     echo -en "\n\$$usdreading $(printf '%+03d' $changeup)/$change $(printf '%+04d' $(( $usdreading - $lastdisplay )) )\$ change  $(( $(date +%s) - $START )) seconds"
     lastdisplay=$usdreading
