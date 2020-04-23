@@ -6,7 +6,8 @@ import rainbowhat
 rainbowhat.rainbow.set_clear_on_exit(False)
 
 #rainbowhat.display.clear()
-
+sys.stdout.write('total time to change digits:')
+sys.stdout.flush()
 t0 = time()
 vala = int(sys.argv[1])
 valb = int(sys.argv[2])
@@ -28,4 +29,4 @@ for val in range (vala,valb+stride,stride):
     x=x+1.0
 
 t1 = time()
-print 'total time to change digits: %f' %(t1-t0)
+sys.stdout.write(str(t1-t0))
