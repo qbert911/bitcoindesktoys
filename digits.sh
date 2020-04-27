@@ -1,13 +1,14 @@
 #!/bin/bash
+# shellcheck disable=SC2004
 lastreading=$((0))
 change=$((-1))
 START=$(date +%s)
 echo -en "Watching BTC price movements..."
 while : ;do
   usdraw=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" -H "accept: application/json")
-  if echo $usdraw | grep -q "bitcoin"  ;then  #data scrape was successful
-    usdreading=$(echo $usdraw |jq -r '.bitcoin.usd')
-    usdreading=$(printf '%04.0f' $usdreading)
+  if echo "$usdraw" | grep -q "bitcoin"  ;then  #data scrape was successful
+    usdreading=$(echo "$usdraw" |jq -r '.bitcoin.usd')
+    usdreading=$(printf '%04.0f' "$usdreading")
     if [ -z "$usdreading" ] || [[ "$usdreading" = "null" ]] || [[ "$usdreading" = "0" ]];then usdreading=$lastreading;fi #in case of timeout
   else  usdreading=$lastreading;  fi #data scrape unsuccessful
 

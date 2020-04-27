@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2004
 SPEEDMONITOR=false
 DISPLAYDIGITS=false
 CHATPRICE=false
@@ -9,7 +10,7 @@ chatthreshhold=$((490))
 echo  "Catching up to Newest Block..."
 while [ -z "$tblok" ] || [[ $tblok = "null" ]] ||  [ -z "$oldmempool" ] || [[ "$oldmempool" = "null" ]] ; do    #|| [[ "$oldmempool" = "0" ]]
 	logstatus=$(tail /home/pi/bitcoin/debug.log -n 1|grep progress | cut -f 5,10 -d ' ')
-	if [ "$logstatus" != "" ]; then echo $logstatus;fi
+	if [ "$logstatus" != "" ]; then echo "$logstatus";fi
 	tblok=$(curl -s --user bongos:goobers --data-binary '{"method": "getblockchaininfo", "params": [] }' http://$nodeip:8332/ | jq '.result.blocks')
 	if [ "$SPEEDMONITOR" = true ]; then eval "/home/pi/bitcoindesktoys/setto.py 0";fi
 	if [ "$DISPLAYDIGITS" = true ]; then eval "/home/pi/bitcoindesktoys/show_message.py Load" ;fi
@@ -41,7 +42,7 @@ while : ;do
      ( *	)        cola="\e[38;5;229m";colb="\e[38;5;094m";;
     esac
     if [ "$RUNTIME" -ge 3600 ]; then  cola="\e[38;5;088m";colb="\e[38;5;088m";fi #when over an hour keep red
-    out="\033[1K\r\e[?25l$(( $tblok + 1 )) \e[38;5;229m$(printf "$cola%01d$colb%01d\e[38;5;229m:%02d" $((RUNTIME/60%100/10)) $((RUNTIME/60%10)) $((RUNTIME%60)))\e[0m $(printf "%05d" $mempool) "
+    out="\033[1K\r\e[?25l$(( $tblok + 1 )) \e[38;5;229m$(printf "$cola%01d$colb%01d\e[38;5;229m:%02d" $((RUNTIME/60%100/10)) $((RUNTIME/60%10)) $((RUNTIME%60)))\e[0m $(printf "%05d" "$mempool") "
     nscale=$(( (($mempool/10000)+1)*(10000/$maxbarlen) ))
     if [ "$nscale" != "$scale" ];then
       scale=$nscale
@@ -77,11 +78,11 @@ while : ;do
     for (( c=1; c<=$(( $currbarlen - $oldbarlen )); c++ )); do out+="#";done
     for (( c=1; c<=$(( $maxbarlen - $currbarlen )); c++ )); do
       if [ "$(( ($c + $currbarlen) % ($maxbarlen / 10 / $scalevel ) ))" == "0" ];then out+="+";else out+=${myblank}; fi;  done
-    if [[ "$(( $RUNTIME%5 ))" -eq "0" ]] || [ "$lastprice" < "1" ];then
+    if [[ "$(( $RUNTIME%5 ))" -eq "0" ]] || [ "$lastprice" -lt "1" ];then
 			echo -en "O"
 			usdprice=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" -H "accept: application/json")
-			if echo $usdprice | grep -q "bitcoin"  ;then
-				usdprice=$(echo $usdprice |jq -r '.bitcoin.usd')
+			if echo "$usdprice" | grep -q "bitcoin"  ;then
+				usdprice=$(echo "$usdprice" |jq -r '.bitcoin.usd')
 				if [ -z "$usdprice" ] || [[ "$usdprice" = "null" ]] || [[ "$usdprice" = "0" ]];then usdprice=$lastprice;fi #in case of timeout
 				if [[ "$lastprice" = "0" ]]; then lastprice=$usdprice; fi #set historical value for first row
 				echo -en "@"
@@ -90,7 +91,7 @@ while : ;do
 			fi
 			if [ "$DISPLAYDIGITS" = true ]; then eval "/home/pi/bitcoindesktoys/show_message.py $(printf '%04.0f' $usdprice)" ;fi
     fi
-		pdfull="$(printf '%+06.2f' $(echo $usdprice - $lastprice | bc ) )"
+		pdfull="$(printf '%+06.2f' "$(echo $usdprice - $lastprice | bc )" )"
 		echo -en "${out} \$$(printf "%07.2f" $usdprice)($pdfull) $(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))/s"
     sleep .5s
 		echo -en "."
@@ -127,14 +128,14 @@ while : ;do
   echo -en "\e[0m"
   for (( c=1; c<=$(( $maxbarlen - $currbarlen )); c++ )); do
     if [ "$(( ($c + $currbarlen) % ( $maxbarlen / 10 / $scalevel ) ))" == "0" ];then echo -n "+";else echo -n "${myblank}"; fi;  done
-  pdfull="$(printf '%+06.2f' $(echo $usdprice - $lastprice | bc ) )"
+  pdfull="$(printf '%+06.2f' "$(echo $usdprice - $lastprice | bc )" )"
 	echo -e  "\e[0m \$$(printf "%07.2f" $usdprice)($pdfull) [$(printf "%04d" ${bakedin})tx] $(date '+%H:%M')"
 	if [ "$CHATPRICE" = true ]; then
-		if [ "$(printf '%.0f' $pdfull)" -gt "$chatthreshhold" ]; then
+		if [ "$(printf '%.0f' "$pdfull")" -gt "$chatthreshhold" ]; then
     	echo "price  up  to $usdprice from $lastprice -- $pdfull "
     	/home/ben/go/bin/keybase chat send fucres2 ":roller_coaster: :chart_with_upwards_trend: price up \$$pdfull to $usdprice from $lastprice"
   	fi
-  	if [ "$(printf '%.0f' $pdfull)" -lt "$(( 0 - $chatthreshhold ))" ] && [ "$usdprice"  -gt "0" ]; then
+  	if [ "$(printf '%.0f' "$pdfull")" -lt "$(( 0 - $chatthreshhold ))" ] && [ "$usdprice"  -gt "0" ]; then
     	echo "price down to $usdprice from $lastprice -- $pdfull "
     	/home/ben/go/bin/keybase chat send fucres2 ":roller_coaster: :chart_with_downwards_trend: price down \$$pdfull to $usdprice from $lastprice"
   	fi
