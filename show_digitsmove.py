@@ -2,10 +2,25 @@
 """
 high level support for doing this and that.
 """
-import sys
+import os, sys
+with open(os.devnull, 'w') as f:   #to prevent pygame loading message
+    # disable stdout
+    oldstdout = sys.stdout
+    sys.stdout = f
+
+    from pygame import mixer
+
+    # enable stdout
+    sys.stdout = oldstdout
+
 from time import time, sleep
 import rainbowhat
 rainbowhat.rainbow.set_clear_on_exit(False)
+
+mixer.pre_init(buffer=1024)
+mixer.init()
+soundup = mixer.Sound('/home/pi/bitcoindesktoys/tickup.wav')
+sounddown = mixer.Sound('/home/pi/bitcoindesktoys/tickdown.wav')
 
 def main():
     """asdasd"""
@@ -24,11 +39,16 @@ def main():
 
     for val in range(vala, valb+stride, stride):
         sleep_time = (counter/(abs(vala-valb)+1.0))**1.8*(10.0/(abs(vala-valb)+1.0))
-        #print(st)
+        #print(sleep_time,val)
         sleep(sleep_time)
         if sleep_time > .01:
             rainbowhat.display.print_str(str(val))
             rainbowhat.display.show()
+
+        if val > vala:
+            soundup.play()
+        elif val < vala:
+            sounddown.play()
 
         counter = counter+1.0
 
@@ -36,3 +56,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    sleep(1)   #needed so we can hear the last sound effect

@@ -75,6 +75,7 @@ while : ;do
       fi
       out+=$mychar
     done
+		if [[ $(($maxbarlen/$scalevel)) -lt "10" ]];then scalevel=$(($maxbarlen/10));fi
     for (( c=1; c<=$(( $currbarlen - $oldbarlen )); c++ )); do out+="#";done
     for (( c=1; c<=$(( $maxbarlen - $currbarlen )); c++ )); do
       if [ "$(( ($c + $currbarlen) % ($maxbarlen / 10 / $scalevel ) ))" == "0" ];then out+="+";else out+=${myblank}; fi;  done
@@ -92,7 +93,7 @@ while : ;do
 			if [ "$DISPLAYDIGITS" = true ]; then eval "/home/pi/bitcoindesktoys/show_message.py $(printf '%04.0f' $usdprice)" ;fi
     fi
 		pdfull="$(printf '%+06.2f' "$(echo $usdprice - $lastprice | bc )" )"
-		echo -en "${out} \$$(printf "%07.2f" $usdprice)($pdfull) $(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))/s"
+		echo -en "${out} \$$(printf "%07.2f" $usdprice)($pdfull)  $(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))/s"
     sleep .5s
 		echo -en "."
 		tblok=$(curl -s --user bongos:goobers --data-binary '{"method":"getblockchaininfo","params":[]}' http://$nodeip:8332/ | jq '.result.blocks')
@@ -141,6 +142,6 @@ while : ;do
   	fi
 	fi
   lastprice=$usdprice
-  if [ -f "/home/ben/sms2.wav" ]; then eval "aplay -q /home/ben/sms2.wav" ; fi
-	if [ -f "/home/pi/bitcoindesktoys/playtone.py" ]; then eval "/home/pi/bitcoindesktoys/playtone.py" ; fi
+  if [ -f "/home/pi/bitcoindesktoys/cukoo.wav" ]; then eval "aplay -q /home/pi/bitcoindesktoys/cuckoo.wav" ; fi
+	#if [ -f "/home/pi/bitcoindesktoys/playtone.py" ]; then eval "/home/pi/bitcoindesktoys/playtone.py" ; fi
 done
