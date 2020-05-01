@@ -142,6 +142,6 @@ while : ;do
   	fi
 	fi
   lastprice=$usdprice
-  if [ -f "/home/pi/bitcoindesktoys/cukoo.wav" ]; then eval "aplay -q /home/pi/bitcoindesktoys/cuckoo.wav" ; fi
+  if [ -f "/home/pi/bitcoindesktoys/cuckoo.wav" ]; then eval "aplay -q /home/pi/bitcoindesktoys/cuckoo.wav" ; fi
 	#if [ -f "/home/pi/bitcoindesktoys/playtone.py" ]; then eval "/home/pi/bitcoindesktoys/playtone.py" ; fi
 done
