@@ -1,12 +1,11 @@
 #!/usr/bin/env python
+# pylint: disable=C0103,C0326
 """jjjjj"""
 import sys
 import rainbowhat
 rainbowhat.rainbow.set_clear_on_exit(False)
-# pylint: disable=C0103,C0326
 
 rainbowhat.rainbow.clear()
-vala = int(sys.argv[1])+10
 position = [
     [-1,-1,-1,-1,-1,-1,-1],
     [0,-1,-1,-1,-1,-1,-1],
@@ -36,9 +35,10 @@ gray = [25, 25, 30]
 blank = [0,0,0]
 brightness = 0.04
 
-def main():
+def rainbow_led_pricechange(vala):
     """asdasd"""
     #print position[vala]
+    vala=int(vala)+10
     for x in range(0,7):
         if position[vala][x] == 2:
             r,g,b = gray
@@ -53,4 +53,4 @@ def main():
     rainbowhat.rainbow.show()
 
 if __name__ == "__main__":
-    main()
+    print "supposed to be called from another python file, not solo"
