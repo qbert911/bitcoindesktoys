@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # pylint: disable=C0103,C0326
-"""jjjjj"""
-import sys
+"""
+write to the seven leds on the top of the rainbow HAT
+"""
 import rainbowhat
-rainbowhat.rainbow.set_clear_on_exit(False)
 
-rainbowhat.rainbow.clear()
 position = [
     [-1,-1,-1,-1,-1,-1,-1],
     [0,-1,-1,-1,-1,-1,-1],
@@ -29,14 +28,15 @@ position = [
     [+1,+1,+1,+1,+1,+1,0],
     [+1,+1,+1,+1,+1,+1,+1]
 ]
-red = [55, 0, 0]
-green = [0, 55, 0]
-gray = [25, 25, 30]
+red = [20, 0, 0]
+green = [0, 20, 0]
+gray = [10, 10, 20]
 blank = [0,0,0]
 brightness = 0.04
 
 def rainbow_led_pricechange(vala):
     """asdasd"""
+    rainbowhat.rainbow.clear()
     #print position[vala]
     vala=int(vala)+10
     for x in range(0,7):
@@ -53,4 +53,4 @@ def rainbow_led_pricechange(vala):
     rainbowhat.rainbow.show()
 
 if __name__ == "__main__":
-    print "supposed to be called from another python file, not solo"
+    print ("supposed to be called from another python file, not solo")

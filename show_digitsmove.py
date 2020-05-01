@@ -1,25 +1,22 @@
 #!/usr/bin/env python
 """
-high level support for doing this and that.
+rainbow HAT - alter digits and call led function
 """
 import os, sys
 with open(os.devnull, 'w') as f:   #to prevent pygame loading message
-    # disable stdout
     oldstdout = sys.stdout
     sys.stdout = f
-
     from pygame import mixer
-
-    # enable stdout
     sys.stdout = oldstdout
-
+#------------end pygame non display message hack------------------------------
 from time import time, sleep
+import rainbowhat
 from rainbowhat_ledfunctions import rainbow_led_pricechange
 
-import rainbowhat
+
 rainbowhat.rainbow.set_clear_on_exit(False)
 
-mixer.pre_init(buffer=1024)
+mixer.pre_init(buffer=512)
 mixer.init()
 soundup = mixer.Sound('/home/pi/bitcoindesktoys/tickup.wav')
 sounddown = mixer.Sound('/home/pi/bitcoindesktoys/tickdown.wav')
@@ -54,9 +51,9 @@ def main():
             sounddown.play()
 
         counter = counter+1.0
+    sleep(.12)   #needed so we can hear the last sound effect
     rainbow_led_pricechange(valc)
     sys.stdout.write(str(time()-timeing))
 
 if __name__ == "__main__":
     main()
-    sleep(1)   #needed so we can hear the last sound effect
