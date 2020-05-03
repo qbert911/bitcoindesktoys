@@ -22,7 +22,7 @@ while [ -z "$tblok" ] || [[ $tblok = "null" ]] ||  [ -z "$oldmempool" ] || [[ "$
 	oldmempool=$(curl -s --user bongos:goobers --data-binary '{"method": "getmempoolinfo", "params": [] }' http://$nodeip:8332/ | jq '.result.size')
 done
 nmempool=$(( 1 + $oldmempool ))
-oldmempool=$(( 1 + $oldmempool ))
+mempool=$(( 1 + $oldmempool ))
 lastprice=$(( 0 ))
 mychar="-";myblank=" ";
 while : ;do
@@ -107,7 +107,8 @@ while : ;do
   nmempool=$(curl -s --user bongos:goobers --data-binary '{"method": "getmempoolinfo", "params": [] }' http://$nodeip:8332/ | jq '.result.size')
   while [ -z "$nmempool" ] || [[ "$nmempool" = "null" ]] || [[ "$nmempool" = "0" ]];do sleep 2; nmempool=$(curl -s --user bongos:goobers --data-binary '{"method": "getmempoolinfo", "params": [] }' http://$nodeip:8332/ | jq '.result.size');  done #in case of timeout
   scale=$(( (($oldmempool/10000)+1)*(10000/$maxbarlen) ))
-  bakedin=$(( $oldmempool - $nmempool ))
+	if [[ $(($maxbarlen/$scale)) -lt "10" ]];then scale=$(($maxbarlen/10));fi
+	bakedin=$(( $oldmempool - $nmempool ))
   currbarlen=$(( $oldmempool / $scale ))
   oldbarlen=$(( $nmempool / $scale ))
   if [ "$currbarlen" -lt "$oldbarlen" ]; then oldbarlen=$currbarlen;fi
