@@ -2,7 +2,8 @@
 """
 rainbow HAT - alter digits and call led function
 """
-import os, sys
+import os
+import sys
 with open(os.devnull, 'w') as f:   #to prevent pygame loading message
     oldstdout = sys.stdout
     sys.stdout = f
@@ -13,10 +14,9 @@ from time import time, sleep
 import rainbowhat
 from rainbowhat_ledfunctions import rainbow_led_pricechange
 
-
 rainbowhat.rainbow.set_clear_on_exit(False)
 
-mixer.pre_init(buffer=512)
+mixer.pre_init(buffer=8192)
 mixer.init()
 soundup = mixer.Sound('/home/pi/bitcoindesktoys/tickup.wav')
 sounddown = mixer.Sound('/home/pi/bitcoindesktoys/tickdown.wav')
@@ -34,25 +34,28 @@ def main():
 
     if vala > valb:
         stride = -1
+        rainbowhat.lights.red.on()
     else:
         stride = 1
+        rainbowhat.lights.green.on()
 
     for val in range(vala, valb+stride, stride):
         sleep_time = (counter/(abs(vala-valb)+1.0))**1.8*(10.0/(abs(vala-valb)+1.0))
         #print(sleep_time,val)
-        sleep(sleep_time)
-        if sleep_time > .01:
-            rainbowhat.display.print_str(str(val))
-            rainbowhat.display.show()
-
         if val > vala:
-            soundup.play()
+            #soundup.play()
+            rainbowhat.buzzer.midi_note(82, .05)
+            #rainbowhat.lights.green.toggle()
         elif val < vala:
-            sounddown.play()
-
+            #sounddown.play()
+            rainbowhat.buzzer.midi_note(22, .05)
+            #rainbowhat.lights.red.toggle()
+        rainbowhat.display.print_str(str(val))
+        rainbowhat.display.show()
         counter = counter+1.0
-    sleep(.12)   #needed so we can hear the last sound effect
+        sleep(sleep_time)
     rainbow_led_pricechange(valc)
+    sleep(.4)   #needed so we can hear the last sound effect
     sys.stdout.write(str(time()-timeing))
 
 if __name__ == "__main__":

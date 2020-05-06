@@ -3,7 +3,10 @@
 SPEEDMONITOR=false
 DISPLAYDIGITS=false
 CHATPRICE=false
-maxbarlen=$((100))
+maxbarlen=$(cat /home/pi/columnwidth.txt)
+if [ ${#maxbarlen} -eq 0 ]; then
+	maxbarlen=$((100))
+fi
 nodeip="127.0.0.1"
 chatthreshhold=$((490))
 #if [ "$CHATPRICE" = true ]; then /home/ben/go/bin/keybase chat send fucres2 ":roller_coaster: BTC annoucement bot starting up - reporting on any change in price per block greater than \$$chatthreshhold USD";fi
@@ -22,7 +25,7 @@ while [ -z "$tblok" ] || [[ $tblok = "null" ]] ||  [ -z "$oldmempool" ] || [[ "$
 	oldmempool=$(curl -s --user bongos:goobers --data-binary '{"method": "getmempoolinfo", "params": [] }' http://$nodeip:8332/ | jq '.result.size')
 done
 nmempool=$(( 1 + $oldmempool ))
-oldmempool=$(( 1 + $oldmempool ))
+mempool=$(( 1 + $oldmempool ))
 lastprice=$(( 0 ))
 mychar="-";myblank=" ";
 while : ;do
