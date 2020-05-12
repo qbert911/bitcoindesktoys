@@ -48,7 +48,7 @@ def main():
             #rainbowhat.lights.green.toggle()
         elif val < vala:
             #sounddown.play()
-            rainbowhat.buzzer.midi_note(22, .05)
+            rainbowhat.buzzer.midi_note(2, .05)
             #rainbowhat.lights.red.toggle()
         rainbowhat.display.print_str(str(val))
         rainbowhat.display.show()

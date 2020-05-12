@@ -1,6 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2004
-SPEEDMONITOR=false
+SPEEDMONITOR=true
 DISPLAYDIGITS=false
 CHATPRICE=false
 maxbarlen=$(cat /home/pi/columnwidth.txt)
@@ -15,12 +15,12 @@ while [ -z "$tblok" ] || [[ $tblok = "null" ]] ||  [ -z "$oldmempool" ] || [[ "$
 	logstatus=$(tail /home/pi/bitcoin/debug.log -n 1|grep progress | cut -f 5,10 -d ' ')
 	if [ "$logstatus" != "" ]; then echo "$logstatus";fi
 	tblok=$(curl -s --user bongos:goobers --data-binary '{"method": "getblockchaininfo", "params": [] }' http://$nodeip:8332/ | jq '.result.blocks')
-	if [ "$SPEEDMONITOR" = true ]; then eval "/home/pi/bitcoindesktoys/setto.py 0";fi
+	if [ "$SPEEDMONITOR" = true ]; then eval "/home/pi/bitcoindesktoys/piglow_speed.py 0";fi
 	if [ "$DISPLAYDIGITS" = true ]; then eval "/home/pi/bitcoindesktoys/show_message.py Load" ;fi
 	sleep 1
-	if [ "$SPEEDMONITOR" = true ]; then eval "/home/pi/bitcoindesktoys/setto.py 3";fi
+	if [ "$SPEEDMONITOR" = true ]; then eval "/home/pi/bitcoindesktoys/piglow_speed.py 3";fi
 	sleep 1
-	if [ "$SPEEDMONITOR" = true ]; then eval "/home/pi/bitcoindesktoys/setto.py 6";fi
+	if [ "$SPEEDMONITOR" = true ]; then eval "/home/pi/bitcoindesktoys/piglow_speed.py 6";fi
 	sleep 1
 	oldmempool=$(curl -s --user bongos:goobers --data-binary '{"method": "getmempoolinfo", "params": [] }' http://$nodeip:8332/ | jq '.result.size')
 done
@@ -102,7 +102,7 @@ while : ;do
 		tblok=$(curl -s --user bongos:goobers --data-binary '{"method":"getblockchaininfo","params":[]}' http://$nodeip:8332/ | jq '.result.blocks')
     if [[ -z "$tblok" || $tblok = "null" ]]; then tblok=$oldblok;fi #in case of timeout
 		speedval=$(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))
-    if [[ "$oldval" != "$speedval" && "$SPEEDMONITOR" = true ]];then eval "/home/pi/bitcoindesktoys/setto.py $speedval";oldval=$speedval;fi
+    if [[ "$oldval" != "$speedval" && "$SPEEDMONITOR" = true ]];then eval "/home/pi/bitcoindesktoys/piglow_speed.py $speedval";oldval=$speedval;fi
 		echo -en "o"
 		#if [ -e "/home/ben/newbolt.txt" ];then eval "/home/ben/cycle2count.py 6";rm /home/ben/newbolt.txt;fi
   done
