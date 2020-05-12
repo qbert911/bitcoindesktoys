@@ -95,8 +95,8 @@ while : ;do
 			fi
 			if [ "$DISPLAYDIGITS" = true ]; then eval "/home/pi/bitcoindesktoys/show_message.py $(printf '%04.0f' $usdprice)" ;fi
     fi
-		pdfull="$(printf '%+06.2f' "$(echo $usdprice - $lastprice | bc )" )"
-		echo -en "${out} \$$(printf "%07.2f" $usdprice)($pdfull)  $(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))/s"
+		pdfull="$(printf '%+04.0f' "$(echo $usdprice - $lastprice | bc )" )"
+		echo -en "${out} \$$(printf "%04.0f" $usdprice)($pdfull)  $(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))/s"
     sleep .5s
 		echo -en "."
 		tblok=$(curl -s --user bongos:goobers --data-binary '{"method":"getblockchaininfo","params":[]}' http://$nodeip:8332/ | jq '.result.blocks')
@@ -132,8 +132,8 @@ while : ;do
   echo -en "\e[0m"
   for (( c=1; c<=$(( $maxbarlen - $currbarlen )); c++ )); do
     if [ "$(( ($c + $currbarlen) % ( $maxbarlen / 10 / $scalevel ) ))" == "0" ];then echo -n "+";else echo -n "${myblank}"; fi;  done
-  pdfull="$(printf '%+06.2f' "$(echo $usdprice - $lastprice | bc )" )"
-	echo -e  "\e[0m \$$(printf "%07.2f" $usdprice)($pdfull) [$(printf "%04d" ${bakedin})tx] $(date '+%H:%M')"
+  pdfull="$(printf '%+04.0f' "$(echo $usdprice - $lastprice | bc )" )"
+	echo -e  "\e[0m \$$(printf "%04.0f" $usdprice)($pdfull) [$(printf "%04d" ${bakedin})tx] $(date '+%H:%M')"
 	if [ "$CHATPRICE" = true ]; then
 		if [ "$(printf '%.0f' "$pdfull")" -gt "$chatthreshhold" ]; then
     	echo "price  up  to $usdprice from $lastprice -- $pdfull "
