@@ -40,11 +40,11 @@ while : ;do
     case "$((RUNTIME/60%60/10))$((RUNTIME/60%10))" in
      (0[0-2])      cola="\e[38;5;070m";colb="\e[38;5;070m";;
      (0[3-7])      cola="\e[38;5;070m";colb="\e[38;5;229m";;
-     (1[2-9])      cola="\e[38;5;229m";colb="\e[38;5;094m";;
-     ([2-9][0-9])  cola="\e[38;5;088m";colb="\e[38;5;088m";;
-     ( *	)        cola="\e[38;5;229m";colb="\e[38;5;094m";;
+     (1[2-9])      cola="\e[38;5;229m";colb="\e[38;5;220m";;
+     ([2-9][0-9])  cola="\e[38;5;196m";colb="\e[38;5;196m";;
+     ( *	)        cola="\e[38;5;229m";colb="\e[38;5;229m";;
     esac
-    if [ "$RUNTIME" -ge 3600 ]; then  cola="\e[38;5;088m";colb="\e[38;5;088m";fi #when over an hour keep red
+    if [ "$RUNTIME" -ge 3600 ]; then  cola="\e[38;5;196m";colb="\e[38;5;196m";fi #when over an hour keep red
     out="\033[1K\r\e[?25l$(( $tblok + 1 )) \e[38;5;229m$(printf "$cola%01d$colb%01d\e[38;5;229m:%02d" $((RUNTIME/60%100/10)) $((RUNTIME/60%10)) $((RUNTIME%60)))\e[0m $(printf "%05d" "$mempool") "
     nscale=$(( (($mempool/10000)+1)*(10000/$maxbarlen) ))
     if [ "$nscale" != "$scale" ];then
@@ -64,17 +64,17 @@ while : ;do
       elif [[ "$scalevel" = "4" ]] || [ "$c" -lt "$((4*$maxbarlen/$scalevel))" ]; then
         mychar="‡"
       elif [[ "$scalevel" = "5" ]] || [ "$c" -lt "$((5*$maxbarlen/$scalevel))" ]; then
-        mychar="5"
+        mychar="4"
       elif [[ "$scalevel" = "6" ]] || [ "$c" -lt "$((6*$maxbarlen/$scalevel))" ]; then
-        mychar="6"
+        mychar="5"
       elif [[ "$scalevel" = "7" ]] || [ "$c" -lt "$((7*$maxbarlen/$scalevel))" ]; then
-        mychar="7"
+        mychar="6"
       elif [[ "$scalevel" = "8" ]] || [ "$c" -lt "$((8*$maxbarlen/$scalevel))" ]; then
-        mychar="8"
+        mychar="7"
       elif [[ "$scalevel" = "9" ]] || [ "$c" -lt "$((9*$maxbarlen/$scalevel))" ]; then
-        mychar="9"
+        mychar="8"
       else
-        mychar="z";myblank='…'
+        mychar="9";myblank='…'
       fi
       out+=$mychar
     done
@@ -96,7 +96,14 @@ while : ;do
 			if [ "$DISPLAYDIGITS" = true ]; then eval "/home/pi/bitcoindesktoys/show_message.py $(printf '%04.0f' $usdprice)" ;fi
     fi
 		pdfull="$(printf '%+04.0f' "$(echo $usdprice - $lastprice | bc )" )"
-		echo -en "${out} \$$(printf "%04.0f" $usdprice)($pdfull)  $(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))/s"
+
+		if [ ${pdfull:1:3} = "000" ];then pdfulle="      ";else
+			if [ ${pdfull:0:1} = + ]; then	pdfulle="(\e[38;5;046m+\e[0m";else pdfulle="(\e[38;5;160m-\e[0m";fi
+			if [ ${pdfull:1:1} = 0 ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:1:1};fi
+			if [ "${pdfull:1:2}" = "00" ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:2:1};fi
+			pdfulle=$pdfulle${pdfull:3:1}")"
+		fi
+		echo -en "${out} \$$(printf "%04.0f" $usdprice)$pdfulle  $(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))/s"
     sleep .5s
 		echo -en "."
 		tblok=$(curl -s --user bongos:goobers --data-binary '{"method":"getblockchaininfo","params":[]}' http://$nodeip:8332/ | jq '.result.blocks')
@@ -132,8 +139,7 @@ while : ;do
   echo -en "\e[0m"
   for (( c=1; c<=$(( $maxbarlen - $currbarlen )); c++ )); do
     if [ "$(( ($c + $currbarlen) % ( $maxbarlen / 10 / $scalevel ) ))" == "0" ];then echo -n "+";else echo -n "${myblank}"; fi;  done
-  pdfull="$(printf '%+04.0f' "$(echo $usdprice - $lastprice | bc )" )"
-	echo -e  "\e[0m \$$(printf "%04.0f" $usdprice)($pdfull) [$(printf "%04d" ${bakedin})tx] $(date '+%H:%M')"
+	echo -e  "\e[0m \$$(printf "%04.0f" $usdprice)$pdfulle [$(printf "%04d" ${bakedin})tx] $(date '+%H:%M')"
 	if [ "$CHATPRICE" = true ]; then
 		if [ "$(printf '%.0f' "$pdfull")" -gt "$chatthreshhold" ]; then
     	echo "price  up  to $usdprice from $lastprice -- $pdfull "
