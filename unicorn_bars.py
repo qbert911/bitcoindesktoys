@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-unicorn hat - show price movement bar chart
+unicorn hat - show price movement bar charts
 """
 # pylint: disable=C0103,C0301
 from __future__ import print_function
@@ -8,15 +8,13 @@ import json
 import os
 import sys
 import unicornhat as unicorn
-
-unicorn.set_layout(unicorn.AUTO)
+unicorn.set_layout(unicorn.HAT)
 unicorn.rotation(0)
 with open(os.devnull, 'w') as f:   #to prevent loading message
     oldstdout = sys.stdout
     sys.stdout = f
     unicorn.brightness(0.2)  #prints warning
     sys.stdout = oldstdout
-
 
 def main():
     """asdasd"""
@@ -33,17 +31,9 @@ def main():
 
     myrange = max(myfile["history"])-min(myfile["history"])
     myfloor = min(myfile["history"])
-    print("minimum is:", min(myfile["history"]), " maximum is: ", max(myfile["history"]), "range: ", myrange)
-    print(myfile["history"])
-
-    for y in range(0, 8):
-        checkpoint = myfloor+((y)*myrange/8)+1
-        checkpointb = myfloor+((y+1)*myrange/8)
-        print(checkpoint, "-", checkpointb, " ", end='')
-
-    print("")
+    print( "range:", myrange, "           ("+str(min(myfile["history"]))+" - "+str(max(myfile["history"]))+")")
     for x in range(0, 8):
-        print(x, myfile["history"][x], myfile["history"][x+1], " ", end='')
+        print(x, myfile["history"][x], myfile["history"][x+1], "{:+04d}".format(myfile["history"][x+1] - myfile["history"][x]), " ", end='')
         for y in range(0, 8):
             checkpoint = myfloor+((y)*myrange/8)+1
             checkpointb = myfloor+((y+1)*myrange/8)
@@ -61,7 +51,6 @@ def main():
 
     unicorn.show()
 
-    #time.sleep(10)
 if __name__ == "__main__":
     main()
     unicorn.atexit._exithandlers = []

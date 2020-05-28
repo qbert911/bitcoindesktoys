@@ -57,6 +57,6 @@ def main():
     rainbow_led_pricechange(valc)
     sleep(.4)   #needed so we can hear the last sound effect
     sys.stdout.write(str(time()-timeing))
-
+    print("")
 if __name__ == "__main__":
     main()
