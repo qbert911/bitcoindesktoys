@@ -24,7 +24,7 @@ sounddown = mixer.Sound('/home/pi/bitcoindesktoys/tickdown.wav')
 def main():
     """asdasd"""
     #rainbowhat.display.clear()
-    sys.stdout.write('total time to change digits:')
+    sys.stdout.write('time4digits:')
     sys.stdout.flush()
     timeing = time()
     vala = int(sys.argv[1])

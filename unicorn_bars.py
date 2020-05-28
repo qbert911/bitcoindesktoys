@@ -31,7 +31,7 @@ def main():
 
     myrange = max(myfile["history"])-min(myfile["history"])
     myfloor = min(myfile["history"])
-    print( "range:", myrange, "           ("+str(min(myfile["history"]))+" - "+str(max(myfile["history"]))+")")
+    print("range:", myrange, "         ("+str(min(myfile["history"]))+" - "+str(max(myfile["history"]))+")")
     for x in range(0, 8):
         print(x, myfile["history"][x], myfile["history"][x+1], "{:+04d}".format(myfile["history"][x+1] - myfile["history"][x]), " ", end='')
         for y in range(0, 8):

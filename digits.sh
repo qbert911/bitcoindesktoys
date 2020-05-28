@@ -24,7 +24,8 @@ while : ;do
     fi
     if [[ "$lastreading" = "0" ]];then lastreading=$usdreading;START=$(($START+10));fi  #make first row behave properly
     eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
-    eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change"
+    eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change" &
+    sleep 3
     eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py"
     echo -en "\$$usdreading $(printf '%+03d' $change) $(printf '%+04d' $(( $usdreading - $lastreading )) )\$ change  $(( $(date +%s) - $START )) seconds"
     START=$(date +%s)

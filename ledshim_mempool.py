@@ -35,13 +35,13 @@ while True:
     #print(v,j)
     show_graph(v, 255, 255, 255)
     if j > 0:
-        ledshim.set_pixel(abs((27*invert)-26), 0, 0, 255)
+        ledshim.set_pixel(abs((27*invert)-26), 0, 255, 0)
     if j > 1:
-        ledshim.set_pixel(abs((27*invert)-24), 0, 0, 255)
+        ledshim.set_pixel(abs((27*invert)-24), 0, 255, 0)
     if j > 2:
         ledshim.set_pixel(abs((27*invert)-22), 0, 255, 0)
     if j > 3:
-        ledshim.set_pixel(abs((27*invert)-20), 0, 255, 0)
+        ledshim.set_pixel(abs((27*invert)-20), 255, 255, 0)
     if j > 4:
         ledshim.set_pixel(abs((27*invert)-18), 255, 255, 0)
     if j > 5:
@@ -50,6 +50,8 @@ while True:
         ledshim.set_pixel(abs((27*invert)-14), 255, 0, 0)
     if j > 7:
         ledshim.set_pixel(abs((27*invert)-12), 255, 0, 0)
+    if j > 8:
+        ledshim.set_pixel(abs((27*invert)-10), 255, 0, 0)
 
     ledshim.show()
     time.sleep(1)
