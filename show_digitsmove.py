@@ -23,9 +23,9 @@ sounddown = mixer.Sound('/home/pi/bitcoindesktoys/tickdown.wav')
 
 def main():
     """asdasd"""
+    rainbowhat.lights.red.off()   #hack to turn off bootup dim light
     #rainbowhat.display.clear()
     sys.stdout.write('time4digits:')
-    sys.stdout.flush()
     timeing = time()
     vala = int(sys.argv[1])
     valb = int(sys.argv[2])
@@ -57,6 +57,7 @@ def main():
     rainbow_led_pricechange(valc)
     sleep(.4)   #needed so we can hear the last sound effect
     sys.stdout.write(str(time()-timeing))
-    print("")
+    sys.stdout.flush()
+    #print("")
 if __name__ == "__main__":
     main()

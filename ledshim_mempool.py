@@ -31,7 +31,7 @@ while True:
         v = gooby["size"] % 10000 / 10000.000
         j = gooby["size"]/10000
     except:
-        gooby,v,j=0,0,8
+        gooby,v,j=0,0,9
     #print(v,j)
     show_graph(v, 255, 255, 255)
     if j > 0:
