@@ -2,6 +2,7 @@
 """
 rainbow HAT - alter digits and call led function
 """
+# pylint: disable=C0103
 import os
 import sys
 with open(os.devnull, 'w') as f:   #to prevent pygame loading message
@@ -23,7 +24,7 @@ sounddown = mixer.Sound('/home/pi/bitcoindesktoys/tickdown.wav')
 
 def main():
     """asdasd"""
-    rainbowhat.lights.red.off()   #hack to turn off bootup dim light
+try:
     #rainbowhat.display.clear()
     sys.stdout.write('time4digits:')
     timeing = time()
@@ -38,6 +39,7 @@ def main():
     else:
         stride = 1
         rainbowhat.lights.green.on()
+        rainbowhat.lights.red.off()   #hack to turn off bootup dim light
 
     for val in range(vala, valb+stride, stride):
         sleep_time = (counter/(abs(vala-valb)+1.0))**1.8*(10.0/(abs(vala-valb)+1.0))
@@ -59,5 +61,8 @@ def main():
     sys.stdout.write(str(time()-timeing))
     sys.stdout.flush()
     #print("")
+except:
+    print("EXXXXXXXXXXXXXXXXXCEPTION")
+
 if __name__ == "__main__":
     main()
