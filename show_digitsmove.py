@@ -26,7 +26,7 @@ def main():
     """asdasd"""
 try:
     #rainbowhat.display.clear()
-    sys.stdout.write('time4digits:')
+    #sys.stdout.write('time4digits:')
     timeing = time()
     vala = int(sys.argv[1])
     valb = int(sys.argv[2])
@@ -58,8 +58,8 @@ try:
         sleep(sleep_time)
     rainbow_led_pricechange(valc)
     sleep(.4)   #needed so we can hear the last sound effect
-    sys.stdout.write(str(time()-timeing))
-    sys.stdout.flush()
+    #sys.stdout.write(str(time()-timeing))
+    #sys.stdout.flush()
     #print("")
 except:
     print("EXXXXXXXXXXXXXXXXXCEPTION")

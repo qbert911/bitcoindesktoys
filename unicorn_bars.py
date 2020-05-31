@@ -35,14 +35,14 @@ def main():
         myfloor = min(myfloor, myfile["history"][x])
         myceiling = max(myceiling, myfile["history"][x])
     myrange = myceiling - myfloor
-    print("   range:", myrange, "      ("+str(myfloor)+" - "+str(myceiling)+")")
+    print("   ("+str(myfloor)+" - "+str(myceiling)+")   range:", myrange, "(", (myrange/8.00), "per cell )")
 
     for x in range(len(myfile["history"])-9, len(myfile["history"])-1):
         print(x-(len(myfile["history"])-9), x, myfile["history"][x], myfile["history"][x+1], "{:+04d}".format(myfile["history"][x+1] - myfile["history"][x]), " ", end='')
         for y in range(0, 8):
-            checkpoint = myfloor+((y)*myrange/8)+min(y, 1)
-            checkpointb = myfloor+((y+1)*myrange/8)
-            if min(myfile["history"][x], myfile["history"][x+1]) < checkpointb and max(myfile["history"][x], myfile["history"][x+1]) >= checkpoint:
+            checkpoint = myfloor+((y)*myrange/8.00)+min(y, .01)
+            checkpointb = myfloor+((y+1)*myrange/8.00)
+            if min(myfile["history"][x], myfile["history"][x+1]) < checkpointb and max(myfile["history"][x], myfile["history"][x+1]) > checkpoint:
                 if myfile["history"][x] < myfile["history"][x+1]:
                     print("o ", end='')
                     unicorn.set_pixel(x-(len(myfile["history"])-9), 7-y, 0, 255, 0)
