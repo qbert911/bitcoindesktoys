@@ -11,10 +11,10 @@ def main():
 
     newinfo = int(sys.argv[1])
     file_name = "/home/pi/history.json"
-    history_length = 160
+    history_length = 240
 
     if not os.path.isfile(file_name):  #instantiate new config file
-        mydict = {"history":[9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008]}
+        mydict = {"history":[newinfo-1, newinfo+2, newinfo-3, newinfo+4, newinfo-5, newinfo+6, newinfo-7, newinfo+8, newinfo-9]}
         with open(file_name, "w") as outfile:
             json.dump(mydict, outfile)
 

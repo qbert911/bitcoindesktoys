@@ -42,7 +42,7 @@ try:
         rainbowhat.lights.red.off()   #hack to turn off bootup dim light
 
     for val in range(vala, valb+stride, stride):
-        sleep_time = (counter/(abs(vala-valb)+1.0))**1.8*(10.0/(abs(vala-valb)+1.0))
+        sleep_time = min((counter/(abs(vala-valb)+1.000))**1.8*(10.0/(abs(vala-valb)+1.0)), 3.000)
         #print(sleep_time,val)
         if val > vala:
             #soundup.play()

@@ -25,9 +25,8 @@ def main():
         mydict = {"history":[9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009]}
         with open(file_name, "w") as outfile:
             json.dump(mydict, outfile)
-    else:
-        with open(file_name, 'r') as openfile:
-            myfile = json.load(openfile)
+    with open(file_name, 'r') as openfile:
+        myfile = json.load(openfile)
 
     myfloor = 9999999
     myceiling = 0
