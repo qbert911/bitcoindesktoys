@@ -11,7 +11,7 @@ nodeip="127.0.0.1"
 chatthreshhold=$((490))
 #if [ "$CHATPRICE" = true ]; then /home/ben/go/bin/keybase chat send fucres2 ":roller_coaster: BTC annoucement bot starting up - reporting on any change in price per block greater than \$$chatthreshhold USD";fi
 echo  "Catching up to Newest Block..."
-while [ -z "$tblok" ] || [[ $tblok = "null" ]] ||  [ -z "$oldmempool" ] || [[ "$oldmempool" = "null" ]] ; do    #|| [[ "$oldmempool" = "0" ]]
+while [ -z "$tblok" ] || [[ $tblok = "null" ]] || [ -z "$oldmempool" ] || [[ "$oldmempool" = "null" ]] ; do    #|| [[ "$oldmempool" = "0" ]]
 	logstatus=$(tail /home/pi/bitcoin/debug.log -n 1|grep progress | cut -f 5,10 -d ' ')
 	if [ "$logstatus" != "" ]; then echo "$logstatus";fi
 	tblok=$(curl -s --user bongos:goobers --data-binary '{"method": "getblockchaininfo", "params": [] }' http://$nodeip:8332/ | jq '.result.blocks')
@@ -109,7 +109,11 @@ while : ;do
 		tblok=$(curl -s --user bongos:goobers --data-binary '{"method":"getblockchaininfo","params":[]}' http://$nodeip:8332/ | jq '.result.blocks')
     if [[ -z "$tblok" || $tblok = "null" ]]; then tblok=$oldblok;fi #in case of timeout
 		speedval=$(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))
-    if [[ "$oldval" != "$speedval" && "$SPEEDMONITOR" = true ]];then eval "/home/pi/bitcoindesktoys/piglow_speed.py $speedval";oldval=$speedval;fi
+    if [[ "$oldval" != "$speedval" && "$SPEEDMONITOR" = true ]];then
+			eval "/home/pi/bitcoindesktoys/piglow_speed.py $speedval"
+			eval "/home/pi/bitcoindesktoys/rainbowhat_speed.py $speedval"		
+			oldval=$speedval
+		fi
 		echo -en "o"
 		#if [ -e "/home/ben/newbolt.txt" ];then eval "/home/ben/cycle2count.py 6";rm /home/ben/newbolt.txt;fi
   done

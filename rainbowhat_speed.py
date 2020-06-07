@@ -10,9 +10,10 @@ def main():
     rainbowhat.rainbow.clear()
     vala = int(sys.argv[1])
 
-    red = [255, 0, 0]
-    green = [0, 255, 0]
-    gray = [25, 25, 30]
+    red = [20, 0, 0]
+    green = [0, 20, 0]
+    gray = [10, 10, 20]
+    #blank = [0,0,0]
     brightness = 0.04
 
     for valuetocheck in range(0, 7):

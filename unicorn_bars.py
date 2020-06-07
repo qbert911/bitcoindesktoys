@@ -32,7 +32,7 @@ def main():
         hist_chunk_size = int(sys.argv[1])
     except:
         hist_chunk_size = len(myfile["history"])/8
-    #unicorn.clear()
+
     myfloor = 9999999
     myceiling = 0
     hist_offset = len(myfile["history"]) - 1 - (hist_chunk_size * 8)
@@ -49,14 +49,12 @@ def main():
 
     for y in range(7, -1, -1):
         for x in range(0, 8):
-            #print(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset-1],(x*hist_chunk_size)+hist_offset,((x+1)*hist_chunk_size)+hist_offset,end='')
             localmin = 9999999
             localmax = 0
             for histloop in range(0, hist_chunk_size):
                 localmin = min(myfile["history"][(x*hist_chunk_size)+histloop+hist_offset], localmin)
                 localmax = max(myfile["history"][(x*hist_chunk_size)+histloop+hist_offset], localmax)
 
-            #print(localmin,localmax,end='')
             checkpoint = myfloor+((y)*myrange/8.00)
             checkpointb = myfloor+((y+1)*myrange/8.00)
             if min(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset]) <= checkpointb and \
@@ -78,7 +76,7 @@ def main():
 
             else:
                 print(". ", end='')
-                #unicorn.set_pixel(x/20, 7-y, 0, 0, 0)
+                unicorn.set_pixel(x, 7-y, 0, 0, 0)
         print("")
     unicorn.show()
 

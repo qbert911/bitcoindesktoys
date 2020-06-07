@@ -1,42 +1,42 @@
 #!/bin/bash
 
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 1"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 1"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 2"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 2"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 3"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 3"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 4"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 4"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 5"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 5"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 6"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 6"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 7"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 7"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 8"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 8"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 9"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 9"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 10"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 10"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 11"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 11"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 12"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 12"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 13"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 13"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 14"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 14"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 15"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 15"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 16"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 16"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 17"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 17"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 18"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 18"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 19"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 19"
 sleep .0000005
-eval "sudo /home/pi/bitcoindesktoys/z5unicorn_bars.py 20"
+eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 20"
 sleep .0000005
