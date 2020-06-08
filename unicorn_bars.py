@@ -2,11 +2,12 @@
 """
 unicorn hat - show scatter plot of price history
 """
-# pylint: disable=C0103,C0301
+# pylint: disable=C0103,C0301,E1101
 from __future__ import print_function
 import json
 import os
 import sys
+import atexit
 import unicornhat as unicorn
 unicorn.set_layout(unicorn.HAT)
 unicorn.rotation(0)
@@ -100,4 +101,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    unicorn.atexit._exithandlers = []
+    del atexit._exithandlers[1]  #hack to remove swig destructor error message
