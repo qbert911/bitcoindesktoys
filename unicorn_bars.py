@@ -16,14 +16,19 @@ with open(os.devnull, 'w') as f:   #to prevent loading message
     unicorn.brightness(.3)  #prints warning
     sys.stdout = oldstdout
 
+red = [150, 0, 0]
+green = [0, 150, 0]
+gray = [150, 150, 150]
+blank = [0, 0, 0]
+
+file_name = "/home/pi/history.json"
+if not os.path.isfile(file_name):  #instantiate new config file
+    mydict = {"history":[9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009]}
+    with open(file_name, "w") as outfile:
+        json.dump(mydict, outfile)
+
 def main():
     """asdasd"""
-
-    file_name = "/home/pi/history.json"
-    if not os.path.isfile(file_name):  #instantiate new config file
-        mydict = {"history":[9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009]}
-        with open(file_name, "w") as outfile:
-            json.dump(mydict, outfile)
 
     with open(file_name, 'r') as openfile:
         myfile = json.load(openfile)
@@ -41,11 +46,11 @@ def main():
         myceiling = max(myceiling, myfile["history"][x])
     myrange = myceiling - myfloor
 
-    print("   ("+str(myfloor)+" - "+str(myceiling)+")   range:", myrange, "(", (myrange/8.00), "per cell )    ", len(myfile["history"]), "history records ", hist_chunk_size, " history per cell    offset:", hist_offset)
+    print("("+str(myfloor)+" - "+str(myceiling)+") range:", myrange, "per cell:", (myrange/8.0), "history records:", len(myfile["history"]), "history per cell:", hist_chunk_size, "offset:", hist_offset)
 
-    for x in range(0, 8):
-        print(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset], (x*hist_chunk_size)+hist_offset, ((x+1)*hist_chunk_size)+hist_offset, end='  ')
-    print("")
+    #for x in range(0, 8):
+    #    print(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset], (x*hist_chunk_size)+hist_offset, ((x+1)*hist_chunk_size)+hist_offset, end='  ')
+    #print("")
 
     for y in range(7, -1, -1):
         for x in range(0, 8):
@@ -61,22 +66,27 @@ def main():
                max(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset]) > checkpoint:
                 if myfile["history"][(x*hist_chunk_size)+hist_offset] < myfile["history"][((x+1)*hist_chunk_size)+hist_offset]:
                     print("O ", end='')
-                    unicorn.set_pixel(x, 7-y, 0, 180, 0)
+                    r, g, b = green
+                    unicorn.set_pixel(x, 7-y, r, g, b)
                 else:
                     print("X ", end='')
-                    unicorn.set_pixel(x, 7-y, 180, 0, 0)
+                    r, g, b = red
+                    unicorn.set_pixel(x, 7-y, r, g, b)
 
             elif localmin <= checkpointb and localmax > checkpoint:
                 if myfile["history"][(x*hist_chunk_size)+hist_offset] < myfile["history"][((x+1)*hist_chunk_size)+hist_offset]:
                     print("o ", end='')
-                    unicorn.set_pixel(x, 7-y, 150, 150, 150)
+                    r, g, b = gray
+                    unicorn.set_pixel(x, 7-y, r, g, b)
                 else:
                     print("x ", end='')
-                    unicorn.set_pixel(x, 7-y, 150, 150, 150)
+                    r, g, b = gray
+                    unicorn.set_pixel(x, 7-y, r, g, b)
 
             else:
                 print(". ", end='')
-                unicorn.set_pixel(x, 7-y, 0, 0, 0)
+                r, g, b = blank
+                unicorn.set_pixel(x, 7-y, r, g, b)
         print("")
     unicorn.show()
 

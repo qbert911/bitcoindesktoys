@@ -3,24 +3,12 @@
 rainbow HAT - alter digits and call led function
 """
 # pylint: disable=C0103
-import os
 import sys
-with open(os.devnull, 'w') as f:   #to prevent pygame loading message
-    oldstdout = sys.stdout
-    sys.stdout = f
-    from pygame import mixer
-    sys.stdout = oldstdout
-#------------end pygame non display message hack------------------------------
 from time import time, sleep
 import rainbowhat
 from rainbowhat_ledfunctions import rainbow_led_pricechange
 
 rainbowhat.rainbow.set_clear_on_exit(False)
-
-mixer.pre_init(buffer=8192)
-mixer.init()
-soundup = mixer.Sound('/home/pi/bitcoindesktoys/tickup.wav')
-sounddown = mixer.Sound('/home/pi/bitcoindesktoys/tickdown.wav')
 
 def main():
     """asdasd"""
@@ -45,11 +33,9 @@ try:
         sleep_time = min((counter/(abs(vala-valb)+1.000))**1.8*(10.0/(abs(vala-valb)+1.0)), 3.000)
         #print(sleep_time,val)
         if val > vala:
-            #soundup.play()
             rainbowhat.buzzer.midi_note(82, .05)
             #rainbowhat.lights.green.toggle()
         elif val < vala:
-            #sounddown.play()
             rainbowhat.buzzer.midi_note(2, .05)
             #rainbowhat.lights.red.toggle()
         rainbowhat.display.print_str(str(val))
