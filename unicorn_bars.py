@@ -20,6 +20,7 @@ red = [150, 0, 0]
 green = [0, 150, 0]
 gray = [150, 150, 150]
 blank = [0, 0, 0]
+reporting = 0
 
 file_name = "/home/pi/history.json"
 if not os.path.isfile(file_name):  #instantiate new config file
@@ -48,9 +49,10 @@ def main():
 
     print("("+str(myfloor)+" - "+str(myceiling)+") range:", myrange, "per cell:", (myrange/8.0), "history records:", len(myfile["history"]), "history per cell:", hist_chunk_size, "offset:", hist_offset)
 
-    #for x in range(0, 8):
-    #    print(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset], (x*hist_chunk_size)+hist_offset, ((x+1)*hist_chunk_size)+hist_offset, end='  ')
-    #print("")
+    if reporting:
+        for x in range(0, 8):
+            print(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset], (x*hist_chunk_size)+hist_offset, ((x+1)*hist_chunk_size)+hist_offset, end='  ')
+        print("")
 
     for y in range(7, -1, -1):
         for x in range(0, 8):
@@ -65,29 +67,35 @@ def main():
             if min(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset]) <= checkpointb and \
                max(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset]) > checkpoint:
                 if myfile["history"][(x*hist_chunk_size)+hist_offset] < myfile["history"][((x+1)*hist_chunk_size)+hist_offset]:
-                    print("O ", end='')
+                    if reporting:
+                        print("O ", end='')
                     r, g, b = green
                     unicorn.set_pixel(x, 7-y, r, g, b)
                 else:
-                    print("X ", end='')
+                    if reporting:
+                        print("X ", end='')
                     r, g, b = red
                     unicorn.set_pixel(x, 7-y, r, g, b)
 
             elif localmin <= checkpointb and localmax > checkpoint:
                 if myfile["history"][(x*hist_chunk_size)+hist_offset] < myfile["history"][((x+1)*hist_chunk_size)+hist_offset]:
-                    print("o ", end='')
+                    if reporting:
+                        print("o ", end='')
                     r, g, b = gray
                     unicorn.set_pixel(x, 7-y, r, g, b)
                 else:
-                    print("x ", end='')
+                    if reporting:
+                        print("x ", end='')
                     r, g, b = gray
                     unicorn.set_pixel(x, 7-y, r, g, b)
 
             else:
-                print(". ", end='')
+                if reporting:
+                    print(". ", end='')
                 r, g, b = blank
                 unicorn.set_pixel(x, 7-y, r, g, b)
-        print("")
+        if reporting:
+            print("")
     unicorn.show()
 
 if __name__ == "__main__":
