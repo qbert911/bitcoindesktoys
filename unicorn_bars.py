@@ -10,7 +10,7 @@ import sys
 import atexit
 import unicornhat as unicorn
 unicorn.set_layout(unicorn.HAT)
-unicorn.rotation(0)
+unicorn.rotation(180)
 with open(os.devnull, 'w') as f:   #to prevent loading message
     oldstdout = sys.stdout
     sys.stdout = f
@@ -21,7 +21,7 @@ red = [150, 0, 0]
 green = [0, 150, 0]
 gray = [150, 150, 150]
 blank = [0, 0, 0]
-reporting = 0
+reporting = 1
 
 file_name = "/home/pi/history.json"
 if not os.path.isfile(file_name):  #instantiate new config file
