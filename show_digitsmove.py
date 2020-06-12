@@ -7,6 +7,7 @@ import sys
 from time import time, sleep
 import rainbowhat
 from rainbowhat_ledfunctions import rainbow_led_pricechange
+from config_filefunctions import is_sound_on
 
 rainbowhat.rainbow.set_clear_on_exit(False)
 
@@ -20,7 +21,10 @@ try:
     valb = int(sys.argv[2])
     valc = int(sys.argv[3])
     counter = 1.0
+    soundon = is_sound_on()
 
+    if not soundon:
+        rainbowhat.lights.blue.on()
     if vala > valb:
         stride = -1
         rainbowhat.lights.red.on()
@@ -33,10 +37,12 @@ try:
         sleep_time = min((counter/(abs(vala-valb)+1.000))**1.8*(10.0/(abs(vala-valb)+1.0)), 3.000)
         #print(sleep_time,val)
         if val > vala:
-            rainbowhat.buzzer.midi_note(82, .05)
+            if soudnon:
+                rainbowhat.buzzer.midi_note(82, .05)
             #rainbowhat.lights.green.toggle()
         elif val < vala:
-            rainbowhat.buzzer.midi_note(2, .05)
+            if soundon:
+                rainbowhat.buzzer.midi_note(2, .05)
             #rainbowhat.lights.red.toggle()
         rainbowhat.display.print_str(str(val))
         rainbowhat.display.show()

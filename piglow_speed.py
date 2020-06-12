@@ -16,4 +16,5 @@ try:
             piglow.colour(6-colour, 1)
     piglow.show()
 except:
-    print("exception")
+    1 == 1
+    #print("exception")

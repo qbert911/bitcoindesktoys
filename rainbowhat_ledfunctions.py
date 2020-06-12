@@ -52,5 +52,11 @@ def rainbow_led_pricechange(vala):
 
     rainbowhat.rainbow.show()
 
+def rainbow_show_message(vala):
+    rainbowhat.display.clear()
+
+    rainbowhat.display.print_str(vala)
+    rainbowhat.display.show()
+
 if __name__ == "__main__":
     print ("supposed to be called from another python file, not solo")
