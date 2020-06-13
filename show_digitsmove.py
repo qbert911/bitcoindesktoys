@@ -37,7 +37,7 @@ try:
         sleep_time = min((counter/(abs(vala-valb)+1.000))**1.8*(10.0/(abs(vala-valb)+1.0)), 3.000)
         #print(sleep_time,val)
         if val > vala:
-            if soudnon:
+            if soundon:
                 rainbowhat.buzzer.midi_note(82, .05)
             #rainbowhat.lights.green.toggle()
         elif val < vala:

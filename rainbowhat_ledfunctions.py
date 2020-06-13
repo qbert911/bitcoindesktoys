@@ -4,6 +4,7 @@
 write to the seven leds on the top of the rainbow HAT
 """
 import rainbowhat
+import sys
 
 position = [
     [-1,-1,-1,-1,-1,-1,-1],
@@ -35,6 +36,7 @@ blank = [0,0,0]
 brightness = 0.04
 
 def rainbow_led_pricechange(vala):
+    rainbowhat.rainbow.set_clear_on_exit(False)
     """asdasd"""
     rainbowhat.rainbow.clear()
     #print position[vala]
@@ -59,4 +61,5 @@ def rainbow_show_message(vala):
     rainbowhat.display.show()
 
 if __name__ == "__main__":
-    print ("supposed to be called from another python file, not solo")
+    rainbow_led_pricechange(sys.argv[1])
+    #print ("supposed to be called from another python file, not solo")

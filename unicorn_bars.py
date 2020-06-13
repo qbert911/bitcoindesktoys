@@ -9,8 +9,9 @@ import os
 import sys
 import atexit
 import unicornhat as unicorn
+from config_filefunctions import is_unicornhat_inverted
 unicorn.set_layout(unicorn.HAT)
-unicorn.rotation(180)
+unicorn.rotation(is_unicornhat_inverted()*180)
 with open(os.devnull, 'w') as f:   #to prevent loading message
     oldstdout = sys.stdout
     sys.stdout = f
