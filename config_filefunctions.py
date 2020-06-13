@@ -4,8 +4,9 @@ blah
 """
 import json
 import os
+import rainbowhat
 from rainbowhat_ledfunctions import rainbow_show_message
-
+rainbowhat.rainbow.set_clear_on_exit(False)
 
 def ensure_config_file_exists(file_name):
     """asdasdasd"""
@@ -40,6 +41,7 @@ def is_sound_on():
 def is_unicornhat_inverted():
     """asdasd"""
     file_name = "/home/pi/config.json"
+    ensure_config_file_exists(file_name)
     with open(file_name, 'r') as openfile:
         myfile = json.load(openfile)
         return myfile["invert_unicornhat"]

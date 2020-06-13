@@ -102,4 +102,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    del atexit._exithandlers[1]  #hack to remove swig destructor error message
+    del atexit._exithandlers[1+is_unicornhat_inverted()]  #hack to remove swig destructor error message
