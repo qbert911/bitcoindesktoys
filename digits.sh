@@ -2,6 +2,7 @@
 # shellcheck disable=SC2004
 lastreading=$((0))
 change=$((-1))
+dotcounter=$((0))
 START=$(date +%s)
 echo -en "Watching BTC price movements..."
 while : ;do
@@ -13,7 +14,10 @@ while : ;do
   else  usdreading=$lastreading;  fi #data scrape unsuccessful
 
   if [[ "$usdreading" = "$lastreading" ]];then
-    echo -en "."
+    if [[ "$dotcounter" = "3" ]];then
+      echo -en "."
+      dotcounter=$((0))
+    fi
   else
     if [[ "$usdreading" > "$lastreading" ]];then
       changeup=$(($change+1))
@@ -28,11 +32,11 @@ while : ;do
     eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change" &
     eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 1"
     sleep 10
-    eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py"
-
+    ZOOM=$(cat /home/pi/config.json | jq '.zoom_level')
+    eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py $ZOOM"
     echo -en "\$$usdreading $(printf '%+03d' $change) $(printf '%+04d' $(( $usdreading - $lastreading )) )\$ change"
     START=$(date +%s)
   fi
   lastreading=$usdreading
-  sleep 10
+  sleep 3;dotcounter=$(( $dotcounter + 1))
 done

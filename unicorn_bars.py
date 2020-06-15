@@ -11,18 +11,18 @@ import atexit
 import unicornhat as unicorn
 from config_filefunctions import is_unicornhat_inverted
 unicorn.set_layout(unicorn.HAT)
-unicorn.rotation(is_unicornhat_inverted()*180)
+unicorn.rotation(abs(is_unicornhat_inverted())*180)   #set to zero for battlestation, 1 for twin display, and -1 for solo
 with open(os.devnull, 'w') as f:   #to prevent loading message
     oldstdout = sys.stdout
     sys.stdout = f
-    unicorn.brightness(.3)  #prints warning
+    unicorn.brightness(1)  #prints warning
     sys.stdout = oldstdout
 
-red = [150, 0, 0]
-green = [0, 150, 0]
-gray = [150, 150, 150]
+red = [60, 0, 0]
+green = [0, 60, 0]
+gray = [45, 45, 45]
 blank = [0, 0, 0]
-reporting = 1
+reporting = 0
 
 file_name = "/home/pi/history.json"
 if not os.path.isfile(file_name):  #instantiate new config file

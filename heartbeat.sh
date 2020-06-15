@@ -1,27 +1,17 @@
 #!/bin/bash
 # shellcheck disable=SC2004
-SPEEDMONITOR=true
-DISPLAYDIGITS=false
-CHATPRICE=false
-maxbarlen=$(cat /home/pi/columnwidth.txt)
+SPEEDMONITOR=$(cat /home/pi/config.json | jq '.show_speed')
+maxbarlen=$(cat /home/pi/config.json | jq '.column_width')
 if [ ${#maxbarlen} -eq 0 ]; then
 	maxbarlen=$((100))
 fi
 nodeip="127.0.0.1"
-chatthreshhold=$((490))
-#if [ "$CHATPRICE" = true ]; then /home/ben/go/bin/keybase chat send fucres2 ":roller_coaster: BTC annoucement bot starting up - reporting on any change in price per block greater than \$$chatthreshhold USD";fi
 echo  "Catching up to Newest Block..."
-while [ -z "$tblok" ] || [[ $tblok = "null" ]] || [ -z "$oldmempool" ] || [[ "$oldmempool" = "null" ]] ; do    #|| [[ "$oldmempool" = "0" ]]
+while [ -z "$tblok" ] || [[ $tblok = "null" ]] || [ -z "$oldmempool" ] || [[ "$oldmempool" = "null" ]] ; do
 	logstatus=$(tail /home/pi/bitcoin/debug.log -n 1|grep progress | cut -f 5,10 -d ' ')
 	if [ "$logstatus" != "" ]; then echo "$logstatus";fi
 	tblok=$(curl -s --user bongos:goobers --data-binary '{"method": "getblockchaininfo", "params": [] }' http://$nodeip:8332/ | jq '.result.blocks')
-	if [ "$SPEEDMONITOR" = true ]; then eval "/home/pi/bitcoindesktoys/piglow_speed.py 0";fi
-	if [ "$DISPLAYDIGITS" = true ]; then eval "/home/pi/bitcoindesktoys/show_message.py Load" ;fi
-	sleep 1
-	if [ "$SPEEDMONITOR" = true ]; then eval "/home/pi/bitcoindesktoys/piglow_speed.py 3";fi
-	sleep 1
-	if [ "$SPEEDMONITOR" = true ]; then eval "/home/pi/bitcoindesktoys/piglow_speed.py 6";fi
-	sleep 1
+	sleep 3
 	oldmempool=$(curl -s --user bongos:goobers --data-binary '{"method": "getmempoolinfo", "params": [] }' http://$nodeip:8332/ | jq '.result.size')
 done
 nmempool=$(( 1 + $oldmempool ))
@@ -93,7 +83,6 @@ while : ;do
 			else
 				usdprice=$lastprice
 			fi
-			if [ "$DISPLAYDIGITS" = true ]; then eval "/home/pi/bitcoindesktoys/show_message.py $(printf '%04.0f' $usdprice)" ;fi
     fi
 		pdfull="$(printf '%+04.0f' "$(echo $usdprice - $lastprice | bc )" )"
 
@@ -109,13 +98,12 @@ while : ;do
 		tblok=$(curl -s --user bongos:goobers --data-binary '{"method":"getblockchaininfo","params":[]}' http://$nodeip:8332/ | jq '.result.blocks')
     if [[ -z "$tblok" || $tblok = "null" ]]; then tblok=$oldblok;fi #in case of timeout
 		speedval=$(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))
-    if [[ "$oldval" != "$speedval" && "$SPEEDMONITOR" = true ]];then
+    if [[ "$oldval" != "$speedval" && "$SPEEDMONITOR" = 1 ]];then
 			eval "/home/pi/bitcoindesktoys/piglow_speed.py $speedval"
-			eval "/home/pi/bitcoindesktoys/rainbowhat_speed.py $speedval"		
+			eval "/home/pi/bitcoindesktoys/rainbowhat_speed.py $speedval"
 			oldval=$speedval
 		fi
 		echo -en "o"
-		#if [ -e "/home/ben/newbolt.txt" ];then eval "/home/ben/cycle2count.py 6";rm /home/ben/newbolt.txt;fi
   done
 #------------------------------------------------------------------------------
   nmempool=$(curl -s --user bongos:goobers --data-binary '{"method": "getmempoolinfo", "params": [] }' http://$nodeip:8332/ | jq '.result.size')
@@ -144,17 +132,6 @@ while : ;do
   for (( c=1; c<=$(( $maxbarlen - $currbarlen )); c++ )); do
     if [ "$(( ($c + $currbarlen) % ( $maxbarlen / 10 / $scalevel ) ))" == "0" ];then echo -n "+";else echo -n "${myblank}"; fi;  done
 	echo -e  "\e[0m \$$(printf "%04.0f" $usdprice)$pdfulle [$(printf "%04d" ${bakedin})tx] $(date '+%H:%M')"
-	if [ "$CHATPRICE" = true ]; then
-		if [ "$(printf '%.0f' "$pdfull")" -gt "$chatthreshhold" ]; then
-    	echo "price  up  to $usdprice from $lastprice -- $pdfull "
-    	/home/ben/go/bin/keybase chat send fucres2 ":roller_coaster: :chart_with_upwards_trend: price up \$$pdfull to $usdprice from $lastprice"
-  	fi
-  	if [ "$(printf '%.0f' "$pdfull")" -lt "$(( 0 - $chatthreshhold ))" ] && [ "$usdprice"  -gt "0" ]; then
-    	echo "price down to $usdprice from $lastprice -- $pdfull "
-    	/home/ben/go/bin/keybase chat send fucres2 ":roller_coaster: :chart_with_downwards_trend: price down \$$pdfull to $usdprice from $lastprice"
-  	fi
-	fi
   lastprice=$usdprice
   if [ -f "/home/pi/bitcoindesktoys/cuckoo.wav" ]; then eval "aplay -q /home/pi/bitcoindesktoys/cuckoo.wav" ; fi
-	#if [ -f "/home/pi/bitcoindesktoys/playtone.py" ]; then eval "/home/pi/bitcoindesktoys/playtone.py" ; fi
 done

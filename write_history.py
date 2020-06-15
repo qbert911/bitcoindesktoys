@@ -14,7 +14,7 @@ def main():
     history_length = 240
 
     if not os.path.isfile(file_name):  #instantiate new config file
-        mydict = {"history":[newinfo-1, newinfo+2, newinfo-3, newinfo+4, newinfo-5, newinfo+6, newinfo-7, newinfo+8, newinfo-9]}
+        mydict = {"history":[newinfo, newinfo, newinfo, newinfo, newinfo, newinfo, newinfo, newinfo, newinfo]}
         with open(file_name, "w") as outfile:
             json.dump(mydict, outfile)
 
