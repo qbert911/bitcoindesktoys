@@ -63,11 +63,9 @@ def zoom_level_up():
         myfile = json.load(openfile)
         if myfile["zoom_level"] < 30:
             myfile["zoom_level"] = myfile["zoom_level"] + 1
-
+            with open(file_name, "w") as outfile:
+                json.dump(myfile, outfile)
         rainbow_show_message(str(myfile["zoom_level"]))
-
-        with open(file_name, "w") as outfile:
-            json.dump(myfile, outfile)
 
 def zoom_level_down():
     """asdasd"""
@@ -77,12 +75,9 @@ def zoom_level_down():
         myfile = json.load(openfile)
         if myfile["zoom_level"] > 0:
             myfile["zoom_level"] = myfile["zoom_level"] - 1
-
+            with open(file_name, "w") as outfile:
+                json.dump(myfile, outfile)
         rainbow_show_message(str(myfile["zoom_level"]))
-
-        with open(file_name, "w") as outfile:
-            json.dump(myfile, outfile)
-
 
 if __name__ == "__main__":
     zoom_level_up()

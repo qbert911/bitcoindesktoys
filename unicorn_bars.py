@@ -9,7 +9,7 @@ import os
 import sys
 import atexit
 import unicornhat as unicorn
-from config_filefunctions import is_unicornhat_inverted
+from config_filefunctions import is_unicornhat_inverted, get_zoom_level
 unicorn.set_layout(unicorn.HAT)
 unicorn.rotation(abs(is_unicornhat_inverted())*180)   #set to zero for battlestation, 1 for twin display, and -1 for solo
 with open(os.devnull, 'w') as f:   #to prevent loading message
@@ -24,7 +24,7 @@ gray = [45, 45, 45]
 blank = [0, 0, 0]
 reporting = 0
 
-def main():
+def ubars():
     """asdasd"""
     file_name = "/home/pi/history.json"
     with open(file_name, 'r') as openfile:
@@ -33,7 +33,7 @@ def main():
     try:
         hist_chunk_size = int(sys.argv[1])
     except:
-        hist_chunk_size = len(myfile["history"])/8
+        hist_chunk_size = int(get_zoom_level())    #len(myfile["history"])/8
 
     myfloor = 9999999
     myceiling = 0
@@ -95,5 +95,5 @@ def main():
     unicorn.show()
 
 if __name__ == "__main__":
-    main()
+    ubars()
     del atexit._exithandlers[1+is_unicornhat_inverted()]  #hack to remove swig destructor error message

@@ -10,7 +10,7 @@ while : ;do
     usdreading=$(echo "$usdraw" |jq -r '.bitcoin.usd')
     usdreading=$(printf '%04.0f' "$usdreading")
     if [ -z "$usdreading" ] || [[ "$usdreading" = "null" ]] || [[ "$usdreading" = "0" ]];then usdreading=$lastreading;fi #in case of timeout
-  else  usdreading=$lastreading;  echo -en "x"; fi #data scrape unsuccessful
+  else  usdreading=$lastreading;  echo -en "x";sleep 20; fi #data scrape unsuccessful
 
   if [[ "$usdreading" = "$lastreading" ]];then    #price hasnt changed
     if [[ "$dotcounter" -gt "2" ]];then
@@ -35,6 +35,8 @@ while : ;do
       sleep 10
       ZOOM=$(cat /home/pi/config.json | jq '.zoom_level')
       eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py $ZOOM"
+    else
+      sleep 10
     fi
     echo -en "\$$usdreading $(printf '%+03d' $change) $(printf '%+04d' $(( $usdreading - $lastreading )) )\$ ["
     START=$(date +%s)
