@@ -12,7 +12,7 @@ def ensure_config_file_exists(file_name):
     """asdasdasd"""
     if not os.path.isfile(file_name):  #instantiate new config file
         mydict = {"sound":1, "invert_unicornhat":0, "zoom_level":30, "show_speed":1, "column_width":100}
-        with open(file_name, "w") as outfile:
+        with open(file_name, "w") as outfile:    #invert_unicornhat: zero for battlestation, 1 for twin display, and -1 for solo
             json.dump(mydict, outfile)
 
 def flip_sound():
@@ -78,7 +78,6 @@ def zoom_level_down():
         if myfile["zoom_level"] > 0:
             myfile["zoom_level"] = myfile["zoom_level"] - 1
 
-        print(str(myfile["zoom_level"]))
         rainbow_show_message(str(myfile["zoom_level"]))
 
         with open(file_name, "w") as outfile:
