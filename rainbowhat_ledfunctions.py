@@ -3,8 +3,8 @@
 """
 write to the seven leds on the top of the rainbow HAT
 """
-import rainbowhat
 import sys
+import rainbowhat
 
 position = [
     [-1,-1,-1,-1,-1,-1,-1],
@@ -36,8 +36,8 @@ blank = [0,0,0]
 brightness = 0.04
 
 def rainbow_led_pricechange(vala):
-    rainbowhat.rainbow.set_clear_on_exit(False)
     """asdasd"""
+    rainbowhat.rainbow.set_clear_on_exit(False)
     rainbowhat.rainbow.clear()
     #print position[vala]
     vala=int(vala)+10

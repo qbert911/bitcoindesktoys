@@ -1,19 +1,17 @@
 #!/usr/bin/env python
-"""asdasd"""
+"""rainbowhat - set speed on leds"""
 import sys
 import rainbowhat
 rainbowhat.rainbow.set_clear_on_exit(False)
 
-# pylint: disable=C
 def main():
     """asdasd"""
     rainbowhat.rainbow.clear()
     vala = int(sys.argv[1])
 
-    red = [20, 0, 0]
-    yellow = [20, 20, 0]
     gray = [5, 5, 5]
-    #blank = [0,0,0]
+    yellow = [20, 20, 0]
+    red = [20, 0, 0]
     brightness = 0.04
 
     for valuetocheck in range(0, 7):

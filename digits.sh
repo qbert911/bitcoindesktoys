@@ -33,8 +33,7 @@ while : ;do
     if [[ "$hasunicornhat" -ge "0" ]]; then
       eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 1"
       sleep 10
-      ZOOM=$(cat /home/pi/config.json | jq '.zoom_level')
-      eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py $ZOOM"
+      eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py"
     else
       sleep 10
     fi
