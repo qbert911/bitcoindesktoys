@@ -31,9 +31,9 @@ def ubars():
         myfile = json.load(openfile)
 
     try:
-        hist_chunk_size = int(sys.argv[1])
+        hist_chunk_size = min(int(sys.argv[1]), len(myfile["history"])/8)
     except:
-        hist_chunk_size = int(get_zoom_level())    #len(myfile["history"])/8
+        hist_chunk_size = min(int(get_zoom_level()), len(myfile["history"])/8)
 
     myfloor = 9999999
     myceiling = 0

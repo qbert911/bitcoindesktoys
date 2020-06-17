@@ -11,15 +11,17 @@ rainbowhat.rainbow.set_clear_on_exit(False)
 
 @rainbowhat.touch.A.press()
 def touch_a(channel):
-    config_filefunctions.zoom_level_up()
-    rainbowhat.lights.rgb(1, 0, 0)
-    unicorn_bars.ubars()
+    if config_filefunctions.is_unicornhat_inverted() > -1:
+        config_filefunctions.zoom_level_up()
+        rainbowhat.lights.rgb(1, 0, 0)
+        unicorn_bars.ubars()
 
 @rainbowhat.touch.B.press()
 def touch_b(channel):
-    config_filefunctions.zoom_level_down()
-    rainbowhat.lights.rgb(0, 1, 0)
-    unicorn_bars.ubars()
+    if config_filefunctions.is_unicornhat_inverted() > -1:
+        config_filefunctions.zoom_level_down()
+        rainbowhat.lights.rgb(0, 1, 0)
+        unicorn_bars.ubars()
 
 @rainbowhat.touch.C.press()
 def touch_c(channel):
