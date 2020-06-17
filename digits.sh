@@ -1,5 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2004
+eval 'ulimit -S -s 16384' #to help prevent segfault errors when running show_digitsmove
 lastreading=$((0))
 change=$((-1))
 hasunicornhat=$(cat /home/pi/config.json | jq '.invert_unicornhat')
@@ -10,7 +11,7 @@ while : ;do
     usdreading=$(echo "$usdraw" |jq -r '.bitcoin.usd')
     usdreading=$(printf '%04.0f' "$usdreading")
     if [ -z "$usdreading" ] || [[ "$usdreading" = "null" ]] || [[ "$usdreading" = "0" ]];then usdreading=$lastreading;fi #in case of timeout
-  else  usdreading=$lastreading;  echo -en "x";sleep 20; fi #data scrape unsuccessful
+  else  usdreading=$lastreading;  echo -en "x";sleep 30; fi #data scrape unsuccessful
 
   if [[ "$usdreading" = "$lastreading" ]];then    #price hasnt changed
     if [[ "$dotcounter" -gt "2" ]];then

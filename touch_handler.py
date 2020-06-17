@@ -26,6 +26,7 @@ def touch_b(channel):
 @rainbowhat.touch.C.press()
 def touch_c(channel):
     config_filefunctions.flip_sound()
+    rainbowhat.rainbow.show()
     rainbowhat.lights.rgb(0, 0, 1)
 
 @rainbowhat.touch.release()
