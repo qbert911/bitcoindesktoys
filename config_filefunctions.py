@@ -73,7 +73,7 @@ def zoom_level_down():
     ensure_config_file_exists(file_name)
     with open(file_name, 'r') as openfile:
         myfile = json.load(openfile)
-        if myfile["zoom_level"] > 0:
+        if myfile["zoom_level"] > 1:
             myfile["zoom_level"] = myfile["zoom_level"] - 1
             with open(file_name, "w") as outfile:
                 json.dump(myfile, outfile)

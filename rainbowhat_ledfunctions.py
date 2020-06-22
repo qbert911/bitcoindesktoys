@@ -29,11 +29,11 @@ position = [
     [+1,+1,+1,+1,+1,+1,0],
     [+1,+1,+1,+1,+1,+1,+1]
 ]
-red = [20, 0, 0]
-green = [0, 20, 0]
-gray = [10, 10, 20]
-blank = [0,0,0]
-brightness = 0.04
+red = [2, 0, 0]
+green = [0, 2, 0]
+gray = [1, 1, 1]
+blank = [0, 0, 0]
+brightness = 1
 
 def rainbow_led_pricechange(vala):
     """asdasd"""
