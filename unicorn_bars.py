@@ -12,11 +12,7 @@ import unicornhat as unicorn
 from config_filefunctions import is_unicornhat_inverted, get_zoom_level
 unicorn.set_layout(unicorn.HAT)
 unicorn.rotation(abs(is_unicornhat_inverted())*180)   #set to zero for battlestation, 1 for twin display, and -1 for solo
-with open(os.devnull, 'w') as f:   #to prevent loading message
-    oldstdout = sys.stdout
-    sys.stdout = f
-    unicorn.brightness(1)  #prints warning
-    sys.stdout = oldstdout
+unicorn.brightness(1)
 
 red = [60, 0, 0]
 green = [0, 60, 0]

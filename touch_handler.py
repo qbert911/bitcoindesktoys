@@ -14,14 +14,12 @@ def touch_a(channel):
     if config_filefunctions.is_unicornhat_inverted() > -1:
         config_filefunctions.zoom_level_up()
         rainbowhat.lights.rgb(1, 0, 0)
-        unicorn_bars.ubars()
 
 @rainbowhat.touch.B.press()
 def touch_b(channel):
     if config_filefunctions.is_unicornhat_inverted() > -1:
         config_filefunctions.zoom_level_down()
         rainbowhat.lights.rgb(0, 1, 0)
-        unicorn_bars.ubars()
 
 @rainbowhat.touch.C.press()
 def touch_c(channel):
@@ -32,6 +30,8 @@ def touch_c(channel):
 @rainbowhat.touch.release()
 def release(channel):
     rainbowhat.lights.rgb(0, 0, 0)
+    if config_filefunctions.is_unicornhat_inverted() > -1:
+        unicorn_bars.ubars()
 
 # waits until a signal is received
 signal.pause()
