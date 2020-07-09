@@ -48,7 +48,8 @@ try:
         rainbowhat.display.show()
         counter = counter+1.0
         sleep(sleep_time)
-    rainbow_led_pricechange(valc)
+    if soundon:
+        rainbow_led_pricechange(valc)
     sleep(.4)   #needed so we can hear the last sound effect
     #sys.stdout.write(str(time()-timeing))
     #sys.stdout.flush()
