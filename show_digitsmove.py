@@ -23,15 +23,15 @@ try:
     counter = 1.0
     soundon = is_sound_on()
 
-    if not soundon:
-        rainbowhat.lights.blue.on()
     if vala > valb:
         stride = -1
-        rainbowhat.lights.red.on()
+        if soundon:
+            rainbowhat.lights.red.on()
     else:
         stride = 1
-        rainbowhat.lights.green.on()
         rainbowhat.lights.red.off()   #hack to turn off bootup dim light
+        if soundon:
+            rainbowhat.lights.green.on()
 
     for val in range(vala, valb+stride, stride):
         sleep_time = min((counter/(abs(vala-valb)+1.000))**1.8*(10.0/(abs(vala-valb)+1.0)), 3.000)

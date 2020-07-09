@@ -29,9 +29,9 @@ while : ;do
     if [[ "$lastreading" = "0" ]];then lastreading=$usdreading  #make first row behave properly
     else echo -e "$(( $(date +%s) - $START )) seconds]";fi
 
-    eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
     eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change" &
     if [[ "$hasunicornhat" -ge "0" ]]; then
+      eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
       eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 1"
       sleep 10
       eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py"

@@ -40,6 +40,7 @@ def flip_sound():
         if myfile["sound"] == 1:
             myfile["sound"] = 0
             rainbow_show_message("Mute")
+            rainbowhat.rainbow.clear()
         else:
             myfile["sound"] = 1
             rainbow_show_message("SndY")
