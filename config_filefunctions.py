@@ -44,7 +44,7 @@ def flip_sound():
         else:
             myfile["sound"] = 1
             rainbow_show_message("SndY")
-
+            rainbowhat.rainbow.set_pixel(3, 5, 5, 5, 0.04)
         with open(file_name, "w") as outfile:
             json.dump(myfile, outfile)
 

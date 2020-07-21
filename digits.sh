@@ -32,9 +32,11 @@ while : ;do
     eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change" &
     if [[ "$hasunicornhat" -ge "0" ]]; then
       eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
-      eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py 1"
+      eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py 1"
+      eval "touch /home/pi/trigger.foo"
       sleep 10
-      eval "sudo /home/pi/bitcoindesktoys/unicorn_bars.py"
+      eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py"
+      eval "touch /home/pi/trigger.foo"
     else
       sleep 10
     fi
