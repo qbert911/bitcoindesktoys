@@ -89,7 +89,7 @@ def ubars_write():
         if reporting:
             print("")
 
-    print (position)
+    #print (position)
     file_name = "/home/pi/unicorn.json"
     with open(file_name, "w") as outfile:
         json.dump(position, outfile)

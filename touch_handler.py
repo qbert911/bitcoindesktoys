@@ -4,9 +4,10 @@ rainbow hat - touch handler
 """
 # pylint: disable=C0116,E1101,W0613
 import signal
+import os
 import rainbowhat
 import config_filefunctions
-import unicorn_bars
+import unicorn_bars_calculate
 rainbowhat.rainbow.set_clear_on_exit(False)
 
 @rainbowhat.touch.A.press()
@@ -31,7 +32,8 @@ def touch_c(channel):
 def release(channel):
     rainbowhat.lights.rgb(0, 0, 0)
     if config_filefunctions.is_unicornhat_inverted() > -1:
-        unicorn_bars.ubars()
+        unicorn_bars_calculate.ubars_write()
+        os.mknod("/home/pi/unicorn.json")
 
 # waits until a signal is received
 signal.pause()
