@@ -9,6 +9,7 @@ import rainbowhat
 import config_filefunctions
 import unicorn_bars_calculate
 rainbowhat.rainbow.set_clear_on_exit(False)
+file_name = "/home/pi/trigger.foo"
 
 @rainbowhat.touch.A.press()
 def touch_a(channel):
@@ -33,7 +34,8 @@ def release(channel):
     rainbowhat.lights.rgb(0, 0, 0)
     if config_filefunctions.is_unicornhat_inverted() > -1:
         unicorn_bars_calculate.ubars_write()
-        os.mknod("/home/pi/unicorn.json")
+        if not os.path.exists(file_name):
+            os.mknod(file_name)
 
 # waits until a signal is received
 signal.pause()
