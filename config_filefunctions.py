@@ -41,10 +41,12 @@ def flip_sound():
             myfile["sound"] = 0
             rainbow_show_message("Mute")
             rainbowhat.rainbow.clear()
+            rainbowhat.rainbow.show()
         else:
             myfile["sound"] = 1
             rainbow_show_message("SndY")
             rainbowhat.rainbow.set_pixel(3, 5, 5, 5, 0.04)
+            rainbowhat.rainbow.show()
         with open(file_name, "w") as outfile:
             json.dump(myfile, outfile)
 
@@ -107,6 +109,6 @@ def zoom_level_down():
             flip_speed()
 
 if __name__ == "__main__":
-    zoom_level_up()
-    flip_speed()
+    #zoom_level_up()
+    flip_sound()
     print("sound: ", is_sound_on())
