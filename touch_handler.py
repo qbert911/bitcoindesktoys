@@ -33,8 +33,8 @@ def touch_c(channel):
 def release(channel):
     rainbowhat.lights.rgb(0, 0, 0)
     if config_filefunctions.is_unicornhat_inverted() > -1:
-        unicorn_bars_calculate.ubars_write()
         if not os.path.exists(file_name):
+            unicorn_bars_calculate.ubars_write()
             os.mknod(file_name)
 
 # waits until a signal is received
