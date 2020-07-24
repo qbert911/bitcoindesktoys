@@ -6,6 +6,7 @@ unicorn hat - show scatter plot of price history
 from __future__ import print_function
 import json
 import os
+from time import sleep
 import unicornhat as unicorn
 from config_filefunctions import is_unicornhat_inverted
 unicorn.set_layout(unicorn.HAT)
@@ -18,7 +19,7 @@ gray = [45, 45, 45]
 blank = [0, 0, 0]
 
 def ubars_display():
-    """asdasd"""
+    """update unicornhat with data from file"""
     displayfile_name = "/home/pi/unicorn.json"
     with open(displayfile_name, 'r') as openfile:
         position = json.load(openfile)
@@ -44,3 +45,4 @@ if __name__ == "__main__":
         if os.path.exists(file_name):
             ubars_display()
             os.remove(file_name)
+            sleep(1)

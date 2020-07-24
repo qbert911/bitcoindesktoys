@@ -15,7 +15,7 @@ def main():
     red = [20, 0, 0]
     brightness = 0.04
 
-    if is_sound_on():
+    if is_sound_on() or is_unicornhat_inverted() > -1:
         for valuetocheck in range(0, 7):
             if vala > valuetocheck:
                 r, g, b = gray
