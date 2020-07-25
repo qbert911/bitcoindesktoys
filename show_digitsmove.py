@@ -7,7 +7,7 @@ import sys
 from time import time, sleep
 import rainbowhat
 from rainbowhat_ledfunctions import rainbow_led_pricechange
-from config_filefunctions import is_sound_on
+from config_filefunctions import is_sound_on, is_unicornhat_inverted
 
 rainbowhat.rainbow.set_clear_on_exit(False)
 
@@ -48,7 +48,7 @@ try:
         rainbowhat.display.show()
         counter = counter+1.0
         sleep(sleep_time)
-    if soundon:
+    if soundon or is_unicornhat_inverted() > -1:
         rainbow_led_pricechange(valc)
     sleep(.4)   #needed so we can hear the last sound effect
     #sys.stdout.write(str(time()-timeing))
