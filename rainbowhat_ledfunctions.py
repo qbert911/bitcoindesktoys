@@ -71,6 +71,16 @@ def rainbow_show_message(vala):
     rainbowhat.display.print_str(vala)
     rainbowhat.display.show()
 
+def button_light(vala):
+    if vala == 1:
+        rainbowhat.lights.rgb(1, 0, 0)
+    elif vala == 2:
+        rainbowhat.lights.rgb(0, 1, 0)
+    elif vala == 3:
+        rainbowhat.lights.rgb(0, 0, 1)
+    else:
+        rainbowhat.lights.rgb(0, 0, 0)
+
 if __name__ == "__main__":
     rainbow_led_pricechange(sys.argv[1])
     #print ("supposed to be called from another python file, not solo")
