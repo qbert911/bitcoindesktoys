@@ -4,9 +4,7 @@ blah
 """
 import json
 import os
-import rainbowhat as rainbow
-from rainbowhat_ledfunctions import rainbow_show_message
-rainbow.rainbow.set_clear_on_exit(False)
+from rainbowhat_ledfunctions import rainbow_show_message, rainbow_clear_leds, rainbow_set_middle_on
 
 def ensure_config_file_exists(file_name):
     """asdasdasd"""
@@ -40,13 +38,12 @@ def flip_sound():
         if myfile["sound"] == 1:
             myfile["sound"] = 0
             rainbow_show_message("Mute")
-            rainbow.rainbow.clear()
-            rainbow.rainbow.show()
+            rainbow_clear_leds()
         else:
             myfile["sound"] = 1
             rainbow_show_message("SndY")
-            rainbow.rainbow.set_pixel(3, 5, 5, 5, 0.04)
-            rainbow.rainbow.show()
+            rainbow_set_middle_on()
+
         with open(file_name, "w") as outfile:
             json.dump(myfile, outfile)
 
