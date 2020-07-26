@@ -9,7 +9,7 @@ import rainbowhat
 import config_filefunctions
 from rainbowhat_ledfunctions import button_light
 import unicorn_bars_calculate
-
+rainbowhat.rainbow.set_clear_on_exit(False)
 file_name = "/home/pi/trigger.foo"
 
 @rainbowhat.touch.A.press()

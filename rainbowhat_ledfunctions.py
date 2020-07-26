@@ -72,6 +72,7 @@ def rainbow_show_message(vala):
     rainbowhat.display.show()
 
 def button_light(vala):
+    rainbowhat.rainbow.set_clear_on_exit(False)    
     if vala == 1:
         rainbowhat.lights.rgb(1, 0, 0)
     elif vala == 2:
