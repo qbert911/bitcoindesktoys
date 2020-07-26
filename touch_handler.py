@@ -16,7 +16,7 @@ def touch_a(channel):
     global flag
     flag = 1
     if config_filefunctions.is_unicornhat_inverted() > -1:
-        rainbowhat.lights.rgb(1, 0, 0)
+        rainbowhat.lights.red.on()
         config_filefunctions.zoom_level_up()
 
 @rainbowhat.touch.B.press()
@@ -24,14 +24,14 @@ def touch_b(channel):
     global flag
     flag = 1
     if config_filefunctions.is_unicornhat_inverted() > -1:
-        rainbowhat.lights.rgb(0, 1, 0)
+        rainbowhat.lights.green.on()
         config_filefunctions.zoom_level_down()
 
 @rainbowhat.touch.C.press()
 def touch_c(channel):
     global flag
     flag = 0
-    rainbowhat.lights.rgb(0, 0, 1)
+    rainbowhat.lights.blue.on()
     config_filefunctions.flip_sound()
 
 @rainbowhat.touch.release()
