@@ -25,6 +25,7 @@ def touch_b(channel):
     flag = 1
     if config_filefunctions.is_unicornhat_inverted() > -1:
         rainbowhat.lights.green.on()
+        rainbowhat.lights.red.on()
         config_filefunctions.zoom_level_down()
 
 @rainbowhat.touch.C.press()
@@ -37,7 +38,7 @@ def touch_c(channel):
 @rainbowhat.touch.release()
 def release(channel):
     global flag
-    rainbowhat.lights.rgb(0, 0, 0)
+    #rainbowhat.lights.rgb(0, 0, 0)
     print (flag)
     if flag and config_filefunctions.is_unicornhat_inverted() > -1:
         if not os.path.exists(file_name):

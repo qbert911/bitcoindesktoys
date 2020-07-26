@@ -23,13 +23,14 @@ try:
     counter = 1.0
     soundon = is_sound_on()
 
+#        rainbowhat.lights.red.off()   #hack to turn off bootup dim light
+
     if vala > valb:
         stride = -1
         if soundon:
             rainbowhat.lights.red.on()
     else:
         stride = 1
-        rainbowhat.lights.red.off()   #hack to turn off bootup dim light
         if soundon:
             rainbowhat.lights.green.on()
 
