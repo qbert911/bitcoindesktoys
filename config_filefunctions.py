@@ -5,8 +5,8 @@ blah
 import json
 import os
 from rainbowhat_ledfunctions import rainbow_show_message, rainbow_clear_leds, rainbow_set_middle_on
-import rainbowhat as rainbow
-rainbow.rainbow.set_clear_on_exit(False)
+#import rainbowhat as rainbow
+#rainbow.rainbow.set_clear_on_exit(False)
 
 def ensure_config_file_exists(file_name):
     """asdasdasd"""

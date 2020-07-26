@@ -17,7 +17,7 @@ def touch_a(channel):
     global flag
     flag = 1
     if config_filefunctions.is_unicornhat_inverted() > -1:
-        button_light(1)
+        rainbowhat.lights.rgb(1, 0, 0)
         config_filefunctions.zoom_level_up()
 
 @rainbowhat.touch.B.press()
@@ -25,20 +25,20 @@ def touch_b(channel):
     global flag
     flag = 1
     if config_filefunctions.is_unicornhat_inverted() > -1:
-        button_light(2)
+        rainbowhat.lights.rgb(0, 1, 0)
         config_filefunctions.zoom_level_down()
 
 @rainbowhat.touch.C.press()
 def touch_c(channel):
     global flag
     flag = 0
-    button_light(3)
+    rainbowhat.lights.rgb(0, 0, 1)
     config_filefunctions.flip_sound()
 
 @rainbowhat.touch.release()
 def release(channel):
     global flag
-    button_light(0)
+    rainbowhat.lights.rgb(0, 0, 0)
     print (flag)
     if flag and config_filefunctions.is_unicornhat_inverted() > -1:
         if not os.path.exists(file_name):

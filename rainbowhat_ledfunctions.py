@@ -5,6 +5,7 @@ write to the seven leds on the top of the rainbow HAT
 """
 import sys
 import rainbowhat
+rainbowhat.rainbow.set_clear_on_exit(False)
 
 position = [
     [-1,-1,-1,-1,-1,-1,-1],
@@ -70,17 +71,6 @@ def rainbow_show_message(vala):
 
     rainbowhat.display.print_str(vala)
     rainbowhat.display.show()
-
-def button_light(vala):
-    rainbowhat.rainbow.set_clear_on_exit(False)    
-    if vala == 1:
-        rainbowhat.lights.rgb(1, 0, 0)
-    elif vala == 2:
-        rainbowhat.lights.rgb(0, 1, 0)
-    elif vala == 3:
-        rainbowhat.lights.rgb(0, 0, 1)
-    else:
-        rainbowhat.lights.rgb(0, 0, 0)
 
 if __name__ == "__main__":
     rainbow_led_pricechange(sys.argv[1])
