@@ -14,11 +14,12 @@ while : ;do
   else  usdreading=$lastreading;  echo -en "x";sleep 30; fi #data scrape unsuccessful
 
   if [[ "$usdreading" = "$lastreading" ]];then    #price hasnt changed
-    if [[ "$dotcounter" -gt "2" ]];then
+    if [[ "$dotcounter" -gt "1" ]];then
       echo -en "."
       dotcounter=$((0))
     fi
   else
+    while [[ "$(( $(date +%s) % 13 ))" -ne "0" ]];do sleep 0.05;done
     if [[ "$usdreading" > "$lastreading" ]];then
       changeup=$(($change+1))
       change=$(( $changeup > 10 ? 10 : $changeup ))
@@ -46,5 +47,6 @@ while : ;do
   fi
   lastreading=$usdreading
   dotcounter=$(($dotcounter+1))
-  sleep 3
+  sleep 1
+  while [[ "$(( $(date +%s) % 5 ))" -ne "0" ]];do sleep 0.25;done
 done

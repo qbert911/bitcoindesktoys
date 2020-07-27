@@ -34,9 +34,8 @@ def touch_c(channel):
 
 @rainbowhat.touch.release()
 def release(channel):
-    global flag
     rainbowhat.lights.blue.off()
-    print (flag)
+    print(flag)
     if flag and config_filefunctions.is_unicornhat_inverted() > -1:
         if not os.path.exists(file_name):
             unicorn_bars_calculate.ubars_write()

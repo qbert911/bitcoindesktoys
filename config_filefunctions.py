@@ -85,7 +85,7 @@ def zoom_level_up():
     ensure_config_file_exists(file_name)
     with open(file_name, 'r') as openfile:
         myfile = json.load(openfile)
-        if myfile["zoom_level"] < int(get_history_length() / 8):
+        if myfile["zoom_level"] < int(myfile["history_length"] / 8):
             myfile["zoom_level"] = myfile["zoom_level"] + 1
             with open(file_name, "w") as outfile:
                 json.dump(myfile, outfile)

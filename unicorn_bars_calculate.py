@@ -12,7 +12,6 @@ red = -1
 green = +1
 gray = 8
 blank = 0
-reporting = 0
 
 position = [
     [0, 0, 0, 0, 0, 0, 0, 0],
@@ -46,11 +45,6 @@ def ubars_write():
 
     print("("+str(myfloor)+" - "+str(myceiling)+") range:", myrange, "per cell:", (myrange/8.0), "history records:", len(myfile["history"]), "history per cell:", hist_chunk_size, "offset:", hist_offset)
 
-    if reporting:
-        for x in range(0, 8):
-            print(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset], (x*hist_chunk_size)+hist_offset, ((x+1)*hist_chunk_size)+hist_offset, end='  ')
-        print("")
-
     for y in range(7, -1, -1):
         for x in range(0, 8):
             localmin = 9999999
@@ -64,30 +58,17 @@ def ubars_write():
             if min(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset]) <= checkpointb and \
                max(myfile["history"][(x*hist_chunk_size)+hist_offset], myfile["history"][((x+1)*hist_chunk_size)+hist_offset]) > checkpoint:
                 if myfile["history"][(x*hist_chunk_size)+hist_offset] < myfile["history"][((x+1)*hist_chunk_size)+hist_offset]:
-                    if reporting:
-                        print("O ", end='')
                     position[x][7-y] = green
                 else:
-                    if reporting:
-                        print("X ", end='')
                     position[x][7-y] = red
 
             elif localmin <= checkpointb and localmax > checkpoint:
                 if myfile["history"][(x*hist_chunk_size)+hist_offset] < myfile["history"][((x+1)*hist_chunk_size)+hist_offset]:
-                    if reporting:
-                        print("o ", end='')
                     position[x][7-y] = gray
                 else:
-                    if reporting:
-                        print("x ", end='')
                     position[x][7-y] = gray
             else:
-                if reporting:
-                    print(". ", end='')
                 position[x][7-y] = blank
-
-        if reporting:
-            print("")
 
     #print (position)
     file_name = "/home/pi/unicorn.json"
