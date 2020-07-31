@@ -55,17 +55,6 @@ def rainbow_led_pricechange(vala):
 
     rainbowhat.rainbow.show()
 
-def rainbow_clear_leds():
-    rainbowhat.rainbow.set_clear_on_exit(False)
-    rainbowhat.rainbow.clear()
-    rainbowhat.rainbow.show()
-
-def rainbow_set_middle_on():
-    rainbowhat.rainbow.set_clear_on_exit(False)
-    rainbowhat.rainbow.clear()
-    rainbowhat.rainbow.set_pixel(3, 5, 5, 5, 0.04)
-    rainbowhat.rainbow.show()
-
 def rainbow_show_message(vala):
     rainbowhat.display.clear()
 

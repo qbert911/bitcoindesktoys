@@ -4,7 +4,7 @@ blah
 """
 import json
 import os
-from rainbowhat_ledfunctions import rainbow_show_message, rainbow_clear_leds, rainbow_set_middle_on
+from rainbowhat_ledfunctions import rainbow_show_message
 
 def ensure_config_file_exists(file_name):
     """asdasdasd"""
@@ -38,11 +38,11 @@ def flip_sound():
         if myfile["sound"] == 1:
             myfile["sound"] = 0
             rainbow_show_message("Mute")
-            rainbow_clear_leds()
+            os.system('./rainbowhat_speed.py 0')
         else:
             myfile["sound"] = 1
             rainbow_show_message("SndY")
-            rainbow_set_middle_on()
+            os.system('./rainbowhat_ledfunctions.py 0')
 
         with open(file_name, "w") as outfile:
             json.dump(myfile, outfile)
