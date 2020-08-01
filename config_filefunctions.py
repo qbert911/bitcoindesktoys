@@ -38,11 +38,11 @@ def flip_sound():
         if myfile["sound"] == 1:
             myfile["sound"] = 0
             rainbow_show_message("Mute")
-            os.system('./rainbowhat_speed.py 0')
+            os.system('/home/pi/bitcoindesktoys/rainbowhat_speed.py 0')
         else:
             myfile["sound"] = 1
             rainbow_show_message("SndY")
-            os.system('./rainbowhat_ledfunctions.py 0')
+            os.system('/home/pi/bitcoindesktoys/rainbowhat_ledfunctions.py 0')
 
         with open(file_name, "w") as outfile:
             json.dump(myfile, outfile)
