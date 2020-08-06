@@ -1,16 +1,16 @@
 #!/bin/bash
 # shellcheck disable=SC2004
-eval 'ulimit -S -s 16384' #to help prevent segfault errors when running show_digitsmove
+#eval 'ulimit -S -s 16384' #to help prevent segfault errors when running show_digitsmove
 lastreading=$((0))
 change=$((-1))
 hasunicornhat=$(cat /home/pi/config.json | jq '.invert_unicornhat')
 echo -e "Watching BTC price movements..."
 while : ;do
   usdraw=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" -H "accept: application/json")
-  if echo "$usdraw" | grep -q "bitcoin"  ;then  #data scrape was successful
+  if echo "$usdraw" | grep -q '{"usd":'  ;then  #data scrape was successful
     usdreading=$(echo "$usdraw" |jq -r '.bitcoin.usd')
-    usdreading=$(printf '%04.0f' "$usdreading")
     if [ -z "$usdreading" ] || [[ "$usdreading" = "null" ]] || [[ "$usdreading" = "0" ]];then usdreading=$lastreading;fi #in case of timeout
+    usdreading=$(printf '%04.0f' "$usdreading")
   else  usdreading=$lastreading;  echo -en "x";sleep 30; fi #data scrape unsuccessful
 
   if [[ "$usdreading" = "$lastreading" ]];then    #price hasnt changed
@@ -31,7 +31,7 @@ while : ;do
     else echo -e "$(( $(date +%s) - $START )) seconds]";fi
 
     eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change" &
-    if [[ "$hasunicornhat" -ge "0" ]]; then
+    if [[ "$hasunicornhat" -ge "0" ]] && [[ "$usdreading" -ge "10" ]]; then
       eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
       eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py 1"
       eval "touch /home/pi/trigger.foo"

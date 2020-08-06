@@ -15,7 +15,7 @@ raspberryPi=$(cat /proc/device-tree/model | cut -d " " -f 3 | sed 's/[^0-9]*//g'
 if [ ${#raspberryPi} -eq 0 ]; then
   raspberryPi=0
 fi
-echo "RaspberryPi Model Version: ${raspberryPi}"
+echo "$(tr -d '\0' < /proc/device-tree/model)"
 if [ ${raspberryPi} -lt 4 ]; then
   # raspberryPi 3 and lower (microUSB power connector)
   voltWARN=1230000

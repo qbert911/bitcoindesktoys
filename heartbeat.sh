@@ -74,7 +74,7 @@ while : ;do
     if [[ "$(( $RUNTIME%6 ))" -eq "0" ]] || [[ "$lastprice" = "0" ]];then
 			echo -en "O"
 			usdprice=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" -H "accept: application/json")
-			if echo "$usdprice" | grep -q "bitcoin"  ;then
+			if echo "$usdprice" | grep -q '{"usd":'  ;then
 				usdprice=$(echo "$usdprice" |jq -r '.bitcoin.usd')
 				if [ -z "$usdprice" ] || [[ "$usdprice" = "null" ]] || [[ "$usdprice" = "0" ]];then usdprice=$lastprice;fi #in case of timeout
 				if [[ "$lastprice" = "0" ]]; then lastprice=$usdprice; fi #set historical value for first row
