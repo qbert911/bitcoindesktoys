@@ -52,8 +52,11 @@ def is_sound_on():
     file_name = "/home/pi/config.json"
     ensure_config_file_exists(file_name)
     with open(file_name, 'r') as openfile:
-        myfile = json.load(openfile)
-        return myfile["sound"]
+        try:
+            myfile = json.load(openfile)
+            return myfile["sound"]
+        except:
+            return 0
 
 def is_unicornhat_inverted():
     """asdasd"""

@@ -46,7 +46,11 @@ for val in range(vala, valb+stride, stride):
         if soundon:
             rainbowhat.buzzer.midi_note(2, .05)
 
-    rainbow_show_message(str(val))
+    try:
+        rainbow_show_message(str(val))
+    except:
+        1 == 1
+
     counter = counter+1.0
     sleep(sleep_time)
 if soundon or is_unicornhat_inverted() > -1:
