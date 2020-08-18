@@ -42,7 +42,7 @@ while : ;do
       sleep 10
     fi
     echo -en "\$$usdreading $(printf '%+03d' $change) $(printf '%+04d' $(( $usdreading - $lastreading )) )\$ ["
-    sleep 20
+    sleep 30
     START=$(date +%s)
     dotcounter=$((0))
   fi

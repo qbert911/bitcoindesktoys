@@ -28,8 +28,10 @@ def main():
             if vala >= valuetocheck:
                 r, g, b = red
                 rainbowhat.rainbow.set_pixel((22-valuetocheck), r, g, b, brightness)
-
-        rainbowhat.rainbow.show()
+        try:
+            rainbowhat.rainbow.show()
+        except:
+            1 == 1
 
 if __name__ == "__main__":
     main()

@@ -6,10 +6,13 @@ rainbow HAT - alter digits and call led function
 import sys
 from time import time, sleep
 import rainbowhat
+import microdotphat
 from rainbowhat_ledfunctions import rainbow_led_pricechange, rainbow_show_message
 from config_filefunctions import is_sound_on, is_unicornhat_inverted
 
 rainbowhat.rainbow.set_clear_on_exit(False)
+microdotphat.set_clear_on_exit(False)
+microdotphat.set_rotate180(True)
 
 def main():
     """asdasd"""
@@ -48,6 +51,12 @@ for val in range(vala, valb+stride, stride):
 
     try:
         rainbow_show_message(str(val))
+    except:
+        1 == 1
+
+    try:
+        microdotphat.write_string(" "+str(val), offset_x=0, kerning=False)
+        microdotphat.show()
     except:
         1 == 1
 
