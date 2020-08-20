@@ -1,5 +1,4 @@
 # bitcoindesktoys
 bitcoin desk toys
-test
-sss
-333
+
+sudo  pv -tpreb /dev/mmcblk0 | dd of=~/share/img2.img bs=64M
