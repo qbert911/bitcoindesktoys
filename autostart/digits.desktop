@@ -1,0 +1,5 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Terminal autostart
+Comment=Start a terminal and list directory
+Exec=/usr/bin/lxterminal --geometry=130x40 -e "/home/pi/bitcoindesktoys/digits.sh"
