@@ -12,7 +12,7 @@ from config_filefunctions import is_sound_on, is_unicornhat_inverted
 
 rainbowhat.rainbow.set_clear_on_exit(False)
 microdotphat.set_clear_on_exit(False)
-microdotphat.set_rotate180(True)
+microdotphat.set_rotate180(False)
 
 def main():
     """asdasd"""

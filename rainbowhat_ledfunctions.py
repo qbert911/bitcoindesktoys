@@ -4,8 +4,11 @@
 write to the seven leds on the top of the rainbow HAT
 """
 import sys
+import smbus
 import rainbowhat
 rainbowhat.rainbow.set_clear_on_exit(False)
+
+bus = smbus.SMBus(1) # 1 indicates /dev/i2c-1
 
 position = [
     [-1,-1,-1,-1,-1,-1,-1],
@@ -52,8 +55,11 @@ def rainbow_led_pricechange(vala):
         else:
             r,g,b = blank
         rainbowhat.rainbow.set_pixel(6-x, r,g,b,brightness)
-
-    rainbowhat.rainbow.show()
+    try:
+        bus.read_byte(112)         #check to see if rainbow hat is connected
+        rainbowhat.rainbow.show()  #firing this code with unicornhathd connected breaks it
+    except:
+        1 == 1
 
 def rainbow_show_message(vala):
     rainbowhat.display.clear()

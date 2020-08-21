@@ -19,7 +19,7 @@ while : ;do
       dotcounter=$((0))
     fi
   else
-    while [[ "$(( $(date +%s) % 13 ))" -ne "0" ]];do sleep 0.05;done
+    while [[ "$(( $(date +%s) % 19 ))" -ne "0" ]];do sleep 0.05;done #sync multiple units
     if [[ "$usdreading" > "$lastreading" ]];then
       changeup=$(($change+1))
       change=$(( $changeup > 10 ? 10 : $changeup ))
@@ -42,12 +42,11 @@ while : ;do
       sleep 10
     fi
     echo -en "\$$usdreading $(printf '%+03d' $change) $(printf '%+04d' $(( $usdreading - $lastreading )) )\$ ["
-    sleep 30
+    sleep 40
     START=$(date +%s)
     dotcounter=$((0))
   fi
   lastreading=$usdreading
   dotcounter=$(($dotcounter+1))
-  sleep 1
-  while [[ "$(( $(date +%s) % 5 ))" -ne "0" ]];do sleep 0.25;done
+  while [[ "$(( $(date +%s) % 5 ))" -ne "0" ]];do sleep 0.05;done
 done
