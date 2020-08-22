@@ -1,15 +1,10 @@
 #!/bin/bash
-#/home/pi/Pimoroni/unicornhathd/examples/demo.py &
+sudo /home/pi/Pimoroni/unicornhathd/examples/stars.py &
 sudo /home/pi/bitcoindesktoys/touch_handler.py &
 sudo /home/pi/bitcoindesktoys/unicorn_handler.py &
+sudo /home/pi/bitcoindesktoys/ledshim_mempool.py &
+sudo /home/pi/bitcoindesktoys/time_sync.sh &
 
-( sudo /etc/init.d/ntp stop
-until ping -nq -c3 8.8.8.8; do
-   echo "Waiting for network..."
-done
-sudo ntpd -gq
-sudo /etc/init.d/ntp start )&
-
-#until nc -zw1 1.1.1.1 443 &>/dev/null;do sleep 3;done
-#sleep 25
-#sudo /home/pi/bitcoin/bitcoind -datadir=/home/pi/bitcoin &
+until nc -zw1 1.1.1.1 443 &>/dev/null;do sleep 3;done
+sleep 25
+sudo /home/pi/bitcoin/bitcoind -datadir=/home/pi/bitcoin &

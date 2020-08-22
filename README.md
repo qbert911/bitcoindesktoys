@@ -1,6 +1,8 @@
 # bitcoindesktoys
-bitcoin desk toys
-
+dependencies:
+```
+ntpd jq curl
+```
 
 # .bashrc add
 ```

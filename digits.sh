@@ -28,8 +28,8 @@ while : ;do
       change=$(( $changeup < -10 ? -10 : $changeup ))
     fi
     if [[ "$lastreading" = "0" ]];then lastreading=$usdreading  #make first row behave properly
-    else echo -e "$(( $(date +%s) - $START )) seconds]";fi
-
+    else echo -e "$(( $(date +%s) - $START )) seconds] $(date +%X)";fi
+    START=$(date +%s)
     eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change" &
     if [[ "$hasunicornhat" -ge "0" ]] && [[ "$usdreading" -ge "10" ]]; then
       eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
@@ -43,10 +43,10 @@ while : ;do
     fi
     echo -en "\$$usdreading $(printf '%+03d' $change) $(printf '%+04d' $(( $usdreading - $lastreading )) )\$ ["
     sleep 40
-    START=$(date +%s)
     dotcounter=$((0))
   fi
   lastreading=$usdreading
   dotcounter=$(($dotcounter+1))
+  sleep 1
   while [[ "$(( $(date +%s) % 5 ))" -ne "0" ]];do sleep 0.05;done
 done
