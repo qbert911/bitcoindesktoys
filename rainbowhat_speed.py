@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 """rainbowhat - set speed on leds"""
 import sys
+import smbus
 import rainbowhat
 from config_filefunctions import is_sound_on
 rainbowhat.rainbow.set_clear_on_exit(False)
+bus = smbus.SMBus(1) # 1 indicates /dev/i2c-1
 
 def main():
     """asdasd"""
@@ -29,7 +31,8 @@ def main():
                 r, g, b = red
                 rainbowhat.rainbow.set_pixel((22-valuetocheck), r, g, b, brightness)
         try:
-            rainbowhat.rainbow.show()
+            bus.read_byte(112)         #check to see if rainbow hat is connected
+            rainbowhat.rainbow.show()  #firing this code with unicornhathd connected breaks it
         except:
             1 == 1
 

@@ -19,7 +19,7 @@ while : ;do
       dotcounter=$((0))
     fi
   else
-    while [[ "$(( $(date +%s) % 19 ))" -ne "0" ]];do sleep 0.05;done #sync multiple units
+    while [[ "$(( $(date +%S) % 19 ))" -ne "0" ]];do sleep 0.05;done #sync multiple units
     if [[ "$usdreading" > "$lastreading" ]];then
       changeup=$(($change+1))
       change=$(( $changeup > 10 ? 10 : $changeup ))
