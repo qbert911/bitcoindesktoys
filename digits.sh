@@ -20,7 +20,7 @@ while : ;do
     fi
   else
     FOUND=$(date +%X)
-    while [[ "$(( $(date +%_S) % 19 ))" -ne "0" ]];do sleep 0.05;done #sync multiple units
+    while [[ "$(( ( $(date +%_S) + 1 ) % 19 ))" -ne "0" ]];do sleep 0.05;done #sync multiple units
     if [[ "$usdreading" > "$lastreading" ]];then
       changeup=$(($change+1))
       change=$(( $changeup > 10 ? 10 : $changeup ))
@@ -42,6 +42,7 @@ while : ;do
     else
       sleep 10
     fi
+    eval "sudo /home/pi/bitcoindesktoys/time_sync.sh | tail -n 1"
     echo -en "\$$usdreading $(printf '%+03d' $change) $(printf '%+04d' $(( $usdreading - $lastreading )) )\$ ["
     sleep 40
     dotcounter=$((0))
