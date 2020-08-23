@@ -5,4 +5,4 @@ until ping -nq -c3 8.8.8.8; do
    sleep 3
 done
 sudo ntpd -gq
-#sudo /etc/init.d/ntp start
+sudo /etc/init.d/ntp start
