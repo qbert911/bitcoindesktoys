@@ -19,8 +19,6 @@ while : ;do
       dotcounter=$((0))
     fi
   else
-    FOUND=$(date +%X)
-    while [[ "$(echo $(date +%s) | cut -c $(( $(echo $(date +%s) | wc -m) -1 )) )" -ne "9" ]];do sleep 0.05;done #sync multiple units
     if [[ "$usdreading" > "$lastreading" ]];then
       changeup=$(($change+1))
       change=$(( $changeup > 10 ? 10 : $changeup ))
@@ -29,8 +27,9 @@ while : ;do
       change=$(( $changeup < -10 ? -10 : $changeup ))
     fi
     if [[ "$lastreading" = "0" ]];then lastreading=$usdreading  #make first row behave properly
-    else echo -e "$(( $(date +%s) - $START )) seconds] $FOUND $(date +%X)";fi
+    else echo -e "$(( $(date +%s) - $START )) seconds] $(date +%X)";fi
     START=$(date +%s)
+    while [[ "$(( $(date +%_S) + 1 ))" -ne "60" ]];do sleep 0.05;done #sync multiple units
     eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change" &
     if [[ "$hasunicornhat" -ge "0" ]] && [[ "$usdreading" -ge "10" ]]; then
       eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
@@ -49,6 +48,6 @@ while : ;do
   lastreading=$usdreading
   dotcounter=$(($dotcounter+1))
   sleep 1
-  while [[ "$(( $(date +%s) % 5 ))" -ne "0" ]];do sleep 0.05;done
+  while [[ "$(( $(date +%s) % 5 ))" -ne "0" ]];do sleep 0.5;done
 done
 read -n1 -r -p "Press space to continue..." key

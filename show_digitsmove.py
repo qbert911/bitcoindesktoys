@@ -44,21 +44,26 @@ for val in range(vala, valb+stride, stride):
     #print(sleep_time,val)
     if val > vala:
         if soundon:
-            rainbowhat.buzzer.midi_note(82, .05)
+            try:
+                rainbowhat.buzzer.midi_note(82, .05)
+            except:
+                pass
     elif val < vala:
         if soundon:
-            rainbowhat.buzzer.midi_note(2, .05)
-
+            try:
+                rainbowhat.buzzer.midi_note(2, .05)
+            except:
+                pass
     try:
         rainbow_show_message(str(val))
     except:
-        1 == 1
+        pass
 
     try:
         microdotphat.write_string(" "+str(val), offset_x=0, kerning=False)
         microdotphat.show()
     except:
-        1 == 1
+        pass
 
     counter = counter+1.0
     sleep(sleep_time)

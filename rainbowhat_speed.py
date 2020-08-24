@@ -8,7 +8,7 @@ rainbowhat.rainbow.set_clear_on_exit(False)
 bus = smbus.SMBus(1) # 1 indicates /dev/i2c-1
 
 def main():
-    """asdasd"""
+    """write to leds"""
     rainbowhat.rainbow.clear()
     vala = int(sys.argv[1])
 
@@ -34,7 +34,7 @@ def main():
             bus.read_byte(112)         #check to see if rainbow hat is connected
             rainbowhat.rainbow.show()  #firing this code with unicornhathd connected breaks it
         except:
-            1 == 1
+            pass
 
 if __name__ == "__main__":
     main()

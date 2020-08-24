@@ -40,7 +40,7 @@ blank = [0, 0, 0]
 brightness = 1
 
 def rainbow_led_pricechange(vala):
-    """asdasd"""
+    """write to leds"""
     rainbowhat.rainbow.set_clear_on_exit(False)
     rainbowhat.rainbow.clear()
     #print position[vala]
@@ -59,17 +59,18 @@ def rainbow_led_pricechange(vala):
         bus.read_byte(112)         #check to see if rainbow hat is connected
         rainbowhat.rainbow.show()  #firing this code with unicornhathd connected breaks it
     except:
-        1 == 1
+        pass
 
 def rainbow_show_message(vala):
+    """write to four character display"""
     rainbowhat.display.clear()
 
     rainbowhat.display.print_str(vala)
     try:
         bus.read_byte(112)         #check to see if rainbow hat is connected
-        rainbowhat.display.show() 
+        rainbowhat.display.show()
     except:
-        1 == 1
+        pass
 
 if __name__ == "__main__":
     rainbow_led_pricechange(sys.argv[1])
