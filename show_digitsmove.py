@@ -2,7 +2,7 @@
 """
 rainbow HAT - alter digits and call led function
 """
-# pylint: disable=C0103
+# pylint: disable=C0103,W0702
 import sys
 from time import time, sleep
 import rainbowhat
@@ -28,32 +28,38 @@ except:
 
 counter = 1.0
 soundon = is_sound_on()
-rainbowhat.lights.red.off()    #hack for starting led
+try:
+    rainbowhat.lights.red.off()    #hack for starting led
+except:
+    pass
 
 if vala > valb:
     stride = -1
+    Note_Freq = 82
     if soundon:
-        rainbowhat.lights.red.on()
+        try:
+            rainbowhat.lights.red.on()
+        except:
+            pass
 else:
     stride = 1
+    Note_Freq = 2
     if soundon:
-        rainbowhat.lights.green.on()
+        try:
+            rainbowhat.lights.green.on()
+        except:
+            pass
 
 for val in range(vala, valb+stride, stride):
     sleep_time = min((counter/(abs(vala-valb)+1.000))**1.8*(10.0/(abs(vala-valb)+1.0)), 3.000)
     #print(sleep_time,val)
-    if val > vala:
-        if soundon:
-            try:
-                rainbowhat.buzzer.midi_note(82, .05)
-            except:
-                pass
-    elif val < vala:
-        if soundon:
-            try:
-                rainbowhat.buzzer.midi_note(2, .05)
-            except:
-                pass
+
+    if soundon:
+        try:
+            rainbowhat.buzzer.midi_note(Note_Freq, .05)
+        except:
+            pass
+
     try:
         rainbow_show_message(str(val))
     except:
