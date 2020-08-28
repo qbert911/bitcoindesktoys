@@ -1,7 +1,7 @@
 # bitcoindesktoys
 dependencies:
 ```
-ntpd jq curl
+ntpd jq curl bc
 ```
 
 # .bashrc add
