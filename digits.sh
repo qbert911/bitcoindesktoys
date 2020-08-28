@@ -37,18 +37,17 @@ while : ;do
   		pdfulle=$pdfulle${pdfull:3:1}
       echo -en "\$$usdreading($pdfulle) ["
       eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change" &
-    fi
-    if [[ "$hasunicornhat" -ge "0" ]] && [[ "$usdreading" -ge "10" ]]; then
-      eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
-      eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py 1"
-      eval "touch /home/pi/trigger.foo"
-      sleep 10
-      eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py"
-      eval "touch /home/pi/trigger.foo"
-    else
-      sleep 10
-    fi
-    if [[ ${#lastreading} > 1 ]];then sleep 30;fi
+      if [[ "$hasunicornhat" -ge "0" ]] && [[ "$usdreading" -ge "10" ]]; then
+        eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
+        eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py 1"
+        eval "touch /home/pi/trigger.foo"
+        sleep 10
+        eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py"
+        eval "touch /home/pi/trigger.foo"
+      else
+        sleep 10
+      fi
+      sleep 30
   fi
   lastreading=$usdreading
   sleep 1
