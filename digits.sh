@@ -48,6 +48,7 @@ while : ;do
         sleep 10
       fi
       sleep 30
+    fi
   fi
   lastreading=$usdreading
   sleep 1
