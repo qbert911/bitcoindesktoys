@@ -35,7 +35,6 @@ while : ;do
   			if [ ${pdfull:1:1} = 0 ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:1:1};fi
   			if [ "${pdfull:1:2}" = "00" ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:2:1};fi
   		pdfulle=$pdfulle${pdfull:3:1}
-      echo -en "\$$usdreading($pdfulle) ["
       eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change" &
       if [[ "$hasunicornhat" -ge "0" ]] && [[ "$usdreading" -ge "10" ]]; then
         eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
@@ -47,6 +46,7 @@ while : ;do
       else
         sleep 10
       fi
+      echo -en "\$$usdreading($pdfulle) ["
       sleep 30
     fi
   fi
