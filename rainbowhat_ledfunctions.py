@@ -63,11 +63,10 @@ def rainbow_led_pricechange(vala):
 
 def rainbow_show_message(vala):
     """write to four character display"""
-    rainbowhat.display.clear()
-
-    rainbowhat.display.print_str(vala)
     try:
         bus.read_byte(112)         #check to see if rainbow hat is connected
+        rainbowhat.display.clear()
+        rainbowhat.display.print_str(vala)
         rainbowhat.display.show()
     except:
         pass

@@ -2,13 +2,13 @@
 """
 rainbow HAT - alter digits and call led function
 """
-# pylint: disable=C0103,W0702
+# pylint: disable=C0103,W0702,C0301
 import sys
 from time import time, sleep
 import rainbowhat
 import microdotphat
 from rainbowhat_ledfunctions import rainbow_led_pricechange, rainbow_show_message
-from config_filefunctions import is_sound_on, is_unicornhat_inverted
+from config_filefunctions import is_sound_on
 
 rainbowhat.rainbow.set_clear_on_exit(False)
 microdotphat.set_clear_on_exit(False)
@@ -36,19 +36,19 @@ except:
 if vala > valb:
     stride = -1
     Note_Freq = 82
-    if soundon:
-        try:
-            rainbowhat.lights.red.on()
-        except:
-            pass
+    #if soundon:
+    try:
+        rainbowhat.lights.red.on()
+    except:
+        pass
 else:
     stride = 1
     Note_Freq = 2
-    if soundon:
-        try:
-            rainbowhat.lights.green.on()
-        except:
-            pass
+    #if soundon:
+    try:
+        rainbowhat.lights.green.on()
+    except:
+        pass
 
 for val in range(vala, valb+stride, stride):
     sleep_time = min((counter/(abs(vala-valb)+1.000))**1.8*(10.0/(abs(vala-valb)+1.0)), 3.000)
@@ -66,19 +66,20 @@ for val in range(vala, valb+stride, stride):
         pass
 
     try:
-        microdotphat.write_string(" "+str(val), offset_x=0, kerning=False)
+        mystring = (str(val).rjust(len(str(val)))[0:2+len(str(val))-5] + "," + str(val)[-3+len(str(val).rjust(5))-5:]).rjust(6)
+        microdotphat.write_string(mystring, offset_x=0, kerning=False)
         microdotphat.show()
     except:
         pass
 
     counter = counter+1.0
     sleep(sleep_time)
-if soundon or is_unicornhat_inverted() > -1:
-    rainbow_led_pricechange(valc)
+
 sleep(.4)   #needed so we can hear the last sound effect
 #sys.stdout.write(str(time()-timeing))
 #sys.stdout.flush()
 #print("")
+rainbow_led_pricechange(valc)
 
 if __name__ == "__main__":
     main()
