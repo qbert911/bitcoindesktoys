@@ -16,17 +16,17 @@ while : ;do
   fi
 
   if cat /home/pi/targetpool.json |grep -q USDC ;then            #data scrape was successful
-    totalusdc=$(cat /home/pi/targetpool.json | jq '.tokens[0].balance')
-    totalusdt=$(cat /home/pi/targetpool.json | jq '.tokens[1].balance')
-    totalusdcu=$(cat /home/pi/targetpool.json | jq '.tokens[0].tokenInfo.lastUpdated')
-    totalusdtu=$(cat /home/pi/targetpool.json | jq '.tokens[1].tokenInfo.lastUpdated')
+    totalusdc=$(cat /home/pi/targetpool.json | jq '.tokens[]| select(.tokenInfo.symbol | contains("USDC"))|.balance')
+    totalusdt=$(cat /home/pi/targetpool.json | jq '.tokens[]| select(.tokenInfo.symbol | contains("USDT"))|.balance')
+    totalusdcu=$(cat /home/pi/targetpool.json | jq '.tokens[]| select(.tokenInfo.symbol | contains("USDC"))|.tokenInfo.lastUpdated')
+    totalusdtu=$(cat /home/pi/targetpool.json | jq '.tokens[]| select(.tokenInfo.symbol | contains("USDT"))|.tokenInfo.lastUpdated')
   else
    echo -en "y"; sleep 20       #data scrape unsuccessful
   fi
 
   age1=$(echo $(date +%s) - $mytokensu |bc)
-  age2=$(echo $(date +%s) - $totalusdcu |bc)
-  age3=$(echo $(date +%s) - $totalusdtu |bc)
+  age2=$(echo $(date +%s) - $totalusdtu |bc)
+  age3=$(echo $(date +%s) - $totalusdcu |bc)
 
   mypercent=$(echo $mytokens / $totalsupply |bc -l)
   myusdt=$(echo $mypercent *$totalusdt/1000000 |bc -l)
@@ -75,7 +75,7 @@ while : ;do
       #fi
     #fi
     echo -en "\n$(date +%m/%d@%T) $mycolor$myout\e[0m [ $pthisdiff ] "
-    if [[ "$age1" -ge "4800" ]] || [[ "$age2" -ge "2400" ]] || [[ "$age3" -ge "2400" ]];then
+    if [[ "$age1" -ge "6400" ]] || [[ "$age2" -ge "2400" ]] || [[ "$age3" -ge "2400" ]];then
         echo -en " [ STALE $age1 $age2 $age3 ] [ $totalsupply $(echo $totalusdt/1000000 |bc) $(echo $totalusdc/1000000 |bc) ] "
     fi
   fi
@@ -84,9 +84,9 @@ while : ;do
     dotcounter=$((0))
     echo -en "\n$(date +%m/%d@%T) \e[38;5;086m$lastsaneout\e[0m"
     echo $(date +%m,%d,%T),$(printf '%.4f\n' "$(echo $lsmyusdt + $lsmyusdc | bc -l)")>> /home/pi/uniswaplog.csv
-    eval sudo /home/pi/share/bitcoindesktoys/ethlogprocess.sh
+    eval sudo /home/pi/bitcoindesktoys/ethlogprocess.sh
     echo -en " "
-    eval "/home/pi/share/bitcoindesktoys/feth16.sh"
+    eval "/home/pi/bitcoindesktoys/hd_bars_calculate.sh"
     eval "touch /home/pi/triggerhd.foo"
     sleep 60
   fi
