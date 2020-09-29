@@ -12,6 +12,6 @@ do
   #echo " $myvalue"
   echo -en "$myvalue," >> /home/pi/hdbars.csv
 done
-mv2=$(printf "%.2f" $(echo "$t / (17 - $i)" | bc -l))
+mv2=$(printf "%.2f" $(echo "$t / 16" | bc -l))
 #echo $mv2
 echo "$mv2" >> /home/pi/hdbars.csv

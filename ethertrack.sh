@@ -3,14 +3,16 @@ mycurrencyinput=$((5043))
 lastsaneout=$((0))
 while : ;do
 
-  curl -s https://api.ethplorer.io/getAddressInfo/0x8D82Fef0d77d79e5231AE7BFcFeBA2bAcF127E2B?apiKey=EK-d81D6-5s7p3du-G9q7j -o /home/pi/myethwallet.json
+  #curl -s https://api.ethplorer.io/getAddressInfo/0x8D82Fef0d77d79e5231AE7BFcFeBA2bAcF127E2B?apiKey=EK-d81D6-5s7p3du-G9q7j -o /home/pi/myethwallet.json
   curl -s https://api.ethplorer.io/getAddressInfo/0x3041cbd36888becc7bbcbc0045e3b1f144466f5f?apiKey=EK-d81D6-5s7p3du-G9q7j -o /home/pi/targetpool.json
-  #curl -s https://api.ethplorer.io/getTokenInfo/0x3041cbd36888becc7bbcbc0045e3b1f144466f5f?apiKey=EK-d81D6-5s7p3du-G9q7j -o targettoken.txt
+  curl -s https://api.ethplorer.io/getTokenInfo/0x3041cbd36888becc7bbcbc0045e3b1f144466f5f?apiKey=EK-d81D6-5s7p3du-G9q7j -o /home/pi/targettoken.json
 
-  if cat /home/pi/myethwallet.json |grep -q UNI-V2 ;then            #data scrape was successful
-    mytokens=$(cat /home/pi/myethwallet.json | jq '.tokens[]| select(.tokenInfo.address |contains("0x3041cbd36888becc7bbcbc0045e3b1f144466f5f"))|.balance')
-    mytokensu=$(cat /home/pi/myethwallet.json | jq '.tokens[]| select(.tokenInfo.address |contains("0x3041cbd36888becc7bbcbc0045e3b1f144466f5f"))|.tokenInfo.lastUpdated')
-    totalsupply=$(cat /home/pi/myethwallet.json | jq '.tokens[]| select(.tokenInfo.address |contains("0x3041cbd36888becc7bbcbc0045e3b1f144466f5f"))|.tokenInfo.totalSupply|tonumber')
+  if cat /home/pi/targettoken.json |grep -q UNI-V2 ;then            #data scrape was successful
+    #mytokens=$(cat /home/pi/myethwallet.json | jq '.tokens[]| select(.tokenInfo.address |contains("0x3041cbd36888becc7bbcbc0045e3b1f144466f5f"))|.balance')
+    #mytokensu=$(cat /home/pi/myethwallet.json | jq '.tokens[]| select(.tokenInfo.address |contains("0x3041cbd36888becc7bbcbc0045e3b1f144466f5f"))|.tokenInfo.lastUpdated')
+    #totalsupply=$(cat /home/pi/myethwallet.json | jq '.tokens[]| select(.tokenInfo.address |contains("0x3041cbd36888becc7bbcbc0045e3b1f144466f5f"))|.tokenInfo.totalSupply|tonumber')
+    mytokens=$((2344805636))
+    totalsupply=$(cat /home/pi/targettoken.json | jq '.totalSupply|tonumber')
   else
    echo -en "x"; sleep 20       #data scrape unsuccessful
   fi
@@ -23,7 +25,7 @@ while : ;do
   else
    echo -en "y"; sleep 20       #data scrape unsuccessful
   fi
-
+  mytokensu=$totalusdcu
   age1=$(echo $(date +%s) - $mytokensu |bc)
   age2=$(echo $(date +%s) - $totalusdtu |bc)
   age3=$(echo $(date +%s) - $totalusdcu |bc)
