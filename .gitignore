@@ -1,2 +1,4 @@
 *.pyc
 *.jpg
+*.json
+!config.json
