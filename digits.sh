@@ -26,7 +26,7 @@ while : ;do
     fi
     if [[ "${#lastreading}" = "0" ]];then
       START=$(date +%s)
-      eval "/home/pi/bitcoindesktoys/show_digitsmove.py $usdreading $usdreading $(($change-1+$mymod)))" &
+      eval "/home/pi/bitcoindesktoys/show_digitsmove.py $usdreading $usdreading $(($change-1+$mymod))" &
       echo -en "\$$usdreading       ["
     else
       echo -e "] $(( $(date +%s) - $START )) seconds ($(date +%X))"
