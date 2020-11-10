@@ -43,7 +43,7 @@ def ubars_write():
         myceiling = max(myceiling, myfile["history"][x])
     myrange = myceiling - myfloor
 
-    print("("+str(myfloor)+" - "+str(myceiling)+") range:", myrange, "per cell:", (myrange/8.0), "history records:", len(myfile["history"]), "history per cell:", hist_chunk_size, "offset:", hist_offset)
+    print("("+str(myfloor)+" - "+str(myceiling)+") range:", myrange, "per cell:", (myrange/8.0), "history len:", len(myfile["history"]), "history/cell:", hist_chunk_size, "offset:", hist_offset)
 
     for y in range(7, -1, -1):
         for x in range(0, 8):

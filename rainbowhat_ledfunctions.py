@@ -71,6 +71,16 @@ def rainbow_show_message(vala):
     except:
         pass
 
+def rainbow_show_float(vala):
+    """write to four character display"""
+    try:
+        bus.read_byte(112)         #check to see if rainbow hat is connected
+        rainbowhat.display.clear()
+        rainbowhat.display.print_float(vala)
+        rainbowhat.display.show()
+    except:
+        pass
+
 if __name__ == "__main__":
     rainbow_led_pricechange(sys.argv[1])
     #print ("supposed to be called from another python file, not solo")

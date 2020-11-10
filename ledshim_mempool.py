@@ -52,6 +52,16 @@ while True:
         ledshim.set_pixel(abs((27*invert)-12), 255, 0, 0)
     if j > 8:
         ledshim.set_pixel(abs((27*invert)-10), 255, 0, 0)
+    if j > 9:
+        ledshim.set_pixel(abs((27*invert)-8), 255, 0, 0)
+    if j > 10:
+        ledshim.set_pixel(abs((27*invert)-6), 255, 0, 0)
+    if j > 11:
+        ledshim.set_pixel(abs((27*invert)-4), 255, 0, 0)
+    if j > 12:
+        ledshim.set_pixel(abs((27*invert)-2), 255, 0, 0)
+    if j > 13:
+        ledshim.set_pixel(abs((27*invert)-0), 255, 0, 0)
 
     ledshim.show()
     time.sleep(1)

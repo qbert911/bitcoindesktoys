@@ -62,8 +62,22 @@ while : ;do
         mychar="7"
       elif [[ "$scalevel" = "9" ]] || [ "$c" -lt "$((9*$maxbarlen/$scalevel))" ]; then
         mychar="8"
+			elif [[ "$scalevel" = "10" ]] || [ "$c" -lt "$((10*$maxbarlen/$scalevel))" ]; then
+        mychar="9"
+			elif [[ "$scalevel" = "11" ]] || [ "$c" -lt "$((11*$maxbarlen/$scalevel))" ]; then
+        mychar="0"
+			elif [[ "$scalevel" = "12" ]] || [ "$c" -lt "$((12*$maxbarlen/$scalevel))" ]; then
+        mychar="1"
+			elif [[ "$scalevel" = "13" ]] || [ "$c" -lt "$((13*$maxbarlen/$scalevel))" ]; then
+        mychar="2"
+			elif [[ "$scalevel" = "14" ]] || [ "$c" -lt "$((14*$maxbarlen/$scalevel))" ]; then
+        mychar="3"
+			elif [[ "$scalevel" = "15" ]] || [ "$c" -lt "$((15*$maxbarlen/$scalevel))" ]; then
+        mychar="4"
+			elif [[ "$scalevel" = "16" ]] || [ "$c" -lt "$((16*$maxbarlen/$scalevel))" ]; then
+        mychar="5"
       else
-        mychar="9";myblank='…'
+        mychar="Z";myblank='…'
       fi
       out+=$mychar
     done

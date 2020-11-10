@@ -2,11 +2,13 @@
 # shellcheck disable=SC2004
 eval 'ulimit -S -s 16384' #to help prevent segfault errors when running show_digitsmove
 hasunicornhat=$(cat /home/pi/config.json | jq '.invert_unicornhat')
-echo -e "Watching BTC price movements..."
+#mycode="curve-dao-token";mymod=$((100000))
+mycode="bitcoin";mymod=$((1))
+echo -e "Watching $mycode price movements..."
 while : ;do
-  usdraw=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd" -H "accept: application/json")
+  usdraw=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=$mycode&vs_currencies=usd" -H "accept: application/json")
   if echo "$usdraw" | grep -q '{"usd":'  ;then            #data scrape was successful
-    usdreading=$(echo "$usdraw" |jq -r '.bitcoin.usd')
+    usdreading=$(echo "$usdraw" |jq -r '."'$mycode'".usd');usdreading=$(echo "$usdreading * $mymod" |bc)
     if [ -z "$usdreading" ] || [[ "$usdreading" = "null" ]] || [[ "$usdreading" = "0" ]];then usdreading=$lastreading;fi #in case of timeout
     usdreading=$(printf '%04.0f' "$usdreading")
   else
@@ -24,7 +26,7 @@ while : ;do
     fi
     if [[ "${#lastreading}" = "0" ]];then
       START=$(date +%s)
-      eval "/home/pi/bitcoindesktoys/show_digitsmove.py $usdreading $usdreading 0" &
+      eval "/home/pi/bitcoindesktoys/show_digitsmove.py $usdreading $usdreading $(($change-1+$mymod)))" &
       echo -en "\$$usdreading       ["
     else
       echo -e "] $(( $(date +%s) - $START )) seconds ($(date +%X))"
@@ -35,7 +37,7 @@ while : ;do
   			if [ ${pdfull:1:1} = 0 ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:1:1};fi
   			if [ "${pdfull:1:2}" = "00" ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:2:1};fi
   		pdfulle=$pdfulle${pdfull:3:1}
-      eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $change" &
+      eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $(($change-1+$mymod))" &
       if [[ "$hasunicornhat" -ge "0" ]] && [[ "$usdreading" -ge "10" ]]; then
         eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
         eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py 1"

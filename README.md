@@ -2,6 +2,7 @@
 dependencies:
 ```
 ntpd jq curl bc
+pip install python-bitcoinrpc
 ```
 
 # .bashrc add

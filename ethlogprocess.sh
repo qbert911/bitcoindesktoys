@@ -19,8 +19,10 @@ echo -n "(${b1}hr/$b4%)"
 
 b6=$(printf "%.2f\n" "$(echo "${value[-1]} - ${value[-2]}" | bc)")
 echo -en " [ \e[38;5;086m$b6\e[0m ] "
-apr 1
-apr 6
-apr 12
-apr 18
-apr 24
+if [[ "${#value[@]}" -gt 24 ]];then
+  apr 1
+  apr 6
+  apr 12
+  apr 18
+  apr 24
+fi
