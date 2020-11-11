@@ -61,10 +61,13 @@ for val in range(vala, valb+stride, stride):
             pass
 
     try:
-        if valc > 999:
+        if valc > 99:
             mystring = "0"+(str(val).rjust(len(str(val)))[0:2+len(str(val))-5] + str(val)[-3+len(str(val).rjust(5))-5:]).rjust(5)
-            rainbow_show_float(float("0."+str(val)[0:3]))
-            rainbow_led_pricechange(0)
+            if val < 1000:
+                rainbow_show_float(float("0."+str(val)[0:3]))
+            else:
+                rainbow_show_float(float(str(val)[0:1]+"."+str(val)[1:4]))                
+            rainbow_led_pricechange(valc-1000)  #100000 for micro dot hat
             microdotphat.set_decimal(1, 1)
         else:
             mystring = (str(val).rjust(len(str(val)))[0:2+len(str(val))-5] + "," + str(val)[-3+len(str(val).rjust(5))-5:]).rjust(6)

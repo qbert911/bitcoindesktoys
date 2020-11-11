@@ -7,6 +7,7 @@ from __future__ import print_function
 import csv
 import os
 import math
+import json
 from time import sleep
 import unicornhathd
 
@@ -17,8 +18,9 @@ red = [60, 0, 0]
 green = [0, 60, 0]
 blue = [0, 0, 60]
 gray = [45, 45, 45]
+blank = [0, 0, 0]
 
-def hd_ubars_display():
+def hd_ubars_display_old():
     """update unicornhat with data from file"""
     unicornhathd.clear()
     displayfile_name = "/home/pi/hdbars.csv"
@@ -54,6 +56,29 @@ def hd_ubars_display():
     unicornhathd.set_pixel(0, min(round(float(position[16])-1), 15), r, g, b)
     unicornhathd.show()
     print(position, round(float(position[16])-1), endzeros)
+
+
+def hd_ubars_display():
+    """update unicornhat with data from file"""
+    displayfile_name = "/home/pi/unicornhd.json"
+    unicornhathd.clear()
+    with open(displayfile_name, 'r') as openfile:
+        position = json.load(openfile)
+
+        for y in range(0, 16):
+            for x in range(0, 16):
+                if position[x][y] == 0:
+                    r, g, b = blank
+                elif position[x][y] == 1:
+                    r, g, b = green
+                elif position[x][y] == -1:
+                    r, g, b = red
+                elif position[x][y] == 8:
+                    r, g, b = gray
+
+                unicornhathd.set_pixel(x, y, r, g, b)
+    unicornhathd.show()
+    print(position)
 
 if __name__ == "__main__":
     hd_ubars_display()

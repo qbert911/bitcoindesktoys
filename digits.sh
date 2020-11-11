@@ -2,7 +2,7 @@
 # shellcheck disable=SC2004
 eval 'ulimit -S -s 16384' #to help prevent segfault errors when running show_digitsmove
 hasunicornhat=$(cat /home/pi/config.json | jq '.invert_unicornhat')
-#mycode="curve-dao-token";mymod=$((100000))
+#mycode="curve-dao-token";mymod=$((1000))  #100000 for microdot, 1000 for rainbowhat
 mycode="bitcoin";mymod=$((1))
 echo -e "Watching $mycode price movements..."
 while : ;do
@@ -31,20 +31,22 @@ while : ;do
     else
       echo -e "] $(( $(date +%s) - $START )) seconds ($(date +%X))"
       START=$(date +%s)
-      while [[ "$(( $(date +%_S) + 1 ))" -ne "60" ]];do sleep 0.05;done #sync multiple units
+      #while [[ "$(( $(date +%_S) + 1 ))" -ne "60" ]];do sleep 0.05;done #sync multiple units
       pdfull="$(printf '%+04.0f' "$(echo $usdreading - $lastreading | bc )" )"
   			if [ ${pdfull:0:1} = + ]; then	pdfulle="\e[38;5;046m+\e[0m";else pdfulle="\e[38;5;160m-\e[0m";fi
   			if [ ${pdfull:1:1} = 0 ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:1:1};fi
   			if [ "${pdfull:1:2}" = "00" ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:2:1};fi
   		pdfulle=$pdfulle${pdfull:3:1}
       eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $(($change-1+$mymod))" &
-      if [[ "$hasunicornhat" -ge "0" ]] && [[ "$usdreading" -ge "10" ]]; then
+      if [[ "$hasunicornhat" -ge "0" ]]; then
         eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
         eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py 1"
         eval "touch /home/pi/trigger.foo"
+        eval "touch /home/pi/triggerhd.foo"
         sleep 10
         eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py"
         eval "touch /home/pi/trigger.foo"
+        eval "touch /home/pi/triggerhd.foo"        
       else
         sleep 10
       fi

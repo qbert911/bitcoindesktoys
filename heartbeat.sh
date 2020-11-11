@@ -1,6 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2004
 maxbarlen=$(cat /home/pi/config.json | jq '.column_width')
+show_speed=$(cat /home/pi/config.json | jq '.show_speed')
 if [ ${#maxbarlen} -eq 0 ]; then
 	maxbarlen=$((100))
 fi
@@ -111,7 +112,7 @@ while : ;do
 		tblok=$(curl -s --user bongos:goobers --data-binary '{"method":"getblockchaininfo","params":[]}' http://$nodeip:8332/ | jq '.result.blocks')
     if [[ -z "$tblok" || $tblok = "null" ]]; then tblok=$oldblok;fi #in case of timeout
 		speedval=$(( ( (10 * ($mempool-$nmempool) /(RUNTIME+1) )+5)/10 ))
-    if [[ "$oldval" != "$speedval" ]];then
+    if [[ "$oldval" != "$speedval" ]] && [[ "$show_speed" -eq "1" ]];then
 			eval "/home/pi/bitcoindesktoys/piglow_speed.py $speedval"
 			eval "/home/pi/bitcoindesktoys/rainbowhat_speed.py $speedval"
 			oldval=$speedval
