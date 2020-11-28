@@ -11,7 +11,7 @@ import json
 from time import sleep
 import unicornhathd
 
-unicornhathd.rotation(270)
+unicornhathd.rotation(90)
 unicornhathd.brightness(1)
 
 red = [60, 0, 0]
@@ -76,7 +76,7 @@ def hd_ubars_display():
                 elif position[x][y] == 8:
                     r, g, b = gray
 
-                unicornhathd.set_pixel(x, y, r, g, b)
+                unicornhathd.set_pixel(x, 15-y, r, g, b)
     unicornhathd.show()
     print(position)
 

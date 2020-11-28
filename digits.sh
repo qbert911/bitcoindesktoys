@@ -43,15 +43,16 @@ while : ;do
         eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py 1"
         eval "touch /home/pi/trigger.foo"
         eval "touch /home/pi/triggerhd.foo"
-        sleep 10
+        sleep 1
         eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py"
+        echo -en "\$$usdreading($pdfulle) ["
+        sleep 30
         eval "touch /home/pi/trigger.foo"
-        eval "touch /home/pi/triggerhd.foo"        
+        eval "touch /home/pi/triggerhd.foo"
       else
-        sleep 10
+        echo -en "\$$usdreading($pdfulle) ["
+        sleep 30
       fi
-      echo -en "\$$usdreading($pdfulle) ["
-      sleep 30
     fi
   fi
   lastreading=$usdreading

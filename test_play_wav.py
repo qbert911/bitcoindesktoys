@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 rainbow HAT - alter digits and call led function
 """
@@ -13,5 +13,5 @@ with open(os.devnull, 'w') as f:   #to prevent pygame loading message
 #------------end pygame non display message hack------------------------------
 mixer.pre_init(buffer=8192)
 mixer.init()
-soundup = mixer.Sound('/home/pi/bitcoindesktoys/tickup.wav')
+soundup = mixer.Sound('/home/pi/bitcoindesktoys/cuckoo.wav')
 soundup.play()
