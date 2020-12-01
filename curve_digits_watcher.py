@@ -70,4 +70,4 @@ if __name__ == "__main__":
         microdotphat.show()
         for z in '▁▂▃▄▅▆▇█▇▆▅▄▃▁ ':
             print('\b' + z, end='', flush=True)
-            time.sleep(1)
+            time.sleep(.5)

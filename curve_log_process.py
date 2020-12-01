@@ -3,15 +3,11 @@
 # pylint: disable=C0103,C0116,C0301,W0105,E0401,R0914
 import time
 import json
-from requests import Session
 from colorama import Fore, Style, init
 init()
+from pycoingecko import CoinGeckoAPI
+cg = CoinGeckoAPI()
 
-url = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion'
-parameters = {'amount':'1', 'id':'6538', 'convert':'USD'}
-headers = {'Accepts': 'application/json', 'X-CMC_PRO_API_KEY': 'cb83ec9c-8b44-4f79-b62c-66ec167bd4b2'}
-session = Session()
-session.headers.update(headers)
 file_nameh = "ghistoryh.json"
 usym = Fore.YELLOW + Style.BRIGHT + "$" + Fore.GREEN
 csym = Fore.MAGENTA + Style.BRIGHT + "Ç" + Style.RESET_ALL + Fore.CYAN
@@ -44,14 +40,7 @@ def show_me(inputs, inpute, update, isprice, invested):
     return b
 
 def update_price():
-    try:
-        response = session.get(url, params=parameters)
-        if "price" not in response.text:
-            return float(1)
-        return json.loads(response.text)["data"]["quote"]["USD"]["price"]
-    except:
-        return float(1)
-    return float(1)
+    return cg.get_price(ids='curve-dao-token', vs_currencies='usd')["curve-dao-token"]["usd"]
 
 def daily_log(isprice):
     with open(file_nameh, 'r') as openfile:
@@ -59,9 +48,7 @@ def daily_log(isprice):
     offset = len(myarrayh)-1-(int((len(myarrayh)-1)/24)*24)
     for x in range(0, int((len(myarrayh)-1)/24)):
         try:
-            y = myarrayh[(x*24)+offset]["Npool"]
-            y = 12100
-            y = myarrayh[(x*24)+offset]["invested"]
+            y = myarrayh[(x*24)+24+offset]["invested"]
         except:
             y = 6100
 
@@ -71,4 +58,5 @@ if __name__ == "__main__":
     daily_log(update_price())
     print("")
     show_me(-1, 0, 0, update_price(), (7000))
+    show_me(-1, 0, 0, update_price(), (14100))
     print("    ")

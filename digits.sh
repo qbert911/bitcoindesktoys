@@ -47,7 +47,7 @@ while : ;do
         eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py"
         echo -en "\$$usdreading($pdfulle) ["
         sleep 30
-        eval "touch /home/pi/trigger.foo"
+        if [[ "$mycode" -ne "bitcoin" ]]; then eval "touch /home/pi/trigger.foo";fi
         eval "touch /home/pi/triggerhd.foo"
       else
         echo -en "\$$usdreading($pdfulle) ["

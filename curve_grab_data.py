@@ -34,7 +34,7 @@ INFURA_ID = "6aa1a043a9854eaa9fa68d17f619f326"
 MINTER_ADDRESS = "0xd061D61a4d941c39E5453435B6345Dc261C2fcE0"
 
 carray = {"name": ["T", "N", "Y", "C", "B", "S", "G"],
-          "invested": [6100, 2000, 1000, 1000, 1000, 1000, 1000],
+          "invested": [6100, 3000, 1000, 1000, 1000, 1000, 1000],
           "address" : ["0xbFcF63294aD7105dEa65aA58F8AE5BE2D9d0952A",    #3pool
                        "0xF98450B5602fa59CC66e1379DFfB6FDDc724CfC4",    #N
                        "0xFA712EE4788C042e2B7BB55E6cb8ec569C4530c1",    #Y
@@ -49,7 +49,6 @@ carray["minted"] = [0]*len(carray["name"])
 def main():
     """monitor various curve contracts"""
     totalinvested = 0
-    USD = 1
     w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/'+INFURA_ID))
 
     for i in range(0, len(carray["name"])):
@@ -58,9 +57,11 @@ def main():
         print(carray["name"][i], carray["address"][i], carray["invested"][i], carray["balanceof"][i], round(carray["minted"][i]/10**18, 2))
         totalinvested += carray["invested"][i]
     print(totalinvested, "invested in total.")
+    print(round((myarray[-1]["raw_time"]-myarray[-61]["raw_time"])/60)-60, "minutes out of sync.")
 
     month, day, hour, minut = map(str, time.strftime("%m %d %H %M").split())
     while True:
+        USD = 1
         while month+"/"+day+" "+hour+":"+minut == myarray[-1]["human_time"]:
             time.sleep(6)
             month, day, hour, minut = map(str, time.strftime("%m %d %H %M").split())
@@ -79,12 +80,20 @@ def main():
                 carray["raw"][i] = w3.eth.contract(carray["address"][i], abi=abiguage).functions.claimable_tokens(MY_WALLET_ADDRESS).call()
             except:
                 carray["raw"][i] = 1
-            mydict[carray["name"][i]+"pool"] = round(carray["raw"][i]/10**18, 6) + round(carray["minted"][i]/10**18, 6)
+            mydict[carray["name"][i]+"pool"] = round(round((carray["raw"][i]+carray["minted"][i])/10**18, 6), 5)
             mydict[carray["name"][i]+"invested"] = carray["invested"][i]
             totalraw += carray["raw"][i] + carray["minted"][i]
 
         mydict["claim"] = round(totalraw/10**18, 6)
         myarray.append(mydict)
+
+        if minut == "00" and mydict["claim"] > 1:
+            myarrayh.append(mydict)
+            with open(file_nameh, "w") as outfile:
+                json.dump(myarrayh, outfile, indent=4)
+            time.sleep(3)
+            show_me(-1, -2, 1, USD, totalinvested) #compare last record with 2nd to last, update price
+            time.sleep(3)
 
         print("At $" + Fore.YELLOW + str(format(USD, '.3f')) + Style.RESET_ALL + " per CRV = ", end='')
 
@@ -107,19 +116,14 @@ def main():
         crusdc_interest = round(((((w3.eth.contract("0x44fbeBd2F576670a6C33f6Fc0B00aA8c5753b322", abi=abicream).functions.supplyRatePerBlock().call()*4*60*24/10**18)+1)**364)-1)*100, 2)
         print("\b - "+Back.CYAN+Fore.BLUE+Style.DIM+"F"+str(iusdc_interest)+"% C"+str(crusdc_interest)+"% "+Fore.MAGENTA + Style.BRIGHT + "Ç"+str(crcrv_interest)+"%"+Style.RESET_ALL, end=' - ')
 
+        if round((myarray[-1]["raw_time"]-myarray[-61]["raw_time"])/60)-60 > 0:
+            print(Fore.RED+str(round((myarray[-1]["raw_time"]-myarray[-61]["raw_time"])/60)-60)+ Style.RESET_ALL, end=' - ')
         print(myarray[-1]["human_time"], end='\r', flush=True)
 
         with open(file_name, "w") as outfile:
             if len(myarray) > history_lengthm:
                 del myarray[0]
             json.dump(myarray, outfile, indent=4)
-
-        if minut == "00" and mydict["claim"] > 1:
-            myarrayh.append(mydict)
-            with open(file_nameh, "w") as outfile:
-                json.dump(myarrayh, outfile, indent=4)
-            time.sleep(3)
-            show_me(-1, -2, 1, 1, totalinvested) #compare last record with 2nd to last, update price
 
 if __name__ == "__main__":
     main()

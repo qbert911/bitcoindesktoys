@@ -66,7 +66,7 @@ for val in range(vala, valb+stride, stride):
             if val < 1000:
                 rainbow_show_float(float("0."+str(val)[0:3]))
             else:
-                rainbow_show_float(float(str(val)[0:1]+"."+str(val)[1:4]))                
+                rainbow_show_float(float(str(val)[0:1]+"."+str(val)[1:4]))
             rainbow_led_pricechange(valc-1000)  #100000 for micro dot hat
             microdotphat.set_decimal(1, 1)
         else:
