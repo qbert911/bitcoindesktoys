@@ -6,6 +6,7 @@ unicorn hat - show scatter plot of price history
 from __future__ import print_function
 import json
 import sys
+import smbus
 from config_filefunctions import get_zoom_level
 
 red = -1
@@ -67,5 +68,8 @@ def ubars_write(dimension, myfilename):
         json.dump(position, outfile)
 
 if __name__ == "__main__":
-    ubars_write(8, "unicorn")
-    ubars_write(16, "unicornhd")
+    try:  #if has rainbow hat fire 8 bit, otherwise fire 16 bit calculation
+        bus.read_byte(112)
+        ubars_write(8, "unicorn")
+    except:
+        ubars_write(16, "unicornhd")

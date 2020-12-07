@@ -17,6 +17,8 @@ def show_me(inputs, inpute, update, isprice, invested):
     USD = float(isprice)
     with open(file_nameh, 'r') as openfile:
         myarrayh = json.load(openfile)
+    if invested == 1:
+        invested = myarrayh[inputs]["invested"]
     while update and USD == 1:
         try:
             USD = float(update_price())
@@ -29,11 +31,11 @@ def show_me(inputs, inpute, update, isprice, invested):
 
     print("At $" + Fore.YELLOW + str(format(USD, '.3f')) + Style.RESET_ALL + " per CRV = ", end='')
     print(Fore.GREEN + Style.BRIGHT + str(format(c, '.2f')) + Style.RESET_ALL + "/" + Fore.CYAN + str(format(c/USD, '.2f')) + Style.RESET_ALL + "% APR", end=' - ')
-    print(usym + str(format(round(365*24*a/b, 4), '.2f')).zfill(7)  + Style.RESET_ALL + "/" + csym + str(format(365*24*a/b/USD, '.2f')).zfill(5) + Style.RESET_ALL + " per year", end=' - ')
-    print(usym + str(format(round(24*a/b, 4), '.2f')).zfill(5) + Style.RESET_ALL + "/" + csym + str(format(24*a/b/USD, '.2f')).zfill(5) + Style.RESET_ALL + " per day", end=' - ')
+    print(usym + str(format(round(365*24*a/b, 4), '.2f')).rjust(7)  + Style.RESET_ALL + "/" + csym + str(format(365*24*a/b/USD, '.2f')).rjust(5) + Style.RESET_ALL + " per year", end=' - ')
+    print(usym + str(format(round(24*a/b, 4), '.2f')).rjust(5) + Style.RESET_ALL + "/" + csym + str(format(24*a/b/USD, '.2f')).rjust(5) + Style.RESET_ALL + " per day", end=' - ')
     print(usym + str(format(round(a/b, 4), '.4f')) + Style.RESET_ALL + "/" + csym + str(format(a/b/USD, '.4f')) + Style.RESET_ALL + " per hour", end=' - ')
     if not update:  #print subtotals
-        #print(usym + str(format(round(a, 2), '.2f')).zfill(5) + Style.RESET_ALL + "/" + csym + str(format(a/USD, '.2f')).zfill(5) + Style.RESET_ALL, "profit in", str(round(b)).zfill(3), "hours", end=' - ')
+        #print(usym + str(format(round(a, 2), '.2f')).rjust(5) + Style.RESET_ALL + "/" + csym + str(format(a/USD, '.2f')).rjust(5) + Style.RESET_ALL, "profit in", str(round(b)).rjust(3), "hours", end=' - ')
         print(str(round(b/24, 1)), "days", end=' - ')
     print("between", myarrayh[inpute]["human_time"], "and", myarrayh[inputs]["human_time"], invested)
 
@@ -57,6 +59,6 @@ def daily_log(isprice):
 if __name__ == "__main__":
     daily_log(update_price())
     print("")
-    show_me(-1, 0, 0, update_price(), (7000))
-    show_me(-1, 0, 0, update_price(), (14100))
+    show_me(-1, 0, 0, update_price(), 7000)
+    show_me(-1, 0, 0, update_price(), 1)
     print("    ")

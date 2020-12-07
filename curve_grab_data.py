@@ -29,12 +29,13 @@ with open(file_name, 'r') as openfile:
 with open(file_nameh, 'r') as openfile:
     myarrayh = json.load(openfile)
 
-MY_WALLET_ADDRESS = "0x8D82Fef0d77d79e5231AE7BFcFeBA2bAcF127E2B"
 INFURA_ID = "6aa1a043a9854eaa9fa68d17f619f326"
-MINTER_ADDRESS = "0xd061D61a4d941c39E5453435B6345Dc261C2fcE0"
+w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/'+INFURA_ID))
 
+MY_WALLET_ADDRESS = "0x8D82Fef0d77d79e5231AE7BFcFeBA2bAcF127E2B"
+MINTER_ADDRESS = "0xd061D61a4d941c39E5453435B6345Dc261C2fcE0"
 carray = {"name": ["T", "N", "Y", "C", "B", "S", "G"],
-          "invested": [6100, 3000, 1000, 1000, 1000, 1000, 1000],
+          "invested": [6100, 4500, 1000, 1000, 1000, 1000, 1000],
           "address" : ["0xbFcF63294aD7105dEa65aA58F8AE5BE2D9d0952A",    #3pool
                        "0xF98450B5602fa59CC66e1379DFfB6FDDc724CfC4",    #N
                        "0xFA712EE4788C042e2B7BB55E6cb8ec569C4530c1",    #Y
@@ -49,16 +50,25 @@ carray["minted"] = [0]*len(carray["name"])
 def main():
     """monitor various curve contracts"""
     totalinvested = 0
-    w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/'+INFURA_ID))
-
+    eoa = 0 - len(myarray)
+#HEADER DISPLAY
     for i in range(0, len(carray["name"])):
         carray["balanceof"][i] = round(w3.eth.contract(carray["address"][i], abi=abiguage).functions.balanceOf(MY_WALLET_ADDRESS).call()/10**18, 2)
         carray["minted"][i] = w3.eth.contract(MINTER_ADDRESS, abi=abiminter).functions.minted(MY_WALLET_ADDRESS, carray["address"][i]).call()
-        print(carray["name"][i], carray["address"][i], carray["invested"][i], carray["balanceof"][i], round(carray["minted"][i]/10**18, 2))
+        print(carray["name"][i], carray["address"][i], carray["invested"][i], str(format(carray["balanceof"][i], '.2f')).rjust(7),
+              Style.DIM+str(format(round(carray["minted"][i]/10**18, 2), '.2f')).rjust(6)+Style.RESET_ALL,
+              Style.DIM+str(format(round(myarray[-1][carray["name"][i]+"pool"]-(carray["minted"][i]/10**18), 2), '.2f')).rjust(6)+Style.RESET_ALL,
+              str(format(round(myarray[-1][carray["name"][i]+"pool"], 2), '.2f')).rjust(6),
+              str(format(round(myarray[-1][carray["name"][i]+"pool"]/myarray[-1][carray["name"][i]+"invested"]*100, 2), '.2f')).rjust(6)+ "%")
         totalinvested += carray["invested"][i]
     print(totalinvested, "invested in total.")
-    print(round((myarray[-1]["raw_time"]-myarray[-61]["raw_time"])/60)-60, "minutes out of sync.")
-
+    if round((round(time.time())-myarray[eoa]["raw_time"])/60)+eoa+1 > 1:
+        print(Fore.RED+str(round((round(time.time())-myarray[eoa]["raw_time"])/60)+eoa+1)+ Style.RESET_ALL+" minutes out of sync.")
+    if eoa > -61:
+        print(Fore.RED+str(61+eoa)+ Style.RESET_ALL+" minutes under 60.")
+    if totalinvested != myarray[eoa]["invested"]:
+        print(Fore.RED+str(totalinvested - myarray[eoa]["invested"])+ Style.RESET_ALL+" of New investments obscuring data for up to an hour.")
+#MAIN LOOP COMPUTE
     month, day, hour, minut = map(str, time.strftime("%m %d %H %M").split())
     while True:
         USD = 1
@@ -78,6 +88,11 @@ def main():
         for i in range(0, len(carray["name"])):
             try:
                 carray["raw"][i] = w3.eth.contract(carray["address"][i], abi=abiguage).functions.claimable_tokens(MY_WALLET_ADDRESS).call()
+                if round(round((carray["raw"][i]+carray["minted"][i])/10**18, 6), 5) - myarray[-1][carray["name"][i]+"pool"] > 10:
+                    print("MINTING HAPPENED: Before ", end='')
+                    print(carray["minted"][i], end='   After ')
+                    carray["minted"][i] = w3.eth.contract(MINTER_ADDRESS, abi=abiminter).functions.minted(MY_WALLET_ADDRESS, carray["address"][i]).call()
+                    print(carray["minted"][i])
             except:
                 carray["raw"][i] = 1
             mydict[carray["name"][i]+"pool"] = round(round((carray["raw"][i]+carray["minted"][i])/10**18, 6), 5)
@@ -86,44 +101,50 @@ def main():
 
         mydict["claim"] = round(totalraw/10**18, 6)
         myarray.append(mydict)
+        if len(myarray) > history_lengthm:
+            del myarray[0]
+        eoa = 0 - len(myarray)
+#OUTPUT TO FILES
+        with open(file_name, "w") as outfile:
+            json.dump(myarray, outfile, indent=4)
 
         if minut == "00" and mydict["claim"] > 1:
             myarrayh.append(mydict)
             with open(file_nameh, "w") as outfile:
                 json.dump(myarrayh, outfile, indent=4)
             time.sleep(3)
-            show_me(-1, -2, 1, USD, totalinvested) #compare last record with 2nd to last, update price
+            show_me(-1, -2, 1, USD, 1) #compare last record with 2nd to last, update price
             time.sleep(3)
-
+#MAIN LOOP PRINT LINE
         print("At $" + Fore.YELLOW + str(format(USD, '.3f')) + Style.RESET_ALL + " per CRV = ", end='')
+        print(Fore.GREEN + Style.BRIGHT+str(format(round((myarray[-1]["claim"]-myarray[eoa]["claim"])*USD*24*365/totalinvested*100, 2), '.2f'))+ Style.RESET_ALL+"/", end='')
+        print(Fore.CYAN +str(format(round((myarray[-1]["claim"]-myarray[eoa]["claim"])*24*365/totalinvested*100, 2), '.2f'))+ Style.RESET_ALL+"% APR", end=' ')
 
-        print(Fore.GREEN + Style.BRIGHT+str(format(round((myarray[-1]["claim"]-myarray[-61]["claim"])*USD*24*365/totalinvested*100, 2), '.2f'))+ Style.RESET_ALL+"% APR", end=' ')
         for i in range(0, len(carray["name"])):
             if carray["invested"][i] > 0:
-                print(Fore.RED + Style.BRIGHT+ carray["name"][i]+ Style.RESET_ALL+""+str(format(round((myarray[-1][carray["name"][i]+"pool"]-myarray[-61][carray["name"][i]+"pool"])*USD*24*365/carray["invested"][i]*100, 2), '.2f')), end=' ')
+                print(Fore.RED + Style.BRIGHT+ carray["name"][i]+ Style.RESET_ALL+""+str(format(round((myarray[-1][carray["name"][i]+"pool"]-myarray[eoa][carray["name"][i]+"pool"])*USD*24*365/carray["invested"][i]*100, 2), '.2f')), end=' ')
 
         print("\b - A"+csym+format(myarray[-1]["claim"], '.2f')+Style.RESET_ALL, end=' ')
-        print("Y"+csym+format((round((myarray[-1]["claim"]-myarray[-61]["claim"])*24*365, 2)), '.2f').lstrip("0")+Style.RESET_ALL, end=' ')
-        print("D"+csym+format((round((myarray[-1]["claim"]-myarray[-61]["claim"])*24, 2)), '.2f').lstrip("0")+Style.RESET_ALL, end=' ')
-        print("H"+csym+format((round(myarray[-1]["claim"]-myarray[-61]["claim"], 4)), '.4f').lstrip("0")+Style.RESET_ALL, end=' ')
+        print("Y"+csym+format((round((myarray[-1]["claim"]-myarray[eoa]["claim"])*24*365, 2)), '.2f').lstrip("0")+Style.RESET_ALL, end=' ')
+        print("D"+csym+format((round((myarray[-1]["claim"]-myarray[eoa]["claim"])*24, 2)), '.2f').lstrip("0")+Style.RESET_ALL, end=' ')
+        print("H"+csym+format((round(myarray[-1]["claim"]-myarray[eoa]["claim"], 4)), '.4f').lstrip("0")+Style.RESET_ALL, end=' ')
         #print("M"+csym+format(round(myarray[-1]["claim"] - myarray[-2]["claim"], 4), '.4f').lstrip("0")+Style.RESET_ALL, end='=')
         #for i in range(0, len(carray["name"])):
         #    if carray["raw"][i] > 0:
-        #        print(Fore.RED + Style.BRIGHT+ carray["name"][i] + Style.RESET_ALL + str(format(10000*round(myarray[-1][carray["name"][i]+"pool"] - myarray[-61][carray["name"][i]+"pool"], 4), '.0f').zfill(4)), end=' ')
+        #        print(Fore.RED + Style.BRIGHT+ carray["name"][i] + Style.RESET_ALL + str(format(10000*round(myarray[-1][carray["name"][i]+"pool"] - myarray[eoa][carray["name"][i]+"pool"], 4), '.0f').rjust(4)), end=' ')
 
         iusdc_interest = round(w3.eth.contract("0x32E4c68B3A4a813b710595AebA7f6B7604Ab9c15", abi=abifulcrum).functions.nextSupplyInterestRate(1).call()/10**18, 2)
         crcrv_interest = round(((((w3.eth.contract("0xc7Fd8Dcee4697ceef5a2fd4608a7BD6A94C77480", abi=abicream).functions.supplyRatePerBlock().call()*4*60*24/10**18)+1)**364)-1)*100, 2)
-        crusdc_interest = round(((((w3.eth.contract("0x44fbeBd2F576670a6C33f6Fc0B00aA8c5753b322", abi=abicream).functions.supplyRatePerBlock().call()*4*60*24/10**18)+1)**364)-1)*100, 2)
-        print("\b - "+Back.CYAN+Fore.BLUE+Style.DIM+"F"+str(iusdc_interest)+"% C"+str(crusdc_interest)+"% "+Fore.MAGENTA + Style.BRIGHT + "Ç"+str(crcrv_interest)+"%"+Style.RESET_ALL, end=' - ')
+        #crusdc_interest = round(((((w3.eth.contract("0x44fbeBd2F576670a6C33f6Fc0B00aA8c5753b322", abi=abicream).functions.supplyRatePerBlock().call()*4*60*24/10**18)+1)**364)-1)*100, 2)
+        print("\b - "+Back.CYAN+Fore.BLUE+Style.DIM+"F"+str(format(iusdc_interest, '.2f'))+"% "+Fore.MAGENTA + Style.BRIGHT + "Ç"+str(crcrv_interest)+"%"+Style.RESET_ALL, end=' - ')  #+"C"+str(crusdc_interest)+"% "
 
-        if round((myarray[-1]["raw_time"]-myarray[-61]["raw_time"])/60)-60 > 0:
-            print(Fore.RED+str(round((myarray[-1]["raw_time"]-myarray[-61]["raw_time"])/60)-60)+ Style.RESET_ALL, end=' - ')
+        if round((myarray[-1]["raw_time"]-myarray[eoa]["raw_time"])/60)+eoa+1 >= 1:
+            print(Fore.RED+str(round((myarray[-1]["raw_time"]-myarray[eoa]["raw_time"])/60)+eoa+1)+ Style.RESET_ALL, end=' - ')
+        if eoa > -61:
+            print(Fore.RED+str(61+eoa).rjust(2)+ Style.RESET_ALL, end=' - ')
+        if myarray[-1]["invested"] != myarray[eoa]["invested"]:
+            print(Fore.RED+str(myarray[-1]["invested"] - myarray[eoa]["invested"])+ Style.RESET_ALL, end=' - ')
         print(myarray[-1]["human_time"], end='\r', flush=True)
-
-        with open(file_name, "w") as outfile:
-            if len(myarray) > history_lengthm:
-                del myarray[0]
-            json.dump(myarray, outfile, indent=4)
 
 if __name__ == "__main__":
     main()

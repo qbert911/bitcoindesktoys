@@ -11,7 +11,7 @@ import json
 from time import sleep
 import unicornhathd
 
-unicornhathd.rotation(90)
+unicornhathd.rotation(270)
 unicornhathd.brightness(1)
 
 red = [60, 0, 0]

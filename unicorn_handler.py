@@ -40,6 +40,7 @@ def ubars_display():
     print(position)
 
 if __name__ == "__main__":
+    ubars_display()
     file_name = "/home/pi/trigger.foo"
     while True:
         if os.path.exists(file_name):
