@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 rainbow HAT - alter digits and call led function
 """
@@ -24,7 +24,6 @@ try:
     valc = int(sys.argv[3])
 except:
     print("Exception reading input")
-
 
 counter = 1.0
 soundon = is_sound_on()
@@ -53,13 +52,11 @@ else:
 for val in range(vala, valb+stride, stride):
     sleep_time = min((counter/(abs(vala-valb)+1.000))**1.8*(10.0/(abs(vala-valb)+1.0)), 3.000)
     #print(sleep_time,val)
-
     if soundon:
         try:
             rainbowhat.buzzer.midi_note(Note_Freq, .05)
         except:
             pass
-
     try:
         if valc > 99:
             mystring = "0"+(str(val).rjust(len(str(val)))[0:2+len(str(val))-5] + str(val)[-3+len(str(val).rjust(5))-5:]).rjust(5)

@@ -1,0 +1,37 @@
+[
+  {
+    "longname": "3pool",
+    "invested": 6100,    "currentboost": 2.5,
+    "name": "T",    "address":"0xbFcF63294aD7105dEa65aA58F8AE5BE2D9d0952A"
+  },
+  {
+    "longname": "usdN",
+    "invested": 6100,    "currentboost": 1.4110,
+    "name": "N",    "address":"0xF98450B5602fa59CC66e1379DFfB6FDDc724CfC4"
+  },
+  {
+    "longname": "Compound",
+    "invested": 1000,    "currentboost": 2.5,
+    "name": "C",    "address":"0x7ca5b0a2910B33e9759DC7dDB0413949071D7575"
+  },
+  {
+    "longname": "Yearn",
+    "invested": 1000,    "currentboost": 2.5,
+    "name": "Y",    "address":"0xFA712EE4788C042e2B7BB55E6cb8ec569C4530c1"
+  },
+  {
+    "longname": "Susd",
+    "invested": 1000,    "currentboost": 2.3810,
+    "name": "S",    "address":"0xA90996896660DEcC6E997655E065b23788857849"
+  },
+  {
+    "longname": "Busd",
+    "invested": 1000,    "currentboost": 2.5,
+    "name": "B",    "address":"0x69Fb7c45726cfE2baDeE8317005d3F94bE838840"
+  },
+  {
+    "longname": "Gusd",
+    "invested": 1000,    "currentboost": 1.3237,
+    "name": "G",    "address":"0xC5cfaDA84E902aD92DD40194f0883ad49639b023"
+  }
+]

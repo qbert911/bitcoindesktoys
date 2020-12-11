@@ -1,9 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 unicorn hat - show scatter plot of price history
 """
 # pylint: disable=C0103,C0301,E1101
-from __future__ import print_function
 import json
 import sys
 import smbus
@@ -23,9 +22,9 @@ def ubars_write(dimension, myfilename):
         myfile = json.load(openfile)
 
     try:
-        hist_chunk_size = min(int(sys.argv[1]), len(myfile["history"])/dimension)
+        hist_chunk_size = int(min(int(sys.argv[1]), len(myfile["history"])/dimension))
     except:
-        hist_chunk_size = min(int(get_zoom_level()), len(myfile["history"])/dimension)
+        hist_chunk_size = int(min(int(get_zoom_level()), len(myfile["history"])/dimension))
 
     myfloor = 9999999
     myceiling = 0

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # pylint: disable=C0103,C0326
 """
 write to the seven leds on the top of the rainbow HAT
@@ -37,13 +37,37 @@ red = [2, 0, 0]
 green = [0, 2, 0]
 gray = [1, 1, 1]
 blank = [0, 0, 0]
-brightness = 1
+brightness = .8
+
+def rainbow_show_boost_status(array):
+    """write to leds"""
+    rainbowhat.rainbow.set_clear_on_exit(False)
+    rainbowhat.rainbow.clear()
+    for x in range(0,7):
+        if array[x] == 1:
+            r,g,b = [1,1,1]  #gray
+        elif array[x] == -1:
+            r,g,b = [0,1,0]  #green
+        elif array[x] == 2:
+            r,g,b = [1,0,0]  #red
+        elif array[x] == 3:
+            r,g,b = [1,0,1]  #purple
+        elif array[x] == 4:
+            r,g,b = [0,1,1]  #lightblue
+        else:
+            r,g,b = blank
+        rainbowhat.rainbow.set_pixel(6-x, r,g,b,brightness)
+    try:
+        bus.read_byte(112)         #check to see if rainbow hat is connected
+        rainbowhat.rainbow.show()  #firing this code with unicornhathd connected breaks it
+    except:
+        pass
 
 def rainbow_led_pricechange(vala):
     """write to leds"""
     rainbowhat.rainbow.set_clear_on_exit(False)
     rainbowhat.rainbow.clear()
-    #print position[vala]
+    print (vala, end='')
     vala=int(vala)+10
     for x in range(0,7):
         if position[vala][x] == 2:
@@ -82,5 +106,6 @@ def rainbow_show_float(vala):
         pass
 
 if __name__ == "__main__":
+    #rainbow_show_boost_status([-1,0,1,2,3,4,0,0,0])
     rainbow_led_pricechange(sys.argv[1])
     #print ("supposed to be called from another python file, not solo")
