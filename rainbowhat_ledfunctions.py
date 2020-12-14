@@ -67,7 +67,7 @@ def rainbow_led_pricechange(vala):
     """write to leds"""
     rainbowhat.rainbow.set_clear_on_exit(False)
     rainbowhat.rainbow.clear()
-    print (vala, end='')
+    #print (vala, end='')
     vala=int(vala)+10
     for x in range(0,7):
         if position[vala][x] == 2:

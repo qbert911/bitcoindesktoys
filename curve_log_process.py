@@ -12,7 +12,6 @@ file_nameh = "ghistoryh.json"
 usym = Fore.YELLOW + Style.BRIGHT + "$" + Fore.GREEN
 csym = Fore.MAGENTA + Style.BRIGHT + "Ç" + Style.RESET_ALL + Fore.CYAN
 
-
 def show_me(inputs, inpute, update, isprice, invested, newline):
     USD = float(isprice)
     with open(file_nameh, 'r') as openfile:
@@ -40,9 +39,7 @@ def show_me(inputs, inpute, update, isprice, invested, newline):
         print(str(round(b/24, 1)), "days", end=' - ')
     print("between", myarrayh[inpute]["human_time"], "and", myarrayh[inputs]["human_time"], end='')
     if newline:
-        print(" "+invested)
-
-    return b
+        print(" "+str(invested))
 
 def update_price():
     return cg.get_price(ids='curve-dao-token', vs_currencies='usd')["curve-dao-token"]["usd"]

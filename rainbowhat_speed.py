@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """rainbowhat - set speed on leds"""
 import sys
 import smbus

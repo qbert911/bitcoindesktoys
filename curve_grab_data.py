@@ -33,11 +33,7 @@ w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/'+INFURA_ID))
 MY_WALLET_ADDRESS = "0x8D82Fef0d77d79e5231AE7BFcFeBA2bAcF127E2B"
 MINTER_ADDRESS = "0xd061D61a4d941c39E5453435B6345Dc261C2fcE0"
 veCRV_ADDRESS = "0x5f3b5DfEb7B28CDbD7FAba78963EE202a494e2A2"
-carray = {"longname": [],
-          "invested": [],
-          "currentboost": [],
-          "name": [],
-          "address" : []}
+carray = {"longname": [], "name": [], "invested": [], "currentboost": [], "address" : []}
 
 def load_curvepool_array(barray):
     """prepare iteratable array from json file"""
@@ -66,45 +62,36 @@ def curve_hats_update(myfloat, mystring):
     microdotphat.write_string(mystring, offset_x=0, kerning=False)
     microdotphat.show()
 
-def boost_check():
+def boost_check(endchar):
     """update variables to check boost status"""
     veCRV_mine = round(w3.eth.contract(veCRV_ADDRESS, abi=abiguage).functions.balanceOf(MY_WALLET_ADDRESS).call()/10**18, 2)
     veCRV_total = round(w3.eth.contract(veCRV_ADDRESS, abi=abiguage).functions.totalSupply().call()/10**18, 2)
-    myVOTEshare = veCRV_mine/veCRV_total
-    hasdata = 0
+    outputflag = 0
     for i in range(0, len(carray["name"])):
         if carray["currentboost"][i] == 2.5:
             carray["booststatus"][i] = -1
-            #print(carray["name"][i], end=' ')
-            print("", end='')
         else:
             carray["balanceof"][i] = round(w3.eth.contract(carray["address"][i], abi=abiguage).functions.balanceOf(MY_WALLET_ADDRESS).call()/10**18, 2)
             carray["totalsupply"][i] = round(w3.eth.contract(carray["address"][i], abi=abiguage).functions.totalSupply().call()/10**18, 2)
-            carray["futureboost"][i] = 2.5 * min((carray["balanceof"][i]/2.5) + (carray["totalsupply"][i]*myVOTEshare*(1-(1/2.5))), carray["balanceof"][i])/carray["balanceof"][i]
+            carray["futureboost"][i] = 2.5 * min((carray["balanceof"][i]/2.5) + (carray["totalsupply"][i]*veCRV_mine/veCRV_total*(1-(1/2.5))), carray["balanceof"][i])/carray["balanceof"][i]
             if carray["currentboost"][i] >= carray["futureboost"][i]:
                 carray["booststatus"][i] = 1
-                print("", end='')
-                #print(carray["name"][i], end=' ')
-                #print(Fore.GREEN+str(format(carray["currentboost"][i], '.4f')).rjust(6),
-                #      Style.DIM+str(format(carray["futureboost"][i], '.4f')).rjust(6)+" "+
-                #      str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f')).rjust(6)+Style.RESET_ALL, end=' - ', flush=True)
             else:
-                hasdata = 1
+                outputflag = 1
                 print(carray["name"][i], end=' ')
                 if carray["futureboost"][i]-carray["currentboost"][i] > .01:
                     carray["booststatus"][i] = 2
-                    print(#str(format(carray["currentboost"][i], '.4f')).rjust(6),
-                        Style.BRIGHT+str(format(carray["futureboost"][i], '.4f')).rjust(6),
-                        Fore.RED+str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f')).rjust(6)+Style.RESET_ALL, end=' - ')
+                    print(Style.BRIGHT+str(format(carray["futureboost"][i], '.4f')).rjust(6),
+                          Fore.RED+str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f')).rjust(6)+Style.RESET_ALL, end=' - ')
                 else:
                     carray["booststatus"][i] = 3
-                    print(str(format(carray["currentboost"][i], '.4f')).rjust(6),
+                    print(str(format(carray["futureboost"][i], '.4f')).rjust(6),
                           Fore.RED+Style.DIM+str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f')).rjust(6)+Style.RESET_ALL, end=' - ')
 
-    if hasdata:
-        print('\b\b ', end='', flush=True)
+    if outputflag:
+        print('\b\b ', end=endchar, flush=True)
     else:
-        print(Fore.GREEN+'Boosted'+Style.RESET_ALL, end='', flush=True)
+        print(Fore.GREEN+'Boosted        '+Style.RESET_ALL, end=endchar, flush=True)
     rainbow_show_boost_status(carray["booststatus"])
 
 def header_display():
@@ -112,37 +99,40 @@ def header_display():
     eoa = 0 - len(myarray)
     veCRV_mine = round(w3.eth.contract(veCRV_ADDRESS, abi=abiguage).functions.balanceOf(MY_WALLET_ADDRESS).call()/10**18, 2)
     veCRV_total = round(w3.eth.contract(veCRV_ADDRESS, abi=abiguage).functions.totalSupply().call()/10**18, 2)
-    myVOTEshare = veCRV_mine/veCRV_total
     for i in range(0, len(carray["name"])):
         carray["minted"][i] = w3.eth.contract(MINTER_ADDRESS, abi=abiminter).functions.minted(MY_WALLET_ADDRESS, carray["address"][i]).call()
         carray["balanceof"][i] = round(w3.eth.contract(carray["address"][i], abi=abiguage).functions.balanceOf(MY_WALLET_ADDRESS).call()/10**18, 2)
         carray["totalsupply"][i] = round(w3.eth.contract(carray["address"][i], abi=abiguage).functions.totalSupply().call()/10**18, 2)
-        carray["futureboost"][i] = 2.5*min((carray["balanceof"][i]/2.5) + (carray["totalsupply"][i]*myVOTEshare*(1-(1/2.5))), carray["balanceof"][i])/carray["balanceof"][i]
-        print(carray["longname"][i].ljust(len(max(carray["longname"], key=len))), carray["name"][i], carray["invested"][i],
+        maxinvestforfullboost = carray["totalsupply"][i]*veCRV_mine/veCRV_total
+        carray["futureboost"][i] = 2.5*min((carray["balanceof"][i]/2.5) + (maxinvestforfullboost*(1-(1/2.5))), carray["balanceof"][i])/carray["balanceof"][i]
+        print(carray["longname"][i].ljust(len(max(carray["longname"], key=len))), carray["name"][i], str(carray["invested"][i]).rjust(4),
               str(format(carray["balanceof"][i], '.2f')).rjust(7), str(format(carray["totalsupply"][i], '.0f')).rjust(9),
               Style.DIM+str(format(round(carray["minted"][i]/10**18, 2), '.2f')).rjust(6)+Style.RESET_ALL,
               Style.DIM+str(format(round(myarray[-1][carray["name"][i]+"pool"]-(carray["minted"][i]/10**18), 2), '.2f')).rjust(6)+Style.RESET_ALL,
               str(format(round(myarray[-1][carray["name"][i]+"pool"], 2), '.2f')).rjust(6),
               str(format(round(myarray[-1][carray["name"][i]+"pool"]/myarray[-1][carray["name"][i]+"invested"]*100, 2), '.2f')).rjust(6)+ "%", end=' ')
         if carray["currentboost"][i] >= 2.5:
-            print(Style.BRIGHT+Fore.GREEN+str(format(carray["currentboost"][i], '.4f')).rjust(6).replace("0", " ")+Style.RESET_ALL, end=' ')
-            print(Style.DIM+Fore.GREEN+str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f')).rjust(7)+ Style.RESET_ALL)
-        elif carray["futureboost"][i]-carray["currentboost"][i] < 0:
+            if carray["futureboost"][i]-carray["currentboost"][i] < 0:
+                print(Style.DIM+Fore.GREEN+str(format(abs(round(maxinvestforfullboost-carray["balanceof"][i], 2)), '.2f')).rjust(8)+Style.RESET_ALL, end=' ')
+                print(Style.BRIGHT+Fore.GREEN+str(format(carray["currentboost"][i], '.4f')).rjust(6).replace("0", " ")+Style.RESET_ALL, end=' ')
+                print(Style.DIM+Fore.GREEN+str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f')).rjust(7)+ Style.RESET_ALL)
+            else:
+                print(str(format(round(maxinvestforfullboost-carray["balanceof"][i], 2), '.2f')).rjust(8)+Style.RESET_ALL, end=' ')
+                print(Style.BRIGHT+Fore.GREEN+str(format(carray["currentboost"][i], '.4f')).rjust(6).replace("0", " ")+Style.RESET_ALL, end=' ')
+                print("")
+        elif carray["futureboost"][i]-carray["currentboost"][i] <= 0:
+            print(Style.DIM+str(format(round(maxinvestforfullboost-carray["balanceof"][i], 2), '.2f')).rjust(8)+Style.RESET_ALL, end=' ')
             print(str(format(carray["currentboost"][i], '.4f')).rjust(6), end=' ')
             print(Style.DIM+Fore.GREEN+str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f')).rjust(7)+ Style.RESET_ALL)
         elif carray["futureboost"][i]-carray["currentboost"][i] > 0:
+            print(Style.DIM+str(format(round(maxinvestforfullboost-carray["balanceof"][i], 2), '.2f')).rjust(8)+Style.RESET_ALL, end=' ')
             print(str(format(carray["currentboost"][i], '.4f')).rjust(6), end=' ')
             if carray["futureboost"][i]-carray["currentboost"][i] > 0.01:
-                print(Style.BRIGHT, end='')
+                print(Style.BRIGHT+Fore.RED+str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f')).rjust(7)+ Style.RESET_ALL)
             else:
-                print(Style.DIM, end='')
-            print(Fore.RED+str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f')).rjust(7)+ Style.RESET_ALL)
-        else:
-            print(str(format(carray["currentboost"][i], '.4f')).rjust(6), end=' ')
-            print(str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f').rjust(7))+ Style.RESET_ALL)
+                print(Style.DIM+Fore.RED+str(format(carray["futureboost"][i]-carray["currentboost"][i], '.4f')).rjust(7)+ Style.RESET_ALL)
 
-    print(sum(carray["invested"]), "invested, as well as", veCRV_mine, "veCRV locked (out of", round(veCRV_total), "total).", flush=True)
-
+    print(sum(carray["invested"]), "invested, as well as", veCRV_mine, "veCRV locked (out of", round(veCRV_total), "total).")
     if round((round(time.time())-myarray[eoa]["raw_time"])/60, 2)+eoa >= 0.5:
         print(Fore.RED+str(round(((round(time.time())-myarray[eoa]["raw_time"])/60)+eoa, 2))+ Style.RESET_ALL+" minutes out of sync.")
     if eoa > -61:
@@ -160,19 +150,15 @@ def print_status_line(USD, eoa, totalinvested):
         if carray["invested"][i] > 0:
             print(Fore.RED + Style.BRIGHT+ carray["name"][i]+ Style.RESET_ALL+""+str(format(round((myarray[-1][carray["name"][i]+"pool"]-myarray[eoa][carray["name"][i]+"pool"])*USD*24*365/carray["invested"][i]*100, 2), '.2f')), end=' ')
 
-    print("\b - A"+csym+format(myarray[-1]["claim"], '.2f')+Style.RESET_ALL, end=' ')
-    print("Y"+csym+format((round((myarray[-1]["claim"]-myarray[eoa]["claim"])*24*365, 2)), '.2f').lstrip("0")+Style.RESET_ALL, end=' ')
-    print("D"+csym+format((round((myarray[-1]["claim"]-myarray[eoa]["claim"])*24, 2)), '.2f').lstrip("0")+Style.RESET_ALL, end=' ')
-    print("H"+csym+format((round(myarray[-1]["claim"]-myarray[eoa]["claim"], 4)), '.4f').lstrip("0")+Style.RESET_ALL, end=' ')
-    #print("M"+csym+format(round(myarray[-1]["claim"] - myarray[-2]["claim"], 4), '.4f').lstrip("0")+Style.RESET_ALL, end='=')
-    #for i in range(0, len(carray["name"])):
-    #    if carray["raw"][i] > 0:
-    #        print(Fore.RED + Style.BRIGHT+ carray["name"][i] + Style.RESET_ALL + str(format(10000*round(myarray[-1][carray["name"][i]+"pool"] - myarray[eoa][carray["name"][i]+"pool"], 4), '.0f').rjust(4)), end=' ')
+    print("\b - A"+csym+format(myarray[-1]["claim"], '.3f')+Style.RESET_ALL, end=' ')
+    print("H"+csym+format((round(myarray[-1]["claim"]-myarray[eoa]["claim"], 4)), '.4f')+Style.RESET_ALL, end=' ')
+    print("D"+csym+format((round((myarray[-1]["claim"]-myarray[eoa]["claim"])*24, 2)), '.2f')+Style.RESET_ALL, end=' ')
+    print("Y"+csym+format((round((myarray[-1]["claim"]-myarray[eoa]["claim"])*24*365, 0)), '.0f')+Style.RESET_ALL, end=' ')
 
     iusdc_interest = round(w3.eth.contract("0x32E4c68B3A4a813b710595AebA7f6B7604Ab9c15", abi=abifulcrum).functions.nextSupplyInterestRate(1).call()/10**18, 2)
     crcrv_interest = round(((((w3.eth.contract("0xc7Fd8Dcee4697ceef5a2fd4608a7BD6A94C77480", abi=abicream).functions.supplyRatePerBlock().call()*4*60*24/10**18)+1)**364)-1)*100, 2)
     #crusdc_interest = round(((((w3.eth.contract("0x44fbeBd2F576670a6C33f6Fc0B00aA8c5753b322", abi=abicream).functions.supplyRatePerBlock().call()*4*60*24/10**18)+1)**364)-1)*100, 2)
-    print("\b - "+Back.CYAN+Fore.BLUE+Style.DIM+"F"+str(format(iusdc_interest, '.2f'))+"% "+Fore.MAGENTA+Style.BRIGHT+"Ç"+str(format(crcrv_interest, '.2f'))+"%"+Style.RESET_ALL, end=' - ')  #+"C"+str(crusdc_interest)+"% "
+    print("\b - "+Back.CYAN+Fore.BLUE+Style.DIM+"F"+str(format(iusdc_interest, '.2f'))+"%  "+Fore.MAGENTA+Style.BRIGHT+"Ç"+str(format(crcrv_interest, '.2f'))+"%"+Style.RESET_ALL, end=' - ')  #+"C"+str(crusdc_interest)+"% "
 
     if round((myarray[-1]["raw_time"]-myarray[eoa]["raw_time"])/60)+eoa >= 0:
         print(Fore.RED+str(round((myarray[-1]["raw_time"]-myarray[eoa]["raw_time"])/60)+eoa+1)+Style.RESET_ALL, end=' - ')
@@ -180,29 +166,22 @@ def print_status_line(USD, eoa, totalinvested):
         print(Fore.RED+str(61+eoa).rjust(2)+Style.RESET_ALL, end=' - ')
     if myarray[-1]["invested"] != myarray[eoa]["invested"]:
         print(Fore.RED+str(myarray[-1]["invested"] - myarray[eoa]["invested"])+Style.RESET_ALL, end=' - ')
-    print(myarray[-1]["human_time"], end=' - ', flush=True)
+    print(myarray[-1]["human_time"], end=' - ')
 
 def main():
     """monitor various curve contracts"""
     load_curvepool_array(carray)
-    totalinvested = sum(carray["invested"])
     header_display()
     month, day, hour, minut = map(str, time.strftime("%m %d %H %M").split())
-#Wait for each minute to pass then update price
     while True:
+#Wait for each minute to pass to run again
         while month+"/"+day+" "+hour+":"+minut == myarray[-1]["human_time"]:
             time.sleep(6)
             month, day, hour, minut = map(str, time.strftime("%m %d %H %M").split())
-        USD = 1
-        while USD == 1:
-            try:
-                USD = float(update_price())
-            except:
-                time.sleep(6)
-#UPDATE dictionary
+#UPDATE dictionary values
+        USD = update_price()
         mydict = {"raw_time" : round(time.time()), "human_time": month+"/"+day+" "+hour+":"+minut,
-                  "USD" : USD, "invested" : totalinvested}
-        totalraw = 0
+                  "USD" : USD, "invested" : sum(carray["invested"])}
         for i in range(0, len(carray["name"])):
             try:
                 carray["raw"][i] = w3.eth.contract(carray["address"][i], abi=abiguage).functions.claimable_tokens(MY_WALLET_ADDRESS).call()
@@ -212,11 +191,13 @@ def main():
                     print(carray["minted"][i])
             except:
                 carray["raw"][i] = 1
+                print("claimable tokens web3 call failed! "+hour+":"+minut)
             mydict[carray["name"][i]+"pool"] = round(round((carray["raw"][i]+carray["minted"][i])/10**18, 6), 5)
             mydict[carray["name"][i]+"invested"] = carray["invested"][i]
-            totalraw += carray["raw"][i] + carray["minted"][i]
+            if myarray[-1][carray["name"][i]+"pool"] > mydict[carray["name"][i]+"pool"]:
+                print("error with lower raw value"+carray["name"][i], hour, minut)
 
-        mydict["claim"] = round(totalraw/10**18, 6)
+        mydict["claim"] = round((sum(carray["raw"])+sum(carray["minted"]))/10**18, 6)
         myarray.append(mydict)
         if len(myarray) > 61:
             del myarray[0]
@@ -231,15 +212,13 @@ def main():
                 json.dump(myarrayh, outfile, indent=4)
             time.sleep(3)
             show_me(-1, -2, 1, USD, 1, 0) #compare last record with 2nd to last, update price, do NOT end line
-            time.sleep(3)
             print(" - ", end='')
-            boost_check()
-            print("")
+            boost_check("\n")
 #update information on hats and screen
-        curve_hats_update(round((myarray[-1]["claim"]-myarray[eoa]["claim"])*USD*24*365/totalinvested*100, 2),
+        curve_hats_update(round((myarray[-1]["claim"]-myarray[eoa]["claim"])*USD*24*365/sum(carray["invested"])*100, 2),
                           format((round(myarray[-1]["claim"]-myarray[eoa]["claim"], 4)), '.4f'))
-        print_status_line(USD, eoa, totalinvested)
-        boost_check()
-        print("", end='\r', flush=True)
+        print_status_line(USD, eoa, sum(carray["invested"]))
+        boost_check("\r")
+
 if __name__ == "__main__":
     main()

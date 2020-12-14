@@ -28,6 +28,7 @@ except:
 counter = 1.0
 soundon = is_sound_on()
 try:
+    bus.read_byte(112)         #check to see if rainbow hat is connected
     rainbowhat.lights.red.off()    #hack for starting led
 except:
     pass
@@ -37,6 +38,7 @@ if vala > valb:
     Note_Freq = 82
     #if soundon:
     try:
+        bus.read_byte(112)         #check to see if rainbow hat is connected
         rainbowhat.lights.red.on()
     except:
         pass
@@ -45,6 +47,7 @@ else:
     Note_Freq = 2
     #if soundon:
     try:
+        bus.read_byte(112)         #check to see if rainbow hat is connected
         rainbowhat.lights.green.on()
     except:
         pass
@@ -54,6 +57,7 @@ for val in range(vala, valb+stride, stride):
     #print(sleep_time,val)
     if soundon:
         try:
+            bus.read_byte(112)         #check to see if rainbow hat is connected
             rainbowhat.buzzer.midi_note(Note_Freq, .05)
         except:
             pass
