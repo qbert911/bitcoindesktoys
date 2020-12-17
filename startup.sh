@@ -1,6 +1,6 @@
 #!/bin/bash
 #sudo /home/pi/Pimoroni/unicornhathd/examples/matrix-hd.py &
-sudo /home/pi/bitcoindesktoys/touch_handler.py &
+#sudo /home/pi/bitcoindesktoys/touch_handler.py &
 sudo /home/pi/bitcoindesktoys/unicorn_handler.py &
 sudo /home/pi/bitcoindesktoys/hd_unicorn_handler.py &
 sudo /home/pi/bitcoindesktoys/ledshim_mempool.py &

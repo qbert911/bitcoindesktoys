@@ -26,5 +26,9 @@
   {
     "longname": "Gusd",  "address":"0xC5cfaDA84E902aD92DD40194f0883ad49639b023",
     "invested": 200,    "currentboost": 2.0568, "name": "G"
+  },
+  {
+    "longname": "RSV",  "address":"0x4dC4A289a8E33600D8bD4cf5F6313E43a37adec7",
+    "invested": 0,    "currentboost": 0, "name": "R"
   }
 ]
