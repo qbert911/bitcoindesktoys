@@ -7,6 +7,10 @@ import json
 import sys
 import smbus
 from config_filefunctions import get_zoom_level
+from colorama import Fore, Style, init
+init()
+
+bus = smbus.SMBus(1) # 1 indicates /dev/i2c-1
 
 red = -1
 green = +1
@@ -34,7 +38,7 @@ def ubars_write(dimension, myfilename):
         myceiling = max(myceiling, myfile["history"][x])
     myrange = myceiling - myfloor
 
-    print("("+str(myfloor)+" - "+str(myceiling)+") range:", myrange, "per cell:", (myrange/dimension * 1.0), "history len:", len(myfile["history"]), "history/cell:", hist_chunk_size, "offset:", hist_offset+1)
+    print(Style.DIM+"("+str(myfloor)+" - "+str(myceiling)+") range:"+Style.RESET_ALL+Style.BRIGHT, myrange,Style.DIM+"per cell:", (myrange/dimension * 1.0), "history len:", len(myfile["history"]), "history/cell:", hist_chunk_size, "offset:", hist_offset+1,Style.RESET_ALL)
     dim=dimension-1
     for y in range(dim, -1, -1):
         for x in range(0, dimension):

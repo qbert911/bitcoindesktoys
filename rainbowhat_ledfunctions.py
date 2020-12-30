@@ -43,7 +43,7 @@ def rainbow_show_boost_status(array):
     """write to leds"""
     rainbowhat.rainbow.set_clear_on_exit(False)
     rainbowhat.rainbow.clear()
-    for x in range(0,7):
+    for x in range(0,min(len(array),7)):
         if array[x] == 1:
             r,g,b = [1,1,1]  #gray
         elif array[x] == -1:

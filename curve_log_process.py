@@ -3,6 +3,8 @@
 # pylint: disable=C0103,C0116,C0301,W0105,E0401,R0914
 import time
 import json
+import microdotphat
+from rainbowhat_ledfunctions import rainbow_show_float, rainbow_show_boost_status
 from colorama import Fore, Style, init
 init()
 from pycoingecko import CoinGeckoAPI
@@ -12,10 +14,10 @@ file_nameh = "ghistoryh.json"
 usym = Fore.YELLOW + Style.BRIGHT + "$" + Fore.GREEN
 csym = Fore.MAGENTA + Style.BRIGHT + "Ç" + Style.RESET_ALL + Fore.CYAN
 
-def show_me(inputs, inpute, update, isprice, invested, newline):
+def show_me(inputs, inpute, update, isprice, invested, newline, myarrayh):
     USD = float(isprice)
-    with open(file_nameh, 'r') as openfile:
-        myarrayh = json.load(openfile)
+    if myarrayh == 0:
+        myarrayh = json.load(open(file_nameh, 'r'))
     if invested == 1:
         invested = myarrayh[inputs]["invested"]
     while update and USD == 1:
@@ -29,7 +31,7 @@ def show_me(inputs, inpute, update, isprice, invested, newline):
     b = (myarrayh[inputs]["raw_time"] - myarrayh[inpute]["raw_time"]) / (60*60) #hours elapsed
     c = round(a/b * 24*365 / invested * 100, 2)  #APR
 
-    print("At $" + Fore.YELLOW + str(format(USD, '.3f')) + Style.RESET_ALL + " per CRV = ", end='')
+    print("\rAt $" + Fore.YELLOW + str(format(USD, '.3f')) + Style.RESET_ALL + " per CRV = ", end='')
     print(Fore.GREEN + Style.BRIGHT + str(format(c, '.2f')) + Style.RESET_ALL + "/" + Fore.CYAN + str(format(c/USD, '.2f')) + Style.RESET_ALL + "% APR", end=' - ')
     print(usym + str(format(round(365*24*a/b, 4), '.2f')).rjust(7)  + Style.RESET_ALL + "/" + csym + str(format(365*24*a/b/USD, '.2f')).rjust(5) + Style.RESET_ALL + " per year", end=' - ')
     print(usym + str(format(round(24*a/b, 4), '.2f')).rjust(5) + Style.RESET_ALL + "/" + csym + str(format(24*a/b/USD, '.2f')).rjust(5) + Style.RESET_ALL + " per day", end=' - ')
@@ -42,22 +44,41 @@ def show_me(inputs, inpute, update, isprice, invested, newline):
         print(" "+str(invested))
 
 def update_price():
-    return cg.get_price(ids='curve-dao-token', vs_currencies='usd')["curve-dao-token"]["usd"]
+    USD = 1
+    while USD == 1:
+        try:
+            USD = cg.get_price(ids='curve-dao-token', vs_currencies='usd')["curve-dao-token"]["usd"]
+        except:
+            time.sleep(2)
+
+    return USD
+
+def curve_hats_update(myfloat, mystring, bootstatusarray):
+    """output to rainbow and microdot hats"""
+    rainbow_show_float(myfloat)
+    rainbow_show_boost_status(bootstatusarray)
+    microdotphat.set_clear_on_exit(False)
+    microdotphat.set_rotate180(1)
+    microdotphat.write_string(mystring, offset_x=0, kerning=False)
+    microdotphat.show()
 
 def daily_log(isprice):
     with open(file_nameh, 'r') as openfile:
         myarrayh = json.load(openfile)
     offset = len(myarrayh)-1-(int((len(myarrayh)-1)/24)*24)
     for x in range(0, int((len(myarrayh)-1)/24)):
+        thisprice = isprice
         try:
+            thisprice =  myarrayh[(x*24)+24+offset]["USD"]
             y = myarrayh[(x*24)+24+offset]["invested"]
         except:
             y = 6100
-        show_me((x*24)+24+offset, (x*24)+offset, 0, isprice, y, 1)
+
+        show_me((x*24)+24+offset, (x*24)+offset, 0, thisprice, y, 1, myarrayh)
 
 if __name__ == "__main__":
     daily_log(update_price())
     print("")
-    show_me(-1, 0, 0, update_price(), 7000, 1)
-    show_me(-1, 0, 0, update_price(), 1, 1)
+    show_me(-1, 0, 0, update_price(), 12000, 1, 0)
+    show_me(-1, 0, 0, update_price(), 1, 1, 0)
     print("    ")
