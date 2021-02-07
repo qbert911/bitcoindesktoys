@@ -84,6 +84,7 @@ if __name__ == "__main__":
     hd_ubars_display()
     file_name = "/home/pi/triggerhd.foo"
     while True:
+        sleep(3)
         if os.path.exists(file_name):
             hd_ubars_display()
             os.remove(file_name)

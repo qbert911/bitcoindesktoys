@@ -7,8 +7,11 @@ import sys
 from time import time, sleep
 import microdotphat
 import rainbowhat
+import smbus
 from rainbowhat_ledfunctions import rainbow_show_float, rainbow_show_message, rainbow_led_pricechange
 from config_filefunctions import is_sound_on
+
+bus = smbus.SMBus(1) # 1 indicates /dev/i2c-1
 
 rainbowhat.rainbow.set_clear_on_exit(False)
 microdotphat.set_clear_on_exit(False)
@@ -36,12 +39,12 @@ except:
 if vala > valb:
     stride = -1
     Note_Freq = 82
-    #if soundon:
-    try:
-        bus.read_byte(112)         #check to see if rainbow hat is connected
-        rainbowhat.lights.red.on()
-    except:
-        pass
+    if soundon:
+        try:
+            bus.read_byte(112)         #check to see if rainbow hat is connected
+            rainbowhat.lights.red.on()
+        except:
+            pass
 else:
     stride = 1
     Note_Freq = 2
@@ -57,7 +60,7 @@ for val in range(vala, valb+stride, stride):
     #print(sleep_time,val)
     if soundon:
         try:
-            bus.read_byte(112)         #check to see if rainbow hat is connected
+#            bus.read_byte(112)         #check to see if rainbow hat is connected
             rainbowhat.buzzer.midi_note(Note_Freq, .05)
         except:
             pass

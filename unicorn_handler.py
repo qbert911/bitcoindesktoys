@@ -43,7 +43,8 @@ if __name__ == "__main__":
     ubars_display()
     file_name = "/home/pi/trigger.foo"
     while True:
+        sleep(3)
         if os.path.exists(file_name):
             ubars_display()
             os.remove(file_name)
-            sleep(1)
+            sleep(3)
