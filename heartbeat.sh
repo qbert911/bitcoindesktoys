@@ -35,7 +35,7 @@ while : ;do
      ( *	)        cola="\e[38;5;229m";colb="\e[38;5;229m";;
     esac
     if [ "$RUNTIME" -ge 3600 ]; then  cola="\e[38;5;196m";colb="\e[38;5;196m";fi #when over an hour keep red
-    out="\033[1K\r\e[?25l$(( $tblok + 1 )) \e[38;5;229m$(printf "$cola%01d$colb%01d\e[38;5;229m:%02d" $((RUNTIME/60%100/10)) $((RUNTIME/60%10)) $((RUNTIME%60)))\e[0m $(printf "%05d" "$mempool") "
+    out="\033[1K\r\e[?25l$(( $tblok + 1 )) \e[38;5;229m$(printf "$cola%01d$colb%01d\e[38;5;229m:%02d" $((RUNTIME/60%100/10)) $((RUNTIME/60%10)) $((RUNTIME%60)))\e[0m $(printf "%-6d" "$mempool")"
     nscale=$(( (($mempool/10000)+1)*(10000/$maxbarlen) ))
     if [ "$nscale" != "$scale" ];then
       scale=$nscale

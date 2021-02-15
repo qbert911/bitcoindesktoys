@@ -26,7 +26,7 @@ while : ;do
     fi
     if [[ "${#lastreading}" = "0" ]];then
       START=$(date +%s)
-      eval "/home/pi/bitcoindesktoys/show_digitsmove.py $usdreading $usdreading $(($change-1+$mymod))" &
+      eval "`pwd`/show_digitsmove.py $usdreading $usdreading $(($change-1+$mymod))" &
       echo -en "\$$usdreading       ["
     else
       echo -e "] $(( $(date +%s) - $START )) seconds ($(date +%X))"
@@ -37,7 +37,7 @@ while : ;do
   			if [ ${pdfull:1:1} = 0 ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:1:1};fi
   			if [ "${pdfull:1:2}" = "00" ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:2:1};fi
   		pdfulle=$pdfulle${pdfull:3:1}
-      eval "/home/pi/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $(($change-1+$mymod))" &
+      eval "`pwd`/show_digitsmove.py $lastreading $usdreading $(($change-1+$mymod))" &
       if [[ "$hasunicornhat" -ge "0" ]]; then
         eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
         eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py 1"

@@ -11,6 +11,10 @@ import smbus
 from rainbowhat_ledfunctions import rainbow_show_float, rainbow_show_message, rainbow_led_pricechange
 from config_filefunctions import is_sound_on
 
+import inkyphat
+inkyphat.set_rotation(180)
+inkyphat.set_colour("black")
+myfont = inkyphat.ImageFont.truetype(inkyphat.fonts.FredokaOne, 84)
 bus = smbus.SMBus(1) # 1 indicates /dev/i2c-1
 
 rainbowhat.rainbow.set_clear_on_exit(False)
@@ -28,6 +32,9 @@ try:
 except:
     print("Exception reading input")
 
+w, h = myfont.getsize(sys.argv[2])
+inkyphat.text(((inkyphat.WIDTH / 2) - (w / 2), 2), sys.argv[2], 1, font=myfont)
+inkyphat.show()
 counter = 1.0
 soundon = is_sound_on()
 try:
@@ -65,13 +72,10 @@ for val in range(vala, valb+stride, stride):
         except:
             pass
     try:
-        if valc > 99:
+        if valc > 29:
             mystring = "0"+(str(val).rjust(len(str(val)))[0:2+len(str(val))-5] + str(val)[-3+len(str(val).rjust(5))-5:]).rjust(5)
-            if val < 1000:
-                rainbow_show_float(float("0."+str(val)[0:3]))
-            else:
-                rainbow_show_float(float(str(val)[0:1]+"."+str(val)[1:4]))
-            rainbow_led_pricechange(valc-1000)  #100000 for micro dot hat
+            rainbow_show_float(float(val/100))
+            rainbow_led_pricechange(valc-100)  #100 for curve currency
             microdotphat.set_decimal(1, 1)
         else:
             mystring = (str(val).rjust(len(str(val)))[0:2+len(str(val))-5] + "," + str(val)[-3+len(str(val).rjust(5))-5:]).rjust(6)
