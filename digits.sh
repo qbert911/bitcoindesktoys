@@ -1,9 +1,9 @@
 #!/bin/bash
 # shellcheck disable=SC2004
 eval 'ulimit -S -s 16384' #to help prevent segfault errors when running show_digitsmove
-hasunicornhat=$(cat /home/pi/config.json | jq '.invert_unicornhat')
-#mycode="curve-dao-token";mymod=$((1000))  #100000 for microdot, 1000 for rainbowhat
-mycode="bitcoin";mymod=$((1))
+hasunicornhat=$(cat `pwd`/config.json | jq '.invert_unicornhat')
+mycode="curve-dao-token";mymod=$((100))  #100000 for microdot, 1000 for rainbowhat
+#mycode="bitcoin";mymod=$((1))
 echo -e "Watching $mycode price movements..."
 while : ;do
   usdraw=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=$mycode&vs_currencies=usd" -H "accept: application/json")
@@ -26,10 +26,10 @@ while : ;do
     fi
     if [[ "${#lastreading}" = "0" ]];then
       START=$(date +%s)
-      eval "`pwd`/show_digitsmove.py $usdreading $usdreading $(($change-1+$mymod))" &
+      eval "`pwd`/bitcoindesktoys/show_digitsmove.py $usdreading $usdreading $mymod" &
       echo -en "\$$usdreading       ["
     else
-      echo -e "] $(( $(date +%s) - $START )) seconds ($(date +%X))"
+      echo -e "] $(( $(date +%s) - $START )) seconds ($(date +%X)) $(($change+$mymod))"
       START=$(date +%s)
       #while [[ "$(( $(date +%_S) + 1 ))" -ne "60" ]];do sleep 0.05;done #sync multiple units
       pdfull="$(printf '%+04.0f' "$(echo $usdreading - $lastreading | bc )" )"
@@ -37,7 +37,7 @@ while : ;do
   			if [ ${pdfull:1:1} = 0 ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:1:1};fi
   			if [ "${pdfull:1:2}" = "00" ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:2:1};fi
   		pdfulle=$pdfulle${pdfull:3:1}
-      eval "`pwd`/show_digitsmove.py $lastreading $usdreading $(($change-1+$mymod))" &
+      eval "`pwd`/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $(($change+$mymod))" &
       if [[ "$hasunicornhat" -ge "0" ]]; then
         eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
         eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py 1"
