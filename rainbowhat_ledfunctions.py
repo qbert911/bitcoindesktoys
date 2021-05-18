@@ -67,7 +67,7 @@ def rainbow_show_message(vala):
     try:
         bus.read_byte(112)         #check to see if rainbow hat is connected
         rainbowhat.display.clear()
-        rainbowhat.display.print_str(vala)
+        rainbowhat.display.print_number_str(vala)
         rainbowhat.display.show()
     except:
         pass

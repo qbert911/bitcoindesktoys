@@ -8,7 +8,7 @@ from time import time, sleep
 import microdotphat
 import rainbowhat
 import smbus
-from rainbowhat_ledfunctions import rainbow_show_float, rainbow_show_message, rainbow_led_pricechange
+from rainbowhat_ledfunctions import rainbow_show_message, rainbow_led_pricechange
 from config_filefunctions import is_sound_on
 
 import inkyphat
@@ -74,7 +74,7 @@ for val in range(vala, valb+stride, stride):
     try:
         if valc > 29:
             mystring = "0"+(str(val).rjust(len(str(val)))[0:2+len(str(val))-5] + str(val)[-3+len(str(val).rjust(5))-5:]).rjust(5)
-            rainbow_show_float(float(val/100))
+            rainbow_show_message('{:04.2f}'.format(val/100))
             rainbow_led_pricechange(valc-100)  #100 for curve currency
             microdotphat.set_decimal(1, 1)
         else:
