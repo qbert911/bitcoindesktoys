@@ -4,18 +4,30 @@ rainbow HAT - alter digits and call led function
 """
 # pylint: disable=C0103,W0702,C0301,E0401
 import sys
+import os
+import json
 from time import time, sleep
 import smbus
 import microdotphat
 import rainbowhat
 from rainbowhat_ledfunctions import rainbow_show_message, rainbow_led_pricechange
-from config_filefunctions import is_sound_on
 
 bus = smbus.SMBus(1) # 1 indicates /dev/i2c-1
 
 rainbowhat.rainbow.set_clear_on_exit(False)
 microdotphat.set_clear_on_exit(False)
 microdotphat.set_rotate180(False)
+
+def is_sound_on():
+    """asdasd"""
+    file_name = os.path.join(os.path.dirname(__file__), 'config.json')
+    with open(file_name, 'r') as openfile:
+        try:
+            myfile = json.load(openfile)
+            return myfile["sound"]
+        except:
+            return 0
+
 
 def main():
     """asdasd"""

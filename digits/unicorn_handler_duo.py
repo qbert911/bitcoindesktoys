@@ -2,18 +2,17 @@
 """
 unicorn hat - show scatter plot of price history
 """
-# pylint: disable=C0103,C0301
+# pylint: disable=C0103,C0301,E0401
 from __future__ import print_function
 import json
 import os
 from time import sleep
 import unicornhathd
 import unicornhat
-from config_filefunctions import is_unicornhat_inverted
 import smbus
 bus = smbus.SMBus(1) # 1 indicates /dev/i2c-1
 unicornhat.set_layout(unicornhat.HAT)
-unicornhat.rotation(abs(is_unicornhat_inverted())*180)   #set to zero for battlestation, 1 for twin display, and -1 for solo
+unicornhat.rotation(180)
 unicornhat.brightness(1)
 
 unicornhathd.rotation(270)

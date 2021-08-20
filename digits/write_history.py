@@ -5,13 +5,12 @@ blah
 import json
 import os
 import sys
-from config_filefunctions import get_history_length
 
 def main():
     """asdasd"""
     newinfo = int(sys.argv[1])
     file_name = "/home/pi/history.json"
-    history_length = get_history_length()
+    history_length = 240
 
     if not os.path.isfile(file_name):  #instantiate new config file
         mydict = {"history":[newinfo]*17}
