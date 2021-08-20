@@ -1,5 +1,11 @@
 {
-  "sound": 0,
+  "sound": 1,
   "history_length": 240,
-  "invert_unicornhat": 1
+  "invert_unicornhat": 1,
+  "token_to_track": "curve-dao-token",
+  "token_modifier": 100,
+  "token_modifier_for_microhat": 10000,
+  "offtoken_to_track": "bitcoin",
+  "offtoken_modifier": 1
+
 }

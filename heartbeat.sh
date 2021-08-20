@@ -1,7 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2004
-maxbarlen=$(cat /home/pi/config.json | jq '.column_width')
-show_speed=$(cat /home/pi/config.json | jq '.show_speed')
+maxbarlen=$(cat /home/pi/bitcoindesktoys/config.json | jq '.column_width')
+show_speed=$(cat /home/pi/bitcoindesktoys/config.json | jq '.show_speed')
 if [ ${#maxbarlen} -eq 0 ]; then
 	maxbarlen=$((100))
 fi
@@ -147,5 +147,4 @@ while : ;do
     if [ "$(( ($c + $currbarlen) % ( $maxbarlen / 10 / $scalevel ) ))" == "0" ];then echo -n "+";else echo -n "${myblank}"; fi;  done
 	echo -e  "\e[0m \$$(printf "%04.0f" $usdprice)$pdfulle [$(printf "%04d" ${bakedin})tx] $(date '+%H:%M')"
   lastprice=$usdprice
-  if [ "$RUNTIME" -ge 10 ] && [ -f "/home/pi/bitcoindesktoys/cuckoo.wav" ]; then eval "nice -n -11 aplay -q /home/pi/bitcoindesktoys/cuckoo.wav" ; fi
 done

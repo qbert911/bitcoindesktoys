@@ -1,9 +1,10 @@
 #!/bin/bash
 # shellcheck disable=SC2004
 eval 'ulimit -S -s 16384' #to help prevent segfault errors when running show_digitsmove
-mycode="curve-dao-token";mymod=$((100))  #100000 for microdot, 1000 for rainbowhat
 MYDIR="bitcoindesktoys/digits"
-#mycode="bitcoin";mymod=$((1))
+mycode=$(cat /home/pi/$MYDIR/config.json | jq -r '.token_to_track')
+mymod=$(cat /home/pi/$MYDIR/config.json | jq '.token_modifier')
+
 echo -e "Watching $mycode price movements..."
 while : ;do
   usdraw=$(curl -s -X GET "https://api.coingecko.com/api/v3/simple/price?ids=$mycode&vs_currencies=usd" -H "accept: application/json")
@@ -41,13 +42,11 @@ while : ;do
       eval "/home/pi/$MYDIR/write_history.py $usdreading"
       eval "sudo /home/pi/$MYDIR/unicorn_bars_calculate.py 1"
       eval "touch /home/pi/trigger.foo"
-      eval "touch /home/pi/triggerhd.foo"
       sleep 12
       eval "sudo /home/pi/$MYDIR/unicorn_bars_calculate.py"
       echo -en "\$$usdreading($pdfulle) ["
       sleep 18
       eval "touch /home/pi/trigger.foo"
-      eval "touch /home/pi/triggerhd.foo"
     fi
   fi
   lastreading=$usdreading

@@ -10,6 +10,8 @@ from time import sleep
 import unicornhathd
 import unicornhat
 from config_filefunctions import is_unicornhat_inverted
+import smbus
+bus = smbus.SMBus(1) # 1 indicates /dev/i2c-1
 unicornhat.set_layout(unicornhat.HAT)
 unicornhat.rotation(abs(is_unicornhat_inverted())*180)   #set to zero for battlestation, 1 for twin display, and -1 for solo
 unicornhat.brightness(1)
@@ -67,17 +69,19 @@ def hd_ubars_display():
     print(position)
 
 if __name__ == "__main__":
-    ubars_display()
-    hd_ubars_display()
-    file_name2 = "/home/pi/triggerhd.foo"
+    try:  #if has rainbow hat fire 8 bit, otherwise fire 16 bit calculation
+        bus.read_byte(112)
+        ubars_display()
+    except:
+        hd_ubars_display()
     file_name = "/home/pi/trigger.foo"
     while True:
         sleep(3)
         if os.path.exists(file_name):
-            ubars_display()
+            try:  #if has rainbow hat fire 8 bit, otherwise fire 16 bit calculation
+                bus.read_byte(112)
+                ubars_display()
+            except:
+                hd_ubars_display()
             os.remove(file_name)
-            sleep(3)
-        if os.path.exists(file_name2):
-            hd_ubars_display()
-            os.remove(file_name2)
             sleep(3)
