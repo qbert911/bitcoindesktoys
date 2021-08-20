@@ -1,8 +1,8 @@
 #!/bin/bash
 # shellcheck disable=SC2004
 eval 'ulimit -S -s 16384' #to help prevent segfault errors when running show_digitsmove
-hasunicornhat=$(cat `pwd`/config.json | jq '.invert_unicornhat')
 mycode="curve-dao-token";mymod=$((100))  #100000 for microdot, 1000 for rainbowhat
+MYDIR="bitcoindesktoys/digits"
 #mycode="bitcoin";mymod=$((1))
 echo -e "Watching $mycode price movements..."
 while : ;do
@@ -26,7 +26,7 @@ while : ;do
     fi
     if [[ "${#lastreading}" = "0" ]];then
       START=$(date +%s)
-      eval "`pwd`/bitcoindesktoys/show_digitsmove.py $usdreading $usdreading $mymod" &
+      eval "/home/pi/$MYDIR/show_digitsmove.py $usdreading $usdreading $mymod" &
       echo -en "\$$usdreading       ["
     else
       echo -e "] $(( $(date +%s) - $START )) seconds ($(date +%X)) $(($change+$mymod))"
@@ -37,22 +37,17 @@ while : ;do
   			if [ ${pdfull:1:1} = 0 ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:1:1};fi
   			if [ "${pdfull:1:2}" = "00" ]; then	pdfulle=$pdfulle" ";else pdfulle=$pdfulle${pdfull:2:1};fi
   		pdfulle=$pdfulle${pdfull:3:1}
-      eval "`pwd`/bitcoindesktoys/show_digitsmove.py $lastreading $usdreading $(($change+$mymod))" &
-      if [[ "$hasunicornhat" -ge "0" ]]; then
-        eval "/home/pi/bitcoindesktoys/write_history.py $usdreading"
-        eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py 1"
-        eval "touch /home/pi/trigger.foo"
-        eval "touch /home/pi/triggerhd.foo"
-        sleep 12
-        eval "sudo /home/pi/bitcoindesktoys/unicorn_bars_calculate.py"
-        echo -en "\$$usdreading($pdfulle) ["
-        sleep 18
-        eval "touch /home/pi/trigger.foo"
-        eval "touch /home/pi/triggerhd.foo"
-      else
-        echo -en "\$$usdreading($pdfulle) ["
-        sleep 30
-      fi
+      eval "/home/pi/$MYDIR/show_digitsmove.py $lastreading $usdreading $(($change+$mymod))" &
+      eval "/home/pi/$MYDIR/write_history.py $usdreading"
+      eval "sudo /home/pi/$MYDIR/unicorn_bars_calculate.py 1"
+      eval "touch /home/pi/trigger.foo"
+      eval "touch /home/pi/triggerhd.foo"
+      sleep 12
+      eval "sudo /home/pi/$MYDIR/unicorn_bars_calculate.py"
+      echo -en "\$$usdreading($pdfulle) ["
+      sleep 18
+      eval "touch /home/pi/trigger.foo"
+      eval "touch /home/pi/triggerhd.foo"
     fi
   fi
   lastreading=$usdreading

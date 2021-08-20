@@ -1,13 +1,9 @@
+piglow==1.2.5
+ledshim==0.0.1
 python_bitcoinrpc==1.0
-pygame==1.9.4.post1
 colorama==0.3.7
+smbus==1.1.post2
 microdotphat==0.2.1
 rainbowhat==0.1.0
-unicornhathd==0.0.4
-piglow==1.2.5
-web3==5.12.2
-bitcoinrpc==0.4.0
-inkyphat==1.0.1
-ledshim==0.0.1
-smbus==1.1.post2
 unicornhat==2.2.3
+unicornhathd==0.0.4

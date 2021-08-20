@@ -2,11 +2,10 @@
 """
 unicorn hat - show scatter plot of price history
 """
-# pylint: disable=C0103,C0301,E1101
+# pylint: disable=C0103,C0301,E1101,E0401
 import json
 import sys
 import smbus
-from config_filefunctions import get_zoom_level
 from colorama import Fore, Style, init
 init()
 
@@ -28,7 +27,7 @@ def ubars_write(dimension, myfilename):
     try:
         hist_chunk_size = int(min(int(sys.argv[1]), len(myfile["history"])/dimension))
     except:
-        hist_chunk_size = int(min(int(get_zoom_level()), len(myfile["history"])/dimension))
+        hist_chunk_size = int(len(myfile["history"])/dimension)
 
     myfloor = 9999999
     myceiling = 0

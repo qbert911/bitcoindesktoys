@@ -1,8 +1,5 @@
 {
-  "sound": 0,
-  "history_length": 240,
-  "zoom_level": 15,
-  "show_speed": 1,
-  "column_width": 100,
-  "invert_unicornhat": 1
+  "show_speed":   1,
+  "column_width":   100,
+  "column_width_small_screen": 50
 }

@@ -7,4 +7,4 @@ from web3 import Web3
 #INFURA_ID = "6aa1a043a9854eaa9fa68d17f619f326"
 #w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/'+INFURA_ID))
 #print(round(w3.eth.gasPrice/10**9))
-print(round(Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/6aa1a043a9854eaa9fa68d17f619f326')).eth.gasPrice/10**9))
+print(round(Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/753484fba9304da39c9c724e8b8dfccf')).eth.gasPrice/10**9))
