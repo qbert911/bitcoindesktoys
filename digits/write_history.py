@@ -12,7 +12,7 @@ def main():
     file_name = "/home/pi/history.json"
     history_length = 240
 
-    if not os.path.isfile(file_name):  #instantiate new config file
+    if not os.path.isfile(file_name):  #instantiate new history file
         mydict = {"history":[newinfo]*17}
         with open(file_name, "w") as outfile:
             json.dump(mydict, outfile)

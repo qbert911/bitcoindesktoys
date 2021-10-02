@@ -39,7 +39,6 @@ gray = [1, 1, 1]
 blank = [0, 0, 0]
 brightness = .8
 
-
 def rainbow_led_pricechange(vala):
     """write to leds"""
     rainbowhat.rainbow.set_clear_on_exit(False)
@@ -68,16 +67,6 @@ def rainbow_show_message(vala):
         bus.read_byte(112)         #check to see if rainbow hat is connected
         rainbowhat.display.clear()
         rainbowhat.display.print_number_str(vala)
-        rainbowhat.display.show()
-    except:
-        pass
-
-def rainbow_show_float(vala):
-    """write to four character display"""
-    try:
-        bus.read_byte(112)         #check to see if rainbow hat is connected
-        rainbowhat.display.clear()
-        rainbowhat.display.print_float(vala)
         rainbowhat.display.show()
     except:
         pass

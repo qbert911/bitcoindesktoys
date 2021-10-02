@@ -10,6 +10,8 @@ from time import sleep
 import unicornhathd
 import unicornhat
 import smbus
+import unicorn_bars_calculate
+
 bus = smbus.SMBus(1) # 1 indicates /dev/i2c-1
 unicornhat.set_layout(unicornhat.HAT)
 unicornhat.rotation(180)
@@ -23,6 +25,12 @@ green = [0, 60, 0]
 blue = [0, 0, 60]
 gray = [45, 45, 45]
 blank = [0, 0, 0]
+
+if not os.path.isfile("/home/pi/unicorn.json"):  #instantiate new config file
+    unicorn_bars_calculate.ubars_write(8, "unicorn")
+
+if not os.path.isfile("/home/pi/unicornhd.json"):  #instantiate new config file
+    unicorn_bars_calculate.ubars_write(16, "unicornhd")
 
 def ubars_display():
     """update unicornhat with data from file"""
@@ -71,6 +79,7 @@ if __name__ == "__main__":
     try:  #if has rainbow hat fire 8 bit, otherwise fire 16 bit calculation
         bus.read_byte(112)
         ubars_display()
+        print("8-bit unicorn found")        
     except:
         hd_ubars_display()
     file_name = "/home/pi/trigger.foo"
@@ -80,7 +89,9 @@ if __name__ == "__main__":
             try:  #if has rainbow hat fire 8 bit, otherwise fire 16 bit calculation
                 bus.read_byte(112)
                 ubars_display()
+
             except:
+                print("16-found")
                 hd_ubars_display()
             os.remove(file_name)
             sleep(3)

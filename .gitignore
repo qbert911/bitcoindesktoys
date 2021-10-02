@@ -2,3 +2,4 @@
 *.jpg
 *.json
 !config.json
+output.txt

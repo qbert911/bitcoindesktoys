@@ -7,3 +7,4 @@ microdotphat==0.2.1
 rainbowhat==0.1.0
 unicornhat==2.2.3
 unicornhathd==0.0.4
+bitcoinrpc==0.4.0

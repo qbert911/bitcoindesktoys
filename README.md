@@ -3,11 +3,12 @@ Install latest Raspbian OS image
 ```
 sudo apt update
 
-sudo apt-get install jq curl bc git ...
+sudo apt-get install jq ... (figlet(for gaswatch))
 
 git clone ...
 
-pip install ...
+pip3 install smbus microdotphat rainbowhat (web3, lolcat(for gaswatch)
+sudo pip3 install smbus unicornhat unicornhathd(unicorn_handler_duo and ledshim_mempool)
 
 nano /etc/rc.local ...
 

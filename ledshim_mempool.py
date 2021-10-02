@@ -2,11 +2,15 @@
 """
 color in ledshim according to size of BTC mempool
 """
-# pylint: disable=C0103,C0326
+#pylint: disable=C0103,E0401
 import time
 import ledshim
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
 
+invert=0
+rpcuser = "bongos"
+rpcpassword = "goobers"
+ledshim.set_brightness(0.15)
 ledshim.set_clear_on_exit()
 
 def show_graph(vp, r, g, b):
@@ -20,10 +24,7 @@ def show_graph(vp, r, g, b):
         ledshim.set_pixel(abs((27*invert)-x), r, g, b)
         barlen -= 1
 
-invert=0
-rpcuser = "bongos"
-rpcpassword = "goobers"
-ledshim.set_brightness(0.15)
+
 while True:
     try:
         rpc_connection = AuthServiceProxy("http://%s:%s@127.0.0.1:8332"%(rpcuser, rpcpassword))

@@ -6,6 +6,7 @@ unicorn hat - show scatter plot of price history
 import json
 import sys
 import smbus
+import os
 from colorama import Fore, Style, init
 init()
 
@@ -21,6 +22,11 @@ def ubars_write(dimension, myfilename):
     #dimension = 8
     position = [[0 for x in range(dimension)] for y in range(dimension)]
     file_name = "/home/pi/history.json"
+    if not os.path.isfile(file_name):  #instantiate new history file
+        mydict = {"history":[1000]*17}
+        with open(file_name, "w") as outfile:
+            json.dump(mydict, outfile)
+
     with open(file_name, 'r') as openfile:
         myfile = json.load(openfile)
 
@@ -73,5 +79,6 @@ if __name__ == "__main__":
     try:  #if has rainbow hat fire 8 bit, otherwise fire 16 bit calculation
         bus.read_byte(112)
         ubars_write(8, "unicorn")
+        print("8-bit unicorn found")
     except:
         ubars_write(16, "unicornhd")

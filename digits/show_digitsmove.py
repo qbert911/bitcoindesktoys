@@ -28,19 +28,7 @@ def is_sound_on():
         except:
             return 0
 
-
-def main():
-    """asdasd"""
-    try:
-        #sys.stdout.write('time4digits:')
-        timeing = time()
-        vala = int(sys.argv[1])
-        valb = int(sys.argv[2])
-        valc = int(sys.argv[3])
-    except:
-        print("Exception reading input")
-
-    counter = 1.0
+def boop_beeps(vala,valb,valc):
     soundon = is_sound_on()
     try:
         bus.read_byte(112)         #check to see if rainbow hat is connected
@@ -60,16 +48,30 @@ def main():
     else:
         stride = 1
         Note_Freq = 2
-        #if soundon:
         try:
             bus.read_byte(112)         #check to see if rainbow hat is connected
             rainbowhat.lights.green.on()
         except:
             pass
 
+    return stride, Note_Freq
+
+def main():
+    """asdasd"""
+    try:
+        vala = int(sys.argv[1])
+        valb = int(sys.argv[2])
+        valc = int(sys.argv[3])
+    except:
+        print("Exception reading input")
+
+    counter = 1.0
+    soundon = is_sound_on()
+
+    stride, Note_Freq = boop_beeps(vala,valb,valc)
+
     for val in range(vala, valb+stride, stride):
         sleep_time = min((counter/(abs(vala-valb)+1.000))**1.8*(10.0/(abs(vala-valb)+1.0)), 3.000)
-        #print(sleep_time,val)
         if soundon:
             try:
     #            bus.read_byte(112)         #check to see if rainbow hat is connected
@@ -95,9 +97,6 @@ def main():
         sleep(sleep_time)
 
     sleep(.4)   #needed so we can hear the last sound effect
-    #sys.stdout.write(str(time()-timeing))
-    #sys.stdout.flush()
-    #print("")
 
 if __name__ == "__main__":
     main()
