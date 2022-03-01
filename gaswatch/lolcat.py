@@ -15,12 +15,12 @@ import random
 import re
 import sys
 import time
-from signal import signal, SIGPIPE, SIG_DFL
+#from signal import signal, SIGPIPE, SIG_DFL
 
 PY3 = sys.version_info >= (3,)
 
 # override default handler so no exceptions on SIGPIPE
-signal(SIGPIPE, SIG_DFL)
+#signal(SIGPIPE, SIG_DFL)
 
 # Reset terminal colors at exit
 def reset():
@@ -160,8 +160,8 @@ class LolCat(object):
                 self.wrap(self.ansi(rgb)),
                 c if PY3 else c.encode(options.charset_py2, 'replace'),
             ]))
-        if os.name == 'nt':
-            self.output.print()
+        #if os.name == 'nt':
+        #    self.output.print()
 
 
 def detect_mode(term_hint='xterm-256color'):

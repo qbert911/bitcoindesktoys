@@ -9,7 +9,7 @@ import price_grab_to_output
 options = optparse.OptionParser()   #make use of optparse object class as lolcat expects it
 options.animate = options.force = False
 options.freq = 0.1
-char_lengths = {'0': 26, '1': 20, '2': 28, '3': 27, '4': 29, '5': 30, '6': 28, '7': 28, '8': 28, '9': 29}
+char_lengths = {'0': 25.5, '1': 20, '2': 28, '3': 27, '4': 29, '5': 30, '6': 28, '7': 28, '8': 28, '9': 29}
 
 def main():
     options.spread = 3.0
@@ -27,8 +27,11 @@ def main():
                 length_old = length
                 length = y = 0
                 for i in range(0, len(price_string)):
-                    length = length + char_lengths.get(price_string[i]) - 10
-                if length < length_old or (length <= length_old + 1 and price_string[i] == '5'):  #five character has wierd ending
+                    try:
+                        length = length + char_lengths.get(price_string[i]) - 10
+                    except:
+                        length = 0
+                if length < length_old or (length <= length_old + 1 and price_string[i] == '5') or (length == length_old and price_string[i] == '1'):  #five character has wierd ending
                     myarray=[]
                     print("\033c")  #clear screen
                 myarray.append(price_string+" ("+str(length)+")")

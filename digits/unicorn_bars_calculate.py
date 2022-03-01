@@ -79,6 +79,5 @@ if __name__ == "__main__":
     try:  #if has rainbow hat fire 8 bit, otherwise fire 16 bit calculation
         bus.read_byte(112)
         ubars_write(8, "unicorn")
-        print("8-bit unicorn found")
     except:
         ubars_write(16, "unicornhd")

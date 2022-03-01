@@ -6,10 +6,19 @@ import logging
 logging.getLogger().disabled = True
 from web3 import Web3
 
-def doit(font='s-relief'):
-    myval=str(round(Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/753484fba9304da39c9c724e8b8dfccf')).eth.gasPrice/10**9))
-    os.system("figlet -f '"+font+"' -c -t "+myval+" >output.txt")
+def doit(font='s-relief',outfiglet=True):
+    try:
+        myval=str(round(Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/753484fba9304da39c9c724e8b8dfccf')).eth.gasPrice/10**9))
+    except:
+        myval="xxx"
+    if outfiglet:
+        os.system("figlet -f '"+font+"' -c -t "+myval+" >output.txt")
+    else:
+        with open('output.txt', 'w') as b:
+            print (myval,file=b)
+
     return myval
 
 if __name__ == "__main__":
-    doit()
+    myvall=doit(outfiglet=False)
+    print(myvall)
