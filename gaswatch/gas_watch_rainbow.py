@@ -31,7 +31,8 @@ def main():
                         length = length + char_lengths.get(price_string[i]) - 10
                     except:
                         length = 0
-                if length < length_old or (length <= length_old + 1 and price_string[i] == '5') or (length == length_old and price_string[i] == '1'):  #five character has wierd ending
+                if length < length_old or (length <= length_old + 1 and price_string[i] == '5') \
+                                       or (length == length_old and price_string[i] == '1'):  #five character has wierd ending
                     myarray=[]
                     print("\033c")  #clear screen
                 myarray.append(price_string+" ("+str(length)+")")

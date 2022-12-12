@@ -1,5 +1,4 @@
 *.pyc
 *.jpg
-*.json
 !config.json
 output.txt

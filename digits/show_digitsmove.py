@@ -85,7 +85,10 @@ def main():
                 rainbow_led_pricechange(valc-100)  #100 for curve currency
                 microdotphat.set_decimal(1, 1)
             else:
-                mystring = (str(val).rjust(len(str(val)))[0:2+len(str(val))-5] + "," + str(val)[-3+len(str(val).rjust(5))-5:]).rjust(6)
+                if val > 999:
+                    mystring = (str(val).rjust(len(str(val)))[0:2+len(str(val))-5] + "," + str(val)[-3+len(str(val).rjust(5))-5:]).rjust(6)
+                else:
+                    mystring = (str(val).rjust(len(str(val)))[0:2+len(str(val))-5] + " " + str(val)[-3+len(str(val).rjust(5))-5:]).rjust(6)
                 rainbow_show_message(str(val))
                 rainbow_led_pricechange(valc)
             microdotphat.write_string(mystring, offset_x=0, kerning=False)

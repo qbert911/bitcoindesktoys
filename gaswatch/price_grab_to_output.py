@@ -6,9 +6,11 @@ import logging
 logging.getLogger().disabled = True
 from web3 import Web3
 
-def doit(font='s-relief',outfiglet=True):
+INFURA_ID = '4f3de96859f141b5a0c6a84e840ab4ec'   #HACK 
+
+def doit(font='s-relief',outfiglet=True): 
     try:
-        myval=str(round(Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/753484fba9304da39c9c724e8b8dfccf')).eth.gasPrice/10**9))
+        myval=str(round(Web3(Web3.HTTPProvider(f'https://mainnet.infura.io/v3/{INFURA_ID}')).eth.gasPrice/10**9))
     except:
         myval="xxx"
     if outfiglet:

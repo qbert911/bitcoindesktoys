@@ -1,8 +1,15 @@
 {
-  "sound": 1,
+  "sound": 0,
+  "chainlink_token": "CRV",
   "token_to_track": "curve-dao-token",
   "token_modifier": 100,
-  "token_modifier_for_microhat": 10000,
-  "offtoken_to_track": "bitcoin",
-  "offtoken_modifier": 1
+  "Achainlink_token": "CVX",
+  "Atoken_to_track": "convex-finance",
+  "Atoken_modifier": 100,  
+  "Bchainlink_token": "BTC",
+  "Btoken_to_track": "bitcoin",
+  "Btoken_modifier": 1,
+  "Cchainlink_token": "ETH",
+  "Ctoken_to_track": "ethereum",
+  "Ctoken_modifier": 1  
 }
