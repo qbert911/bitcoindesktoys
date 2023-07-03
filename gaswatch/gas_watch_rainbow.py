@@ -23,22 +23,26 @@ def main():
             x = 1
             y = y + 1
             if y > cycles:
-                price_string = price_grab_to_output.doit()  #use web3 to get eth gas price
+                price_string = price_grab_to_output.dograb()  #use web3 to get eth gas price
                 length_old = length
                 length = y = 0
-                for i in range(0, len(price_string)):
+                for i in range(len(price_string)):
                     try:
                         length = length + char_lengths.get(price_string[i]) - 10
-                    except:
+                    except Exception:
                         length = 0
                 if length < length_old or (length <= length_old + 1 and price_string[i] == '5') \
-                                       or (length == length_old and price_string[i] == '1'):  #five character has wierd ending
+                                       or (length == length_old and price_string[i] == '1') \
+                                       or length_old > 50:  #five character has wierd ending
                     myarray=[]
                     print("\033c")  #clear screen
-                myarray.append(price_string+" ("+str(length)+")")
+
+                myarray.append(f"{price_string} ({length})")
                 if len(myarray) > 5:
                     del myarray[0]
-
+                if length > 50:
+                    price_string = f"{price_string[0:2]}." #truncate longer price strings so as to not bleed of edge of
+                price_grab_to_output.dofiglet(price_string)
         print("\033[0;0H \033[0;0m", myarray,"    ")  #debug message
         x = x + 1
         options.os = 252 - x

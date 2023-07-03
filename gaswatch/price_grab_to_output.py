@@ -8,18 +8,16 @@ from web3 import Web3
 
 INFURA_ID = '4f3de96859f141b5a0c6a84e840ab4ec'   #HACK 
 
-def doit(font='s-relief',outfiglet=True): 
+def dograb(font='s-relief',outfiglet=True): 
     try:
         myval=str(round(Web3(Web3.HTTPProvider(f'https://mainnet.infura.io/v3/{INFURA_ID}')).eth.gasPrice/10**9))
     except:
         myval="xxx"
-    if outfiglet:
-        os.system("figlet -f '"+font+"' -c -t "+myval+" >output.txt")
-    else:
-        with open('output.txt', 'w') as b:
-            print (myval,file=b)
-
     return myval
+
+def dofiglet(myval,font='s-relief'):
+    os.system("figlet -f '"+font+"' -c -t "+myval+" >output.txt")
+
 
 if __name__ == "__main__":
     myvall=doit(outfiglet=False)
